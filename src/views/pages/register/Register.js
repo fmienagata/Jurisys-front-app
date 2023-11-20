@@ -3,6 +3,7 @@ import {
   CButton,
   CCard,
   CCardBody,
+  CCardHeader,
   CCol,
   CContainer,
   CForm,
@@ -21,15 +22,24 @@ const Register = () => {
         <CRow className="justify-content-center">
           <CCol md={9} lg={7} xl={6}>
             <CCard className="mx-4">
+              <CCardHeader style={{ backgroundColor: '#785a38' }}>
+                {' '}
+                <img
+                  style={{ width: '100%' }}
+                  className="  "
+                  src={`${process.env.PUBLIC_URL}/images/logo_1.png`}
+                  alt="Logo"
+                />
+              </CCardHeader>
               <CCardBody className="p-4">
                 <CForm>
-                  <h1>Register</h1>
-                  <p className="text-body-secondary">Create your account</p>
+                  <h1>Registre</h1>
+                  <p className="text-body-secondary">Créez votre compte</p>
                   <CInputGroup className="mb-3">
                     <CInputGroupText>
                       <CIcon icon={cilUser} />
                     </CInputGroupText>
-                    <CFormInput placeholder="Username" autoComplete="username" />
+                    <CFormInput placeholder="Nom d'utilisateur" autoComplete="username" />
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CInputGroupText>@</CInputGroupText>
@@ -41,7 +51,7 @@ const Register = () => {
                     </CInputGroupText>
                     <CFormInput
                       type="password"
-                      placeholder="Password"
+                      placeholder="Mot de passe"
                       autoComplete="new-password"
                     />
                   </CInputGroup>
@@ -51,12 +61,12 @@ const Register = () => {
                     </CInputGroupText>
                     <CFormInput
                       type="password"
-                      placeholder="Repeat password"
+                      placeholder="Répéter le mot de passe"
                       autoComplete="new-password"
                     />
                   </CInputGroup>
                   <div className="d-grid">
-                    <CButton color="success">Create Account</CButton>
+                    <CButton color="success">Créer un compte</CButton>
                   </div>
                 </CForm>
               </CCardBody>

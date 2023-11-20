@@ -14,16 +14,17 @@
 }
 
 .sidebar-toggler {
-  @include ltr-rtl("margin-left", auto);
+  @include ltr-rtl('margin-left', auto);
 }
 
 .sidebar-narrow,
 .sidebar-narrow-unfoldable:not(:hover) {
   .sidebar-toggler {
-    @include ltr-rtl("margin-right", auto);
+    @include ltr-rtl('margin-right', auto);
   }
 }
 
 .footer {
   min-height: calc(3rem + 1px); // stylelint-disable-line function-disallowed-list
 }
+
