@@ -23,12 +23,18 @@ import {
   cilUser,
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
+import { useAuth } from 'src/Context/AuthContext'
 
 import avatar8 from './../../assets/images/avatars/8.jpg'
+import labels from 'src/translations/labels.json'
 
 const AppHeaderDropdown = () => {
+  const { disconnect } = useAuth()
+
   const navigate = useNavigate()
+
   function logout() {
+    disconnect()
     navigate('/login')
   }
   return (
@@ -90,9 +96,9 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem href="#">
-          <CIcon icon={cilLockLocked} className="me-2" onClick={logout()} />
-          Lock Account
+        <CDropdownItem onClick={() => logout()}>
+          <CIcon icon={cilLockLocked} className="me-2" onClick={() => logout()} />
+          {labels.header.logout}
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>

@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react'
-import { Link, Navigate } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Controller, useForm } from 'react-hook-form'
 import {
   CButton,
   CCard,
@@ -7,7 +8,6 @@ import {
   CCardGroup,
   CCol,
   CContainer,
-  CForm,
   CFormInput,
   CInputGroup,
   CInputGroupText,
@@ -16,18 +16,32 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { useNavigate } from 'react-router-dom'
-
+import labels from 'src/translations/labels.json'
+import authService from 'src/services/authServices'
 import { useMessageContext } from 'src/Context/MessageContext'
 
 const Login = () => {
   const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false)
   const { displaySuccess } = useMessageContext()
 
-  function handleLogin() {
-    //navigate('/dashboard')
-    console.log('test')
-    displaySuccess('tester Messages ??')
+  const { control, handleSubmit } = useForm()
+
+  const handleLogin = async (data) => {
+    setIsLoading(true)
+    try {
+      const response = await authService.login(data)
+      localStorage.setItem('token', response.token)
+      setIsLoading(false)
+      displaySuccess('yes logged - in')
+
+      navigate('/dashboard')
+    } catch (error) {
+      console.error('Login failed:', error.message)
+      setIsLoading(false)
+    }
   }
+
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -39,51 +53,69 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm>
-                    <h1>Se connecter</h1>
-                    <p className="text-body-secondary">Connectez-vous à votre compte</p>
+                  <form onSubmit={handleSubmit(handleLogin)}>
+                    <h1>{labels.login.titleHeader}</h1>
+                    <p className="text-body-secondary">{labels.login.title}</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Nom d'utilisateur" autoComplete="username" />
+                      <Controller
+                        name="username"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="username"
+                            placeholder="Nom d'utilisateur"
+                            autoComplete="username"
+                          />
+                        )}
+                      />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
                         <CIcon icon={cilLockLocked} />
                       </CInputGroupText>
-                      <CFormInput
-                        type="password"
-                        placeholder="Mot de passe"
-                        autoComplete="current-password"
+                      <Controller
+                        name="password"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="password"
+                            type="password"
+                            placeholder="Mot de passe"
+                            autoComplete="current-password"
+                          />
+                        )}
                       />
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="success" className="px-4" onClick={() => handleLogin()}>
-                          Se connecter
+                        <CButton color="success" type="submit" disabled={isLoading}>
+                          {isLoading ? labels.login.action.loading : labels.login.action.login}
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
                         <CButton color="link" className="px-0">
-                          Mot de passe oublié?
+                          {labels.login.action.forgotPassword}
                         </CButton>
                       </CCol>
                     </CRow>
-                  </CForm>
+                  </form>
                 </CCardBody>
               </CCard>
               <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
                 <CCardBody className="text-center">
                   <div>
-                    <h2>inscrire</h2>
-                    <p>
-                      La digitalisation au service de votre professsion Cabinet Brudey ondziel
-                      gnelenga locko
-                    </p>
+                    <h2>{labels.login.action.inscrire}</h2>
+                    <p>{labels.description}</p>
                     <Link to="/register">
                       <CButton color="secondary" className="mt-3" active tabIndex={-1}>
-                        inscrire!
+                        {labels.login.action.inscrire}
                       </CButton>
                     </Link>
                   </div>
