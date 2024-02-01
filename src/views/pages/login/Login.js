@@ -35,7 +35,7 @@ const Login = () => {
       setIsLoading(false)
       displaySuccess('yes logged - in')
 
-      navigate('/dashboard')
+      //navigate('/dashboard')
     } catch (error) {
       console.error('Login failed:', error.message)
       setIsLoading(false)
