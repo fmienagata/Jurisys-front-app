@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Controller, useForm } from 'react-hook-form'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Controller, useForm } from 'react-hook-form'
 import {
   CButton,
   CCard,
@@ -21,6 +24,8 @@ import authService from 'src/services/authServices'
 import { useMessageContext } from 'src/Context/MessageContext'
 
 const Login = () => {
+  const { login } = useAuth()
+
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const { displaySuccess } = useMessageContext()
@@ -56,10 +61,26 @@ const Login = () => {
                   <form onSubmit={handleSubmit(handleLogin)}>
                     <h1>{labels.login.titleHeader}</h1>
                     <p className="text-body-secondary">{labels.login.title}</p>
+                  <form onSubmit={handleSubmit(handleLogin)}>
+                    <h1>{labels.login.titleHeader}</h1>
+                    <p className="text-body-secondary">{labels.login.title}</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
+                      <Controller
+                        name="username"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="username"
+                            placeholder="Nom d'utilisateur"
+                            autoComplete="username"
+                          />
+                        )}
+                      />
                       <Controller
                         name="username"
                         control={control}
@@ -91,10 +112,25 @@ const Login = () => {
                             autoComplete="current-password"
                           />
                         )}
+                      <Controller
+                        name="password"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="password"
+                            type="password"
+                            placeholder="Mot de passe"
+                            autoComplete="current-password"
+                          />
+                        )}
                       />
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
+                        <CButton color="success" type="submit" disabled={isLoading}>
+                          {isLoading ? labels.login.action.loading : labels.login.action.login}
                         <CButton color="success" type="submit" disabled={isLoading}>
                           {isLoading ? labels.login.action.loading : labels.login.action.login}
                         </CButton>
@@ -102,9 +138,11 @@ const Login = () => {
                       <CCol xs={6} className="text-right">
                         <CButton color="link" className="px-0">
                           {labels.login.action.forgotPassword}
+                          {labels.login.action.forgotPassword}
                         </CButton>
                       </CCol>
                     </CRow>
+                  </form>
                   </form>
                 </CCardBody>
               </CCard>
@@ -113,8 +151,11 @@ const Login = () => {
                   <div>
                     <h2>{labels.login.action.inscrire}</h2>
                     <p>{labels.description}</p>
+                    <h2>{labels.login.action.inscrire}</h2>
+                    <p>{labels.description}</p>
                     <Link to="/register">
                       <CButton color="secondary" className="mt-3" active tabIndex={-1}>
+                        {labels.login.action.inscrire}
                         {labels.login.action.inscrire}
                       </CButton>
                     </Link>
