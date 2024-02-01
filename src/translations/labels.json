@@ -1,0 +1,29 @@
+{
+  "header": {
+    "logout": "Déconnecter"
+  },
+  "login": {
+    "titleHeader": "Se connecter",
+    "title": "Connectez-vous à votre compte",
+    "label": "La digitalisation au service de votre professsion Cabinet Brudey ondziel gnelenga locko ",
+    "action": {
+      "forgotPassword": "Mot de passe oublié ?",
+      "login": "Se connecter",
+      "inscrire": "S'inscrire",
+      "loading": "Chargement..."
+    }
+  },
+  "welcomeMessage": "Bienvenue dans mon application!",
+  "description": "La digitalisation au service de votre professsion Cabinet Brudey ondziel gnelenga locko",
+  "dossier": {
+    "titleHeader": "Se connecter",
+    "title": "Connectez-vous à votre compte",
+    "label": "La digitalisation au service de votre professsion Cabinet Brudey ondziel gnelenga locko ",
+    "action": {
+      "forgotPassword": "Mot de passe oublié ?",
+      "login": "Se connecter",
+      "inscrire": "S'inscrire",
+      "loading": "Chargement..."
+    }
+  }
+}

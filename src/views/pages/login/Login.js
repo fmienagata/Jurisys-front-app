@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import {
   CButton,
@@ -17,11 +17,16 @@ import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { useNavigate } from 'react-router-dom'
 
+import { useMessageContext } from 'src/Context/MessageContext'
+
 const Login = () => {
   const navigate = useNavigate()
+  const { displaySuccess } = useMessageContext()
 
   function handleLogin() {
-    navigate('/dashboard')
+    //navigate('/dashboard')
+    console.log('test')
+    displaySuccess('tester Messages ??')
   }
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
@@ -71,14 +76,14 @@ const Login = () => {
               <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
                 <CCardBody className="text-center">
                   <div>
-                    <h2>S'inscrire</h2>
+                    <h2>inscrire</h2>
                     <p>
                       La digitalisation au service de votre professsion Cabinet Brudey ondziel
                       gnelenga locko
                     </p>
                     <Link to="/register">
                       <CButton color="secondary" className="mt-3" active tabIndex={-1}>
-                        S'inscrire!
+                        inscrire!
                       </CButton>
                     </Link>
                   </div>

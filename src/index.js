@@ -6,10 +6,13 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { Provider } from 'react-redux'
 import store from './store'
+import { MessageProvider } from './Context/MessageContext'
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <App />
+    <MessageProvider>
+      <App />
+    </MessageProvider>
   </Provider>,
 )
 
