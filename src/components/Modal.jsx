@@ -6,7 +6,7 @@ const Modal = (props) => {
   //const { titleMessage, bodyMessage } = props
 
   // eslint-disable-next-line react/prop-types
-  const { message, bodyMessage, visible, titleMessage, onClose } = props
+  const { message, title, bodyMessage, visible, titleMessage, onClose } = props
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -24,7 +24,7 @@ const Modal = (props) => {
         aria-labelledby="OptionalSizesExample2"
       >
         <CModalHeader>
-          <CModalTitle id="OptionalSizesExample2">{titleMessage}</CModalTitle>
+          <CModalTitle id="OptionalSizesExample2">{title}</CModalTitle>
         </CModalHeader>
         <CModalBody>{message}</CModalBody>
       </CModal>

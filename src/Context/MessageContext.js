@@ -17,6 +17,7 @@ const modalReducer = (modalState, action) => {
       return {
         visible: true,
         variant: 'SUCCESS',
+        title,
         message,
         iconName: 'SUCCESS',
       }
@@ -24,6 +25,7 @@ const modalReducer = (modalState, action) => {
       return {
         visible: true,
         variant: 'ERROR',
+        title,
         message,
         iconName: 'error',
       }
@@ -51,13 +53,14 @@ export const MessageProvider = ({ children }) => {
   const [modal, dispatch] = useReducer(modalReducer, { visible: false })
 
   const displaySuccess = (message) => {
-    dispatch({ type: messageTypes.SUCCESS, message })
+    dispatch({ type: messageTypes.SUCCESS, message, title: 'title' })
   }
 
   const displayError = (message) => {
     dispatch({
       type: messageTypes.ERROR,
       message: message || 'Une erreur est survenue',
+      title: 'Une erreur est survenue',
     })
   }
 
