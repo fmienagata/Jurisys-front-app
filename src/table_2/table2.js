@@ -11,6 +11,11 @@ import {
   CPaginationItem,
   CPagination,
   CTable,
+  CTableRow,
+  CTableDataCell,
+  CTableBody,
+  CTableHead,
+  CTableHeaderCell,
 } from '@coreui/react'
 
 import CIcon from '@coreui/icons-react'
@@ -131,26 +136,26 @@ function Table({ data, columns, currentPage, setCurrentPage }) {
   // Render the UI for your table
   return (
     <>
-      <CDataTable {...getTableProps()} sorter={true}>
-        <thead>
+      <CTable {...getTableProps()} sorter={true}>
+        <CTableHead>
           {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
+            <CTableRow {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th
+                <CTableHeaderCell
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   {...column.getHeaderProps()}
                 >
                   {column.render('Header')}
-                </th>
+                </CTableHeaderCell>
               ))}
-            </tr>
+            </CTableRow>
           ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
+        </CTableHead>
+        <CTableBody {...getTableBodyProps()}>
           {page.map((row, i) => {
             prepareRow(row)
             return (
-              <tr
+              <CTableRow
                 style={{ backgroundColor: i % 2 === 0 ? 'rgb(237 239 241)' : '' }}
                 {...row.getRowProps()}
                 onClick={() => handleLineClick(row)}
@@ -158,7 +163,7 @@ function Table({ data, columns, currentPage, setCurrentPage }) {
                 {row.cells.map((cell) => {
                   if (cell.column.Header === 'Actions') {
                     return (
-                      <td>
+                      <CTableDataCell>
                         <CButton color="success" variant="ghost" size="sm">
                           <CIcon icon={icon.cilClone} size="sm" />
                         </CButton>
@@ -168,15 +173,15 @@ function Table({ data, columns, currentPage, setCurrentPage }) {
                         <CButton color="danger" variant="ghost" size="sm">
                           <CIcon icon={icon.cilTrash} size="sm" />
                         </CButton>
-                      </td>
+                      </CTableDataCell>
                     )
                   }
                   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 })}
-              </tr>
+              </CTableRow>
             )
           })}
-        </tbody>
+        </CTableBody>
       </CTable>
       <CPagination aria-label="Page navigation example">
         <div
