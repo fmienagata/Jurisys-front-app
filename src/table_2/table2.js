@@ -10,13 +10,15 @@ import {
   CRow,
   CPaginationItem,
   CPagination,
+  CTable,
 } from '@coreui/react'
 
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
 
 import styled from 'styled-components'
-import { useTable, usePagination } from 'react-table'
+import { useTable, useSortBy, usePagination, useRowSelect } from 'react-table'
+import { Checkbox } from 'src/table/checkbox'
 
 const Styles = styled.div`
   padding: 1rem;
@@ -47,21 +49,31 @@ const Styles = styled.div`
   }
 `
 
-function Table({ columns, data }) {
-  //   // Use the state and functions returned from useTable to build your UI
+function Table({ data, columns, currentPage, setCurrentPage }) {
+  const generateCheckboxRows = (hooks) =>
+    hooks.visibleColumns.push((columns) => [
+      {
+        id: 'selection',
+        Header: ({ getToggleAllPageRowsSelectedProps }) => (
+          <Checkbox {...getToggleAllPageRowsSelectedProps()} />
+        ),
+        Cell: ({ row }) => <Checkbox {...row.getToggleRowSelectedProps()} />,
+      },
+      ...columns,
+    ])
+  const generateDefaultRows = (hooks) => hooks.visibleColumns.push((columns) => [...columns])
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    page, // Instead of using 'rows', we'll use page,
-    // which has only the rows for the active page
-
-    // The rest of these things are super handy, too ;)
+    page,
     canPreviousPage,
     canNextPage,
     pageOptions,
+    toggleAllRowsSelected,
     nextPage,
+    gotoPage,
     previousPage,
     onPageChange,
     setPageSize,
@@ -70,39 +82,66 @@ function Table({ columns, data }) {
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['id'] },
+      initialState: { pageIndex: currentPage - 1, pageSize: 10, hiddenColumns: ['id'] },
     },
+    useSortBy,
     usePagination,
+    useRowSelect,
+    (hooks) => {
+      if (true) generateCheckboxRows(hooks)
+      return generateDefaultRows(hooks)
+    },
   )
 
   const lastPage = Math.max(0, Math.ceil(data.length / pageSize) - 1)
 
   const handleFirstPageButtonClick = (event) => {
-    onPageChange(event, 0)
+    console.log('pages -> ', page)
+    setCurrentPage(1)
+    gotoPage(0)
   }
 
   const handleBackButtonClick = (event) => {
-    onPageChange(event, page - 1)
+    console.log('pages -> ', page)
+    setCurrentPage(currentPage - 1)
+    gotoPage(page - 1)
   }
 
   const handleNextButtonClick = (event) => {
     console.log('pages -> ', page)
-    onPageChange(event, page + 1)
+    setCurrentPage(currentPage + 1)
+    gotoPage(page + 1)
   }
 
   const handleLastPageButtonClick = (event) => {
-    onPageChange(event, lastPage)
+    console.log('pages -> ', page)
+    setCurrentPage(lastPage + 1)
+    gotoPage(lastPage)
+  }
+
+  const handleChangePage = (event, newPage) => {
+    console.log('currentPage', currentPage)
+    setCurrentPage(newPage)
+    gotoPage(newPage)
+  }
+  const handleLineClick = (row) => {
+    console.log('row -> ', row.id, row.original.id)
   }
 
   // Render the UI for your table
   return (
     <>
-      <table {...getTableProps()}>
+      <CDataTable {...getTableProps()} sorter={true}>
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                <th
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  {...column.getHeaderProps()}
+                >
+                  {column.render('Header')}
+                </th>
               ))}
             </tr>
           ))}
@@ -114,9 +153,10 @@ function Table({ columns, data }) {
               <tr
                 style={{ backgroundColor: i % 2 === 0 ? 'rgb(237 239 241)' : '' }}
                 {...row.getRowProps()}
+                onClick={() => handleLineClick(row)}
               >
                 {row.cells.map((cell) => {
-                  if (cell.column.Header == 'Actions') {
+                  if (cell.column.Header === 'Actions') {
                     return (
                       <td>
                         <CButton color="success" variant="ghost" size="sm">
@@ -137,12 +177,12 @@ function Table({ columns, data }) {
             )
           })}
         </tbody>
-      </table>
+      </CTable>
       <CPagination aria-label="Page navigation example">
         <div
           style={{
             display: 'flex',
-            justifyContent: 'space-between',
+            justifyContent: 'center',
             marginTop: '10PX',
             width: '100%',
           }}
@@ -152,7 +192,7 @@ function Table({ columns, data }) {
               aria-label="Previous"
               onClick={() => {
                 console.log('page=> ', pageIndex)
-                previousPage()
+                handleFirstPageButtonClick()
               }}
               disabled={!canPreviousPage}
             >
@@ -162,7 +202,7 @@ function Table({ columns, data }) {
               aria-label="Previous"
               onClick={() => {
                 console.log('page=> ', pageIndex)
-                previousPage()
+                handleBackButtonClick()
               }}
               disabled={!canPreviousPage}
             >
@@ -180,7 +220,7 @@ function Table({ columns, data }) {
               aria-label="Next"
               onClick={() => {
                 console.log('page=> ', pageIndex)
-                nextPage()
+                handleNextButtonClick()
               }}
               disabled={!canNextPage}
             >
@@ -190,227 +230,20 @@ function Table({ columns, data }) {
               aria-label="Next"
               onClick={() => {
                 console.log('page=> ', pageIndex)
-                nextPage()
+                handleLastPageButtonClick()
               }}
               disabled={!canNextPage}
             >
               <span aria-hidden="true">&raquo;</span>
             </CPaginationItem>
           </div>
-          {/* <select
-            value={pageSize}
-            onChange={(e) => {
-              setPageSize(Number(e.target.value))
-            }}
-          >
-            {[5, 10, 20, 30, 40, 50].map((pageSize) => (
-              <option key={pageSize} value={pageSize}>
-                Show {pageSize}
-              </option>
-            ))}
-          </select> */}
         </div>
       </CPagination>
     </>
   )
 }
 
-const ListUser = () => {
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: 'First Name',
-        accessor: 'firstName',
-      },
-      {
-        Header: 'Last Name',
-        accessor: 'lastName',
-      },
-      {
-        Header: 'Age',
-        accessor: 'age',
-      },
-      {
-        Header: 'Visits',
-        accessor: 'visits',
-      },
-      {
-        Header: 'Status',
-        accessor: 'status',
-      },
-      {
-        Header: 'Profile Progress',
-        accessor: 'progress',
-      },
-      {
-        Header: 'Actions',
-        accessor: 'actions',
-      },
-    ],
-    [],
-  )
-  const data = [
-    {
-      firstName: 'revenue',
-      lastName: 'instance',
-      age: 16,
-      visits: 50,
-      progress: 4,
-      status: 'single',
-    },
-    {
-      firstName: 'hearing',
-      lastName: 'calendar',
-      age: 8,
-      visits: 47,
-      progress: 0,
-      status: 'single',
-    },
-    {
-      firstName: 'proposal',
-      lastName: 'account',
-      age: 26,
-      visits: 5,
-      progress: 79,
-      status: 'single',
-    },
-    {
-      firstName: 'girlfriend',
-      lastName: 'driving',
-      age: 10,
-      visits: 8,
-      progress: 88,
-      status: 'single',
-    },
-    {
-      firstName: 'partner',
-      lastName: 'toad',
-      age: 21,
-      visits: 7,
-      progress: 42,
-      status: 'relationship',
-    },
-    {
-      firstName: 'entertainment',
-      lastName: 'offer',
-      age: 5,
-      visits: 52,
-      progress: 63,
-      status: 'complicated',
-    },
-    {
-      firstName: 'start',
-      lastName: 'situation',
-      age: 23,
-      visits: 74,
-      progress: 89,
-      status: 'single',
-    },
-    {
-      firstName: 'student',
-      lastName: 'employee',
-      age: 16,
-      visits: 21,
-      progress: 14,
-      status: 'relationship',
-    },
-    {
-      firstName: 'steak',
-      lastName: 'shock',
-      age: 28,
-      visits: 64,
-      progress: 85,
-      status: 'relationship',
-    },
-    {
-      firstName: 'twig',
-      lastName: 'arithmetic',
-      age: 25,
-      visits: 72,
-      progress: 75,
-      status: 'single',
-    },
-    {
-      firstName: 'son',
-      lastName: 'park',
-      age: 20,
-      visits: 85,
-      progress: 10,
-      status: 'complicated',
-    },
-    {
-      firstName: 'vase',
-      lastName: 'trees',
-      age: 13,
-      visits: 65,
-      progress: 66,
-      status: 'relationship',
-    },
-    {
-      firstName: 'attack',
-      lastName: 'responsibility',
-      age: 9,
-      visits: 29,
-      progress: 33,
-      status: 'complicated',
-    },
-    {
-      firstName: 'category',
-      lastName: 'grass',
-      age: 17,
-      visits: 58,
-      progress: 70,
-      status: 'complicated',
-    },
-    {
-      firstName: 'prose',
-      lastName: 'home',
-      age: 6,
-      visits: 67,
-      progress: 84,
-      status: 'single',
-    },
-    {
-      firstName: 'coat',
-      lastName: 'door',
-      age: 8,
-      visits: 73,
-      progress: 72,
-      status: 'single',
-    },
-    {
-      firstName: 'hammer',
-      lastName: 'rail',
-      age: 15,
-      visits: 86,
-      progress: 90,
-      status: 'complicated',
-    },
-    {
-      firstName: 'cars',
-      lastName: 'class',
-      age: 21,
-      visits: 43,
-      progress: 94,
-      status: 'relationship',
-    },
-    {
-      firstName: 'volume',
-      lastName: 'apple',
-      age: 2,
-      visits: 2,
-      progress: 36,
-      status: 'complicated',
-    },
-    {
-      firstName: 'airplane',
-      lastName: 'sleep',
-      age: 25,
-      visits: 85,
-      progress: 95,
-      status: 'relationship',
-    },
-  ]
+const Datatable = ({ data, columns, currentPage, setCurrentPage }) => {
   return (
     <Styles>
       <CRow>
@@ -423,7 +256,13 @@ const ListUser = () => {
               </CButton>
             </CCardHeader>
             <CCardBody>
-              <Table columns={columns} data={data} defaultPageSize={1} />
+              <Table
+                columns={columns}
+                data={data}
+                defaultPageSize={1}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+              />
             </CCardBody>
           </CCard>
         </CCol>
@@ -432,4 +271,4 @@ const ListUser = () => {
   )
 }
 
-export default ListUser
+export default Datatable
