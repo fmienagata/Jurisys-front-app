@@ -1,10 +1,53 @@
-import React, { useState } from 'react'
-import DataTable from './table2'
+import React, { useState, useEffect, useRef } from 'react'
+import { Datatable } from './table2'
+import { useRowSelect } from 'react-table'
 import Table from 'src/table/table'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
+import { CButton } from '@coreui/react'
+import {
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CCol,
+  CRow,
+  CPaginationItem,
+  CPagination,
+} from '@coreui/react'
+import styled from 'styled-components'
+
+const Styles = styled.div`
+  padding: 1rem;
+
+  table {
+    border-spacing: 0;
+    border: 1px solid black;
+    width: -webkit-fill-available;
+    tr {
+      :last-child {
+        td {
+          border-bottom: 0;
+        }
+      }
+    }
+
+    th,
+    td {
+      margin: 0;
+      padding: 0.5rem;
+      border-bottom: 1px solid black;
+      border-right: 1px solid black;
+
+      :last-child {
+        border-right: 0;
+      }
+    }
+  }
+`
 
 const Display = () => {
+  const tableRef = useRef(typeof useRowSelect)
+
   const columns = [
     {
       Header: 'First Name',
@@ -38,7 +81,7 @@ const Display = () => {
 
   const data = [
     {
-      id: '12123',
+      id: '0001',
       firstName: 'revenue',
       lastName: 'instance',
       age: 16,
@@ -47,7 +90,7 @@ const Display = () => {
       status: 'single',
     },
     {
-      id: '12123',
+      id: '0002',
       firstName: 'hearing',
       lastName: 'calendar',
       age: 8,
@@ -56,7 +99,7 @@ const Display = () => {
       status: 'single',
     },
     {
-      id: '12123',
+      id: '0003',
       firstName: 'proposal',
       lastName: 'account',
       age: 26,
@@ -65,7 +108,7 @@ const Display = () => {
       status: 'single',
     },
     {
-      id: '12123',
+      id: '0004',
       firstName: 'girlfriend',
       lastName: 'driving',
       age: 10,
@@ -74,7 +117,7 @@ const Display = () => {
       status: 'single',
     },
     {
-      id: '12123',
+      id: '0005',
       firstName: 'partner',
       lastName: 'toad',
       age: 21,
@@ -83,7 +126,7 @@ const Display = () => {
       status: 'relationship',
     },
     {
-      id: '12123',
+      id: '0006',
       firstName: 'entertainment',
       lastName: 'offer',
       age: 5,
@@ -92,7 +135,7 @@ const Display = () => {
       status: 'complicated',
     },
     {
-      id: '12123',
+      id: '0007',
       firstName: 'start',
       lastName: 'situation',
       age: 23,
@@ -101,7 +144,7 @@ const Display = () => {
       status: 'single',
     },
     {
-      id: '12123',
+      id: '0008',
       firstName: 'student',
       lastName: 'employee',
       age: 16,
@@ -110,7 +153,7 @@ const Display = () => {
       status: 'relationship',
     },
     {
-      id: '12123',
+      id: '0009',
       firstName: 'steak',
       lastName: 'shock',
       age: 28,
@@ -119,7 +162,7 @@ const Display = () => {
       status: 'relationship',
     },
     {
-      id: '12123',
+      id: '00010',
       firstName: 'twig',
       lastName: 'arithmetic',
       age: 25,
@@ -399,29 +442,50 @@ const Display = () => {
     },
   ]
 
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(0)
+  const [selection, setSelection] = useState([])
 
   return (
     <div>
       <h1>DataTable with Pagination, Sorting, and Row Selection</h1>
       {/* <DataTable columns={columns} data={data} /> */}
-      <DataTable
+      {/* <Datatable
+        ref={tableRef}
         columns={columns}
         data={data}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-      />
-      {/* <Table
-        columns={columns}
-        data={data}
-        ischeckbox={true}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
+        onSelectedRowChange={setSelection}
+        onLineClick={handleLineClick}
+        selection={selection}
       /> */}
-      <div>
-        {/* <CIcon icon={icon.cilList} /> */}
 
-        {/* Other components */}
+      <div>
+        <Styles>
+          <CRow>
+            <CCol xs={12}>
+              <CCard className="mb-4">
+                <CCardHeader style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <strong className="align-self-start">Liste des Clients</strong>
+                  <CButton className="align-self-end" color="success" variant="outline">
+                    <CIcon icon={icon.cilLibraryAdd} size="sm" /> Ajouter
+                  </CButton>
+                </CCardHeader>
+                <CCardBody>
+                  <Table
+                    ref={tableRef}
+                    columns={columns}
+                    data={data}
+                    ischeckbox={true}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    onSelectedRowChange={setSelection}
+                  />
+                </CCardBody>
+              </CCard>
+            </CCol>
+          </CRow>
+        </Styles>
       </div>
     </div>
   )

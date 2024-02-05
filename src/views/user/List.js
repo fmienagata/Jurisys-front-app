@@ -86,7 +86,6 @@ function Table({ columns, data }) {
   }
 
   const handleNextButtonClick = (event) => {
-    console.log('pages -> ', page)
     onPageChange(event, page + 1)
   }
 
@@ -151,7 +150,6 @@ function Table({ columns, data }) {
             <CPaginationItem
               aria-label="Previous"
               onClick={() => {
-                console.log('page=> ', pageIndex)
                 previousPage()
               }}
               disabled={!canPreviousPage}
@@ -161,7 +159,6 @@ function Table({ columns, data }) {
             <CPaginationItem
               aria-label="Previous"
               onClick={() => {
-                console.log('page=> ', pageIndex)
                 previousPage()
               }}
               disabled={!canPreviousPage}
@@ -179,7 +176,6 @@ function Table({ columns, data }) {
             <CPaginationItem
               aria-label="Next"
               onClick={() => {
-                console.log('page=> ', pageIndex)
                 nextPage()
               }}
               disabled={!canNextPage}
@@ -189,7 +185,6 @@ function Table({ columns, data }) {
             <CPaginationItem
               aria-label="Next"
               onClick={() => {
-                console.log('page=> ', pageIndex)
                 nextPage()
               }}
               disabled={!canNextPage}

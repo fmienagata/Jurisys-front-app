@@ -1,6 +1,9 @@
+/* eslint-disable no-undef */
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/prop-types */
-import React from 'react'
+import { useEffect, useRef } from 'react'
+import React, { forwardRef, useImperativeHandle } from 'react'
+
 import { CButton } from '@coreui/react'
 import {
   CCard,
@@ -18,11 +21,20 @@ import {
   CTableHeaderCell,
 } from '@coreui/react'
 
+import { TableSortLabel } from '@mui/material'
+
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
+import { deepEqual } from 'src/utils/tableUtils'
 
 import styled from 'styled-components'
-import { useTable, useSortBy, usePagination, useRowSelect } from 'react-table'
+import {
+  useTable,
+  useSortBy,
+  usePagination,
+  useRowSelect,
+  useMountedLayoutEffect,
+} from 'react-table'
 import { Checkbox } from 'src/table/checkbox'
 
 const Styles = styled.div`
@@ -54,201 +66,232 @@ const Styles = styled.div`
   }
 `
 
-function Table({ data, columns, currentPage, setCurrentPage }) {
-  const generateCheckboxRows = (hooks) =>
-    hooks.visibleColumns.push((columns) => [
+const Table = forwardRef(
+  ({ data, columns, currentPage, setCurrentPage, onSelectedRowChange, onLineClick }, ref) => {
+    const generateCheckboxRows = (hooks) =>
+      hooks.visibleColumns.push((columns) => [
+        {
+          id: 'selection',
+          Header: ({ getToggleAllPageRowsSelectedProps }) => (
+            <Checkbox {...getToggleAllPageRowsSelectedProps()} />
+          ),
+          Cell: ({ row }) => <Checkbox {...row.getToggleRowSelectedProps()} />,
+        },
+        ...columns,
+      ])
+    const generateDefaultRows = (hooks) => hooks.visibleColumns.push((columns) => [...columns])
+    const {
+      getTableProps,
+      getTableBodyProps,
+      headerGroups,
+      prepareRow,
+      page,
+      canPreviousPage,
+      canNextPage,
+      pageOptions,
+      toggleAllRowsSelected,
+      nextPage,
+      gotoPage,
+      previousPage,
+      onPageChange,
+      setPageSize,
+      state: { pageIndex, pageSize, selectedRowIds },
+    } = useTable(
       {
-        id: 'selection',
-        Header: ({ getToggleAllPageRowsSelectedProps }) => (
-          <Checkbox {...getToggleAllPageRowsSelectedProps()} />
-        ),
-        Cell: ({ row }) => <Checkbox {...row.getToggleRowSelectedProps()} />,
+        columns,
+        data,
+        initialState: {
+          pageIndex: currentPage - 1,
+          pageSize: 10,
+          selectedRowIds: {},
+          hiddenColumns: ['id'],
+        },
       },
-      ...columns,
-    ])
-  const generateDefaultRows = (hooks) => hooks.visibleColumns.push((columns) => [...columns])
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    page,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    toggleAllRowsSelected,
-    nextPage,
-    gotoPage,
-    previousPage,
-    onPageChange,
-    setPageSize,
-    state: { pageIndex, pageSize },
-  } = useTable(
-    {
-      columns,
-      data,
-      initialState: { pageIndex: currentPage - 1, pageSize: 10, hiddenColumns: ['id'] },
-    },
-    useSortBy,
-    usePagination,
-    useRowSelect,
-    (hooks) => {
-      if (true) generateCheckboxRows(hooks)
-      return generateDefaultRows(hooks)
-    },
-  )
+      useSortBy,
+      usePagination,
+      useRowSelect,
+      (hooks) => {
+        if (true) generateCheckboxRows(hooks)
+        return generateDefaultRows(hooks)
+      },
+    )
 
-  const lastPage = Math.max(0, Math.ceil(data.length / pageSize) - 1)
+    const lastPage = Math.max(0, Math.ceil(data.length / pageSize) - 1)
 
-  const handleFirstPageButtonClick = (event) => {
-    console.log('pages -> ', page)
-    setCurrentPage(1)
-    gotoPage(0)
-  }
+    const handleFirstPageButtonClick = (event) => {
+      setCurrentPage(1)
+      gotoPage(0)
+    }
 
-  const handleBackButtonClick = (event) => {
-    console.log('pages -> ', page)
-    setCurrentPage(currentPage - 1)
-    gotoPage(page - 1)
-  }
+    const handleBackButtonClick = (event) => {
+      setCurrentPage(currentPage - 1)
+      gotoPage(page - currentPage)
+    }
 
-  const handleNextButtonClick = (event) => {
-    console.log('pages -> ', page)
-    setCurrentPage(currentPage + 1)
-    gotoPage(page + 1)
-  }
+    const handleNextButtonClick = (event) => {
+      setCurrentPage(currentPage + 1)
+      gotoPage(page + currentPage)
+    }
 
-  const handleLastPageButtonClick = (event) => {
-    console.log('pages -> ', page)
-    setCurrentPage(lastPage + 1)
-    gotoPage(lastPage)
-  }
+    const handleLastPageButtonClick = (event) => {
+      setCurrentPage(lastPage + 1)
+      gotoPage(lastPage)
+    }
 
-  const handleChangePage = (event, newPage) => {
-    console.log('currentPage', currentPage)
-    setCurrentPage(newPage)
-    gotoPage(newPage)
-  }
-  const handleLineClick = (row) => {
-    console.log('row -> ', row.id, row.original.id)
-  }
+    useImperativeHandle(ref, () => ({
+      toggleAllRowsSelected,
+    }))
 
-  // Render the UI for your table
-  return (
-    <>
-      <CTable {...getTableProps()} sorter={true}>
-        <CTableHead>
-          {headerGroups.map((headerGroup) => (
-            <CTableRow {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <CTableHeaderCell
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                  {...column.getHeaderProps()}
-                >
-                  {column.render('Header')}
-                </CTableHeaderCell>
-              ))}
-            </CTableRow>
-          ))}
-        </CTableHead>
-        <CTableBody {...getTableBodyProps()}>
-          {page.map((row, i) => {
-            prepareRow(row)
-            return (
-              <CTableRow
-                style={{ backgroundColor: i % 2 === 0 ? 'rgb(237 239 241)' : '' }}
-                {...row.getRowProps()}
-                onClick={() => handleLineClick(row)}
-              >
-                {row.cells.map((cell) => {
-                  if (cell.column.Header === 'Actions') {
-                    return (
-                      <CTableDataCell>
-                        <CButton color="success" variant="ghost" size="sm">
-                          <CIcon icon={icon.cilClone} size="sm" />
-                        </CButton>
-                        <CButton color="primary" variant="ghost" size="sm">
-                          <CIcon icon={icon.cilPen} size="sm" />
-                        </CButton>
-                        <CButton color="danger" variant="ghost" size="sm">
-                          <CIcon icon={icon.cilTrash} size="sm" />
-                        </CButton>
-                      </CTableDataCell>
-                    )
-                  }
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                })}
+    const getSelectedRows = () => {
+      const selectedIds = Object.keys(selectedRowIds)
+
+      return selectedIds.map((x) => data[x]).filter((x) => x !== null)
+    }
+
+    const handleLineClick = (row) => {
+      return onLineClick !== undefined ? onLineClick(row.original) : null
+    }
+
+    useMountedLayoutEffect(() => {
+      if (onSelectedRowChange !== undefined) {
+        // onSelectedRowChange(getSelectedRows())
+      }
+    }, [selectedRowIds])
+
+    return (
+      <>
+        <CTable {...getTableProps()} sorter={true}>
+          <CTableHead>
+            {headerGroups.map((headerGroup) => (
+              <CTableRow {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <CTableHeaderCell
+                    {...column.getHeaderProps(column.getSortByToggleProps())}
+                    {...column.getHeaderProps()}
+                  >
+                    <i className="cis-sort-ascending"></i>
+
+                    {column.canSort ? (
+                      <TableSortLabel
+                        active={column.isSorted}
+                        direction={column.isSortedDesc ? 'desc' : 'asc'}
+                      >
+                        <i className="cis-sort-ascending">{column.render('Header')}</i>
+                      </TableSortLabel>
+                    ) : (
+                      column.render('Header')
+                    )}
+                  </CTableHeaderCell>
+                ))}
               </CTableRow>
-            )
-          })}
-        </CTableBody>
-      </CTable>
-      <CPagination aria-label="Page navigation example">
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            marginTop: '10PX',
-            width: '100%',
-          }}
-        >
-          <div style={{ display: 'flex' }}>
-            <CPaginationItem
-              aria-label="Previous"
-              onClick={() => {
-                console.log('page=> ', pageIndex)
-                handleFirstPageButtonClick()
-              }}
-              disabled={!canPreviousPage}
-            >
-              <span aria-hidden="true">&laquo;</span>
-            </CPaginationItem>
-            <CPaginationItem
-              aria-label="Previous"
-              onClick={() => {
-                console.log('page=> ', pageIndex)
-                handleBackButtonClick()
-              }}
-              disabled={!canPreviousPage}
-            >
-              <span aria-hidden="true">&laquo;</span>
-            </CPaginationItem>
-            <CPaginationItem>
-              <span>
-                Page
-                <strong>
-                  {pageIndex + 1} of {pageOptions.length}
-                </strong>
-              </span>
-            </CPaginationItem>
-            <CPaginationItem
-              aria-label="Next"
-              onClick={() => {
-                console.log('page=> ', pageIndex)
-                handleNextButtonClick()
-              }}
-              disabled={!canNextPage}
-            >
-              <span aria-hidden="true">&raquo;</span>
-            </CPaginationItem>
-            <CPaginationItem
-              aria-label="Next"
-              onClick={() => {
-                console.log('page=> ', pageIndex)
-                handleLastPageButtonClick()
-              }}
-              disabled={!canNextPage}
-            >
-              <span aria-hidden="true">&raquo;</span>
-            </CPaginationItem>
+            ))}
+          </CTableHead>
+          <CTableBody {...getTableBodyProps()}>
+            {page.map((row, i) => {
+              prepareRow(row)
+              return (
+                <CTableRow
+                  style={{ backgroundColor: i % 2 === 0 ? 'rgb(237 239 241)' : '' }}
+                  {...row.getRowProps()}
+                  onClick={() => handleLineClick(row)}
+                >
+                  {row.cells.map((cell) => {
+                    if (cell.column.Header === 'Actions') {
+                      return (
+                        <CTableDataCell>
+                          <CButton color="success" variant="ghost" size="sm">
+                            <CIcon icon={icon.cilClone} size="sm" />
+                          </CButton>
+                          <CButton color="primary" variant="ghost" size="sm">
+                            <CIcon icon={icon.cilPen} size="sm" />
+                          </CButton>
+                          <CButton color="danger" variant="ghost" size="sm">
+                            <CIcon icon={icon.cilTrash} size="sm" />
+                          </CButton>
+                        </CTableDataCell>
+                      )
+                    }
+                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  })}
+                </CTableRow>
+              )
+            })}
+          </CTableBody>
+        </CTable>
+        <CPagination aria-label="Page navigation example">
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginTop: '10PX',
+              width: '100%',
+            }}
+          >
+            <div style={{ display: 'flex' }}>
+              <CPaginationItem
+                aria-label="Previous"
+                onClick={() => {
+                  console.og('pade index', pageIndex)
+                  handleFirstPageButtonClick()
+                }}
+                disabled={!canPreviousPage}
+              >
+                <span aria-hidden="true">&laquo;</span>
+              </CPaginationItem>
+              <CPaginationItem
+                aria-label="Previous"
+                onClick={() => {
+                  handleBackButtonClick()
+                }}
+                disabled={!canPreviousPage}
+              >
+                <span aria-hidden="true">&laquo;</span>
+              </CPaginationItem>
+              <CPaginationItem>
+                <span>
+                  Page
+                  <strong>
+                    {pageIndex + 1} of {pageOptions.length}
+                  </strong>
+                </span>
+              </CPaginationItem>
+              <CPaginationItem
+                aria-label="Next"
+                onClick={() => {
+                  handleNextButtonClick()
+                }}
+                disabled={!canNextPage}
+              >
+                <span aria-hidden="true">&raquo;</span>
+              </CPaginationItem>
+              <CPaginationItem
+                aria-label="Next"
+                onClick={() => {
+                  handleLastPageButtonClick()
+                }}
+                disabled={!canNextPage}
+              >
+                <span aria-hidden="true">&raquo;</span>
+              </CPaginationItem>
+            </div>
           </div>
-        </div>
-      </CPagination>
-    </>
-  )
-}
+        </CPagination>
+      </>
+    )
+  },
+)
+Table.displayName = 'Table'
 
-const Datatable = ({ data, columns, currentPage, setCurrentPage }) => {
+const Datatable = ({
+  data,
+  columns,
+  currentPage,
+  setCurrentPage,
+  onSelectedRowChange,
+  onLineClick,
+  selection,
+  ref,
+}) => {
   return (
     <Styles>
       <CRow>
@@ -267,6 +310,10 @@ const Datatable = ({ data, columns, currentPage, setCurrentPage }) => {
                 defaultPageSize={1}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
+                onSelectedRowChange={onSelectedRowChange}
+                selection={selection}
+                onLineClick={onLineClick}
+                ref={ref}
               />
             </CCardBody>
           </CCard>
@@ -276,4 +323,4 @@ const Datatable = ({ data, columns, currentPage, setCurrentPage }) => {
   )
 }
 
-export default Datatable
+export { Datatable, Table }
