@@ -1,6 +1,6 @@
 import { legacy_createStore as createStore, applyMiddleware, combineReducers } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import { userReducer, postReducer, changeState } from './userReducer'
+import { userReducer, postReducer, changeStateReducer } from './userReducer'
 import { dossiersReducer } from './dossiersReducer'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -9,7 +9,7 @@ const rootReducer = combineReducers({
   dataDossiers: dossiersReducer,
   dataUsers: userReducer,
   post: postReducer,
-  changeState,
+  changeState: changeStateReducer,
 
   // Add more reducers if needed
 })

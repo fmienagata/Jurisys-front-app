@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import Register from '../register/Register'
 import {
   CCard,
@@ -14,8 +14,6 @@ import Table from 'src/table/table'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
 import styled from 'styled-components'
-
-import baseUrlMock from 'src/services/mock-dossiers.json'
 
 import { getDossiers } from '../../../services/dossiersService'
 import { useSelector, useDispatch } from 'react-redux'
@@ -50,6 +48,7 @@ const Styles = styled.div`
 `
 
 const Dossiers = () => {
+  const tableRefDossiers = useRef(typeof useRowSelect)
   const [currentPage, setCurrentPage] = useState(0)
   const [selection, setSelection] = useState([])
   const [dossiers, setDossiers] = useState([])
@@ -139,6 +138,7 @@ const Dossiers = () => {
                 </CCardHeader>
                 <CCardBody>
                   <Table
+                    ref={tableRefDossiers}
                     columns={columns}
                     data={dossiers}
                     ischeckbox={true}

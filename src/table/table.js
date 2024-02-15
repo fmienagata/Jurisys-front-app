@@ -125,8 +125,8 @@ const Table = forwardRef(
       headerGroups,
       prepareRow,
       page,
-      canPreviousPage,
-      canNextPage,
+      // canPreviousPage,
+      // canNextPage,
       toggleAllRowsSelected,
       gotoPage,
       setPageSize,
@@ -278,8 +278,8 @@ const Table = forwardRef(
             count={data.length}
             rowsPerPage={10}
             page={pageIndex}
-            canNextPage={canNextPage}
-            canPreviousPage={canPreviousPage}
+            // canNextPage={canNextPage}
+            // canPreviousPage={canPreviousPage}
             onPageChange={handleChangePage}
             onRowsPerPageChange={(event) => setPageSize(Number(event.target.value))}
             ActionsComponent={TablePaginationActions}

@@ -7,7 +7,7 @@ const userReducer = (state = initialStateData, action) => {
   switch (action.type) {
     case 'GET_DATA_USERS':
       return { ...state, data: action.payload }
-    case 'SET_EMAIL':
+    case 'ADD_USER':
       return { ...state, email: action.payload }
     default:
       return state
@@ -33,7 +33,7 @@ const initialState = {
   theme: 'light',
 }
 
-const changeState = (state = initialState, { type, ...rest }) => {
+const changeStateReducer = (state = initialState, { type, ...rest }) => {
   switch (type) {
     case 'set':
       return { ...state, ...rest }
@@ -42,4 +42,4 @@ const changeState = (state = initialState, { type, ...rest }) => {
   }
 }
 
-export { userReducer, postReducer, changeState }
+export { userReducer, postReducer, changeStateReducer }
