@@ -3,7 +3,6 @@
   "version": "5.0.0-rc.0",
   "description": "CoreUI Free React Admin Template",
   "homepage": ".",
-  "proxy": "http://www.cabinet-bogl.com",
   "bugs": {
     "url": "https://github.com/coreui/coreui-free-react-admin-template/issues"
   },
@@ -53,6 +52,7 @@
     "react-router-dom": "^6.18.0",
     "react-table": "^7.8.0",
     "redux": "4.2.1",
+    "redux-devtools-extension": "^2.13.9",
     "simplebar-react": "^3.2.4",
     "styled-components": "^6.1.8"
   },

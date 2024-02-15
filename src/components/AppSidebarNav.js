@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import { CBadge } from '@coreui/react'
 
 export const AppSidebarNav = ({ items }) => {
+  console.log('items -> ', items)
   const location = useLocation()
   const navLink = (name, icon, badge, indent = false) => {
     return (

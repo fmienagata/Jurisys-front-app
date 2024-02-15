@@ -23,7 +23,7 @@ import { useMessageContext } from 'src/Context/MessageContext'
 const Login = () => {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
-  const { displaySuccess } = useMessageContext()
+  const { displaySuccess, displayError } = useMessageContext()
 
   const { control, handleSubmit } = useForm()
 
@@ -38,6 +38,7 @@ const Login = () => {
       //navigate('/dashboard')
     } catch (error) {
       console.error('Login failed:', error.message)
+      displayError(error.message)
       setIsLoading(false)
     }
   }
