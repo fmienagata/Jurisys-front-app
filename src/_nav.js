@@ -22,7 +22,7 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Utilisateur',
+    name: 'Utilisateurs',
     to: '/user-add',
     icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
   },
@@ -41,13 +41,13 @@ const _nav = [
   {
     component: CNavGroup,
     name: 'Dossiers',
-    to: '/base',
+    to: '/dossiers',
     icon: <CIcon icon={cilFolder} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'En cours',
-        to: '/base/accordion',
+        name: 'Liste dossiers',
+        to: '/dossiers/list',
       },
       {
         component: CNavItem,

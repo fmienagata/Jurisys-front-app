@@ -44,7 +44,7 @@ const Styles = styled.div`
 `
 
 const Users = () => {
-  const tableRef = useRef(typeof useRowSelect)
+  const tableRefUsers = useRef(typeof useRowSelect)
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -126,7 +126,7 @@ const Users = () => {
               </CCardHeader>
               <CCardBody>
                 <Table
-                  ref={tableRef}
+                  ref={tableRefUsers}
                   columns={columns}
                   data={users}
                   ischeckbox={true}
