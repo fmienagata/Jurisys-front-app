@@ -1,18 +1,25 @@
-import { legacy_createStore as createStore } from 'redux'
+import { legacy_createStore as createStore, applyMiddleware, combineReducers } from 'redux'
+import { composeWithDevTools } from 'redux-devtools-extension'
+import { userReducer, postReducer, changeState } from './userReducer'
+import { dossiersReducer } from './dossiersReducer'
 
-const initialState = {
-  sidebarShow: true,
-  theme: 'light',
-}
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
 
-const changeState = (state = initialState, { type, ...rest }) => {
-  switch (type) {
-    case 'set':
-      return { ...state, ...rest }
-    default:
-      return state
-  }
-}
+const rootReducer = combineReducers({
+  dataDossiers: dossiersReducer,
+  dataUsers: userReducer,
+  post: postReducer,
+  changeState,
 
-const store = createStore(changeState)
+  // Add more reducers if needed
+})
+
+const store = createStore(
+  rootReducer,
+  composeEnhancers(
+    applyMiddleware(/* middleware */),
+    // Ajoutez d'autres améliorations du magasin si nécessaire
+  ),
+)
+
 export default store

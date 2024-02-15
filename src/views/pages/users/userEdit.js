@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import CIcon from '@coreui/icons-react'
 import { Controller, useForm } from 'react-hook-form'
 
 import {
@@ -13,57 +14,34 @@ import {
   CInputGroupText,
   CRow,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
-import labels from 'src/translations/labels.json'
+import { useLocation } from 'react-router-dom'
 
-import { getUsers } from 'src/services/usersService'
+const UserEdit = () => {
+  const location = useLocation()
+  const { state } = location
 
-const Register = () => {
+  console.log('state ', state.data)
   const { control, handleSubmit } = useForm()
 
-  const handleRegistre = (data) => {
-    console.log('handleRegistre', data)
+  const handleEdit = (data) => {
+    console.log('handleEdit call API ', data)
   }
 
-  useEffect(() => {
-    // Use the getUsers function from the userService
-    getUsers()
-      .then((data) => {
-        console.log('data -->', data)
-      })
-      .catch((error) => {
-        // Handle errors if needed
-      })
-  }, [])
-
   return (
-    <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
+    <div>
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md={9} lg={7} xl={6}>
             <CCard className="mx-4">
-              <CCardHeader style={{ backgroundColor: '#785a38' }}>
-                {' '}
-                <img
-                  style={{ width: '100%' }}
-                  className="  "
-                  src={`${process.env.PUBLIC_URL}/images/logo_1.png`}
-                  alt="Logo"
-                />
-              </CCardHeader>
               <CCardBody className="p-4">
-                <form onSubmit={handleSubmit(handleRegistre)}>
-                  <h1>{labels.registre.titleHeader}</h1>
-                  <p className="text-body-secondary">{labels.registre.subTitle}</p>
+                <form onSubmit={handleSubmit(handleEdit)}>
+                  {/* <h1>{labels.registre.titleHeader}</h1> */}
+                  <p className="text-body-secondary">Modifier votre compte</p>
                   <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilUser} />
-                    </CInputGroupText>
                     <Controller
                       name="userType"
                       control={control}
-                      defaultValue=""
+                      defaultValue={state.data.userType}
                       render={({ field }) => (
                         <CFormInput
                           {...field}
@@ -75,13 +53,10 @@ const Register = () => {
                     />
                   </CInputGroup>
                   <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilUser} />
-                    </CInputGroupText>
                     <Controller
                       name="nom"
                       control={control}
-                      defaultValue=""
+                      defaultValue={state.data.nom}
                       render={({ field }) => (
                         <CFormInput
                           {...field}
@@ -93,13 +68,10 @@ const Register = () => {
                     />
                   </CInputGroup>
                   <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilUser} />
-                    </CInputGroupText>
                     <Controller
                       name="prenom"
                       control={control}
-                      defaultValue=""
+                      defaultValue={state.data.prenom}
                       render={({ field }) => (
                         <CFormInput
                           {...field}
@@ -111,13 +83,10 @@ const Register = () => {
                     />
                   </CInputGroup>
                   <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilUser} />
-                    </CInputGroupText>
                     <Controller
                       name="username"
                       control={control}
-                      defaultValue=""
+                      defaultValue={state.data.username}
                       render={({ field }) => (
                         <CFormInput
                           {...field}
@@ -129,13 +98,9 @@ const Register = () => {
                     />
                   </CInputGroup>
                   <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilLockLocked} />
-                    </CInputGroupText>
                     <Controller
                       name="password"
                       control={control}
-                      defaultValue=""
                       render={({ field }) => (
                         <CFormInput
                           {...field}
@@ -148,13 +113,10 @@ const Register = () => {
                     />
                   </CInputGroup>
                   <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilUser} />
-                    </CInputGroupText>
                     <Controller
                       name="societe"
                       control={control}
-                      defaultValue=""
+                      defaultValue={state.data.societe}
                       render={({ field }) => (
                         <CFormInput
                           {...field}
@@ -170,7 +132,7 @@ const Register = () => {
                     <Controller
                       name="email"
                       control={control}
-                      defaultValue=""
+                      defaultValue={state.data.email}
                       render={({ field }) => (
                         <CFormInput
                           {...field}
@@ -184,7 +146,7 @@ const Register = () => {
 
                   <div className="d-grid">
                     <CButton type="submit" color="success">
-                      {labels.registre.action.registre}
+                      Modifier
                     </CButton>
                   </div>
                 </form>
@@ -197,4 +159,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default UserEdit

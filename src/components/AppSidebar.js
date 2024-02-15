@@ -56,17 +56,17 @@ const AppSidebar = () => {
           onClick={() => dispatch({ type: 'set', sidebarShow: false })}
         />
       </CSidebarHeader>
-
+      {console.log('navigation -> ', navigation)}
       <CSidebarNav>
         <SimpleBar>
           <AppSidebarNav items={navigation} />
         </SimpleBar>
       </CSidebarNav>
-      {/* <CSidebarFooter className="border-top d-none d-lg-flex">
+      <CSidebarFooter className="border-top d-none d-lg-flex">
         <CSidebarToggler
           onClick={() => dispatch({ type: 'set', sidebarUnfoldable: !unfoldable })}
         />
-      </CSidebarFooter> */}
+      </CSidebarFooter>
     </CSidebar>
   )
 }

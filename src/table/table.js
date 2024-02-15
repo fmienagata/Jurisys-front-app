@@ -11,6 +11,7 @@ import {
   useSortBy,
   useTable,
 } from 'react-table'
+import { useNavigate } from 'react-router-dom'
 
 import { IconButton, TableSortLabel, TablePagination } from '@mui/material'
 import {
@@ -32,31 +33,22 @@ import TablePaginationActions from './tablePaginationActions'
 import styled from 'styled-components'
 
 const Styles = styled.div`
-  padding: 1rem;
+  .table > :not(caption) > * > * {
+    padding: 0rem 0rem;
+    color: var(--cui-table-color-state, var(--cui-table-color-type, var(--cui-table-color)));
+    background-color: var(--cui-table-bg);
+    border-bottom-width: var(--cui-border-width);
+    box-shadow: inset 0 0 0 9999px
+      var(--cui-table-bg-state, var(--cui-table-bg-type, var(--cui-table-accent-bg)));
+  }
 
-  table {
-    border-spacing: 0;
-    border: 1px solid black;
-    width: -webkit-fill-available;
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-
-    th,
-    td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-
-      :last-child {
-        border-right: 0;
-      }
-    }
+  .muStyle {
+    margin: 0;
+    /* padding: 0.5rem; */
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    vertical-align: middle;
+    text-align: center;
   }
 `
 const Table = forwardRef(
@@ -64,6 +56,7 @@ const Table = forwardRef(
     {
       columns,
       data,
+      fromPage,
       manualPagination = false,
       onSelectedRowChange,
       isFetchDataFinished = true,
@@ -75,6 +68,7 @@ const Table = forwardRef(
       icons,
       currentPage,
       setCurrentPage,
+      setOpenModal,
       setSortColumn,
       selectedFlatRows,
       heightTree,
@@ -85,6 +79,7 @@ const Table = forwardRef(
     const anchorRef = useRef(null)
     const [openMenu, setOpenMenu] = useState(false)
     const toggleMenu = () => setOpenMenu(!openMenu)
+    const navigate = useNavigate()
 
     const generateIconMenu = (hooks) =>
       hooks.visibleColumns.push((columns) => [
@@ -189,12 +184,13 @@ const Table = forwardRef(
     return (
       <>
         <Styles>
-          <CTable {...getTableProps()} sorter={true}>
+          <CTable {...getTableProps()}>
             <CTableHead>
               {headerGroups.map((headerGroup) => (
-                <CTableRow {...headerGroup.getHeaderGroupProps()}>
+                <CTableRow {...headerGroup.getHeaderGroupProps()} className="muStyle">
                   {headerGroup.headers.map((column) => (
                     <CTableHeaderCell
+                      className="muStyle"
                       {...column.getHeaderProps(column.getSortByToggleProps())}
                       {...column.getHeaderProps()}
                     >
@@ -220,6 +216,7 @@ const Table = forwardRef(
                 prepareRow(row)
                 return (
                   <CTableRow
+                    className="muStyle"
                     color={i % 2 === 0 ? '#563d7c' : 'primary'}
                     {...row.getRowProps()}
                     onClick={() => handleLineClick(row)}
@@ -227,14 +224,41 @@ const Table = forwardRef(
                     {row.cells.map((cell) => {
                       if (cell.column.Header === 'Actions') {
                         return (
-                          <CTableDataCell>
-                            <CButton color="success" variant="ghost" size="sm">
+                          <CTableDataCell className="muStyle">
+                            <CButton
+                              color="success"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() =>
+                                navigate('/dossier/' + row.original.id, {
+                                  state: { data: row.original },
+                                })
+                              }
+                            >
                               <CIcon icon={icon.cilClone} size="sm" />
                             </CButton>
-                            <CButton color="primary" variant="ghost" size="sm">
+                            <CButton
+                              color="primary"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                fromPage && fromPage === 'users'
+                                  ? navigate('/user-edit/' + row.original.id, {
+                                      state: { data: row.original },
+                                    })
+                                  : navigate('/dossier-edit/' + row.original.id, {
+                                      state: { data: row.original },
+                                    })
+                              }}
+                            >
                               <CIcon icon={icon.cilPen} size="sm" />
                             </CButton>
-                            <CButton color="danger" variant="ghost" size="sm">
+                            <CButton
+                              color="danger"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setOpenModal(true)}
+                            >
                               <CIcon icon={icon.cilTrash} size="sm" />
                             </CButton>
                           </CTableDataCell>

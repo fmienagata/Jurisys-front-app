@@ -13,6 +13,14 @@
       "loading": "Chargement..."
     }
   },
+  "registre": {
+    "titleHeader": "Registre",
+    "subTitle": "Créez votre compte",
+    "label": "La digitalisation au service de votre professsion Cabinet Brudey ondziel gnelenga locko ",
+    "action": {
+      "registre": "Créer un compte"
+    }
+  },
   "welcomeMessage": "Bienvenue dans mon application!",
   "description": "La digitalisation au service de votre professsion Cabinet Brudey ondziel gnelenga locko",
   "dossier": {
