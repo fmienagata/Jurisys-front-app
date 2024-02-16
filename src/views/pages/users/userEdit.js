@@ -15,16 +15,28 @@ import {
   CRow,
 } from '@coreui/react'
 import { useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+
+import { editUser } from 'src/services/usersService'
+import { useMessageContext } from 'src/Context/MessageContext'
 
 const UserEdit = () => {
   const location = useLocation()
   const { state } = location
+  const navigate = useNavigate()
+  const { displaySuccess, displayError } = useMessageContext()
 
-  console.log('state ', state.data)
   const { control, handleSubmit } = useForm()
 
-  const handleEdit = (data) => {
-    console.log('handleEdit call API ', data)
+  const handleEdit = async (data) => {
+    try {
+      const usersData = await editUser(state.data.id, data)
+      displaySuccess("L'utilisateur a bien été modifié avec sucess")
+      navigate('/users')
+    } catch (error) {
+      displayError("error est survenue lors de la modification d'un utilisateur")
+      navigate('/users')
+    }
   }
 
   return (

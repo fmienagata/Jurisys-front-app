@@ -1,12 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { CModal, CModalBody, CModalHeader, CModalTitle } from '@coreui/react'
 import PropTypes from 'prop-types'
 
 const Modal = (props) => {
-  //const { titleMessage, bodyMessage } = props
-
-  // eslint-disable-next-line react/prop-types
-  const { message, title, bodyMessage, visible, titleMessage, onClose } = props
+  const { message, title, visible, onClose } = props
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -14,7 +11,7 @@ const Modal = (props) => {
     }
     onClose(event, reason)
   }
-  //const [visible, setVisible] = useState(true)
+
   return (
     <>
       <CModal
@@ -26,15 +23,17 @@ const Modal = (props) => {
         <CModalHeader>
           <CModalTitle id="OptionalSizesExample2">{title}</CModalTitle>
         </CModalHeader>
-        <CModalBody>{message}</CModalBody>
+        <CModalBody color="danger">{message}</CModalBody>
       </CModal>
     </>
   )
 }
 
-// Modal.propTypes = {
-//   titleMessage: PropTypes.string.isRequired,
-//   bodyMessage: PropTypes.string.isRequired,
-// }
+Modal.propTypes = {
+  title: PropTypes.string,
+  message: PropTypes.string,
+  visible: PropTypes.bool,
+  onClose: PropTypes.func,
+}
 
 export default Modal

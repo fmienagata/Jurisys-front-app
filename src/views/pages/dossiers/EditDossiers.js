@@ -28,12 +28,12 @@ const EditDossier = () => {
   const { control, handleSubmit, reset } = useForm()
 
   const handleEdit = async (data) => {
-    // console.log('handleEdit call API ', data)
+    console.log('handleEdit call API ', data)
     // const responseData = await getDossierID(data)
     // console.log('responseData --> ', responseData)
     // const dossiers = await getDossiers()
     // console.log('dossiers -> ', dossiers)
-    const responseData = await updateDossier(data)
+    const responseData = await updateDossier(state.data.id, data)
     console.log('responseData --> ', responseData)
   }
 
@@ -237,7 +237,8 @@ const EditDossier = () => {
                   </CInputGroup>
                   <div>
                     <CButton
-                      color="light"
+                      color="info"
+                      variant="ghost"
                       onClick={() => {
                         reset()
                       }}

@@ -14,12 +14,25 @@ import {
   CInputGroupText,
   CRow,
 } from '@coreui/react'
+import { useNavigate } from 'react-router-dom'
+
+import { addUser } from 'src/services/usersService'
+import { useMessageContext } from 'src/Context/MessageContext'
 
 const AddUser = () => {
+  const navigate = useNavigate()
   const { control, handleSubmit } = useForm()
+  const { displaySuccess, displayError } = useMessageContext()
 
-  const handleAddUser = (data) => {
+  const handleAddUser = async (data) => {
     console.log('handleAddUser call API ', data)
+    try {
+      const usersData = await addUser(data)
+      displaySuccess("L'utilisateur a bien été créé avec sucess")
+      //navigate('/users')
+    } catch (error) {
+      displayError(error.messages)
+    }
   }
 
   return (

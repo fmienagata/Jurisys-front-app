@@ -7,12 +7,12 @@ import { CButton } from '@coreui/react'
 import { CCard, CCardBody, CCardHeader, CCol, CRow } from '@coreui/react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
-import ModalAction from 'src/components/Modal'
+import ModalAction from 'src/components/ModalAction'
 
-import baseUrlMock from 'src/services/mock-users.json'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { getUsers } from '../../../services/usersService'
+import { getUsers, deleteUser } from '../../../services/usersService'
+import { useMessageContext } from 'src/Context/MessageContext'
 
 const Styles = styled.div`
   padding: 1rem;
@@ -47,8 +47,7 @@ const Users = () => {
   const tableRefUsers = useRef(typeof useRowSelect)
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
-  const userData = useSelector((state) => state.dataUsers.data)
+  const { displayError, displaySuccess } = useMessageContext()
 
   const columns2 = [
     {
@@ -97,6 +96,7 @@ const Users = () => {
       setColumns(columns2)
       dispatch({ type: 'GET_DATA_USERS', payload: usersData })
     } catch (error) {
+      displayError(error.messages)
       setError(error)
     } finally {
       setLoading(false)
@@ -107,6 +107,29 @@ const Users = () => {
     fetchData()
   }, [])
 
+  const handleDeleteUser = (userId) => {
+    // Implement your delete logic here
+    setOpenModal(true)
+    console.log(`Deleting Dossier with ID ${userId}`)
+    deleteAction(userId)
+  }
+
+  async function deleteAction(userId) {
+    try {
+      const usersData = await deleteUser(userId)
+      displaySuccess('Supprimer avec sucess')
+    } catch (error) {
+      displayError(error.messages)
+    } finally {
+      setOpenModal(false)
+    }
+    setOpenModal(false)
+  }
+
+  function DeleteMultiUsers() {
+    console.log('selection =>', selection)
+  }
+
   return (
     <div>
       <Styles>
@@ -115,14 +138,29 @@ const Users = () => {
             <CCard className="mb-4">
               <CCardHeader style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <strong className="align-self-start">Liste des Clients</strong>
-                <CButton
+                <div
                   className="align-self-end"
-                  color="success"
-                  variant="outline"
-                  onClick={() => navigate('/user-add')}
+                  style={{ display: 'flex', justifyContent: 'space-between' }}
                 >
-                  <CIcon icon={icon.cilLibraryAdd} size="sm" /> Ajouter
-                </CButton>
+                  {selection.length >= 2 && (
+                    <CButton
+                      className="mr-2"
+                      color="danger"
+                      variant="outline"
+                      onClick={() => DeleteMultiUsers()}
+                    >
+                      <CIcon icon={icon.cilLibraryAdd} size="sm" /> Supprimer
+                    </CButton>
+                  )}
+                  <CButton
+                    className="align-self-end"
+                    color="success"
+                    variant="outline"
+                    onClick={() => navigate('/user-add')}
+                  >
+                    <CIcon icon={icon.cilLibraryAdd} size="sm" /> Ajouter
+                  </CButton>
+                </div>
               </CCardHeader>
               <CCardBody>
                 <Table
@@ -135,10 +173,19 @@ const Users = () => {
                   setOpenModal={setOpenModal}
                   onSelectedRowChange={setSelection}
                   fromPage={'users'}
+                  onDelete={handleDeleteUser}
                 />
               </CCardBody>
             </CCard>
-            <ModalAction openModal={openModal} setOpenModal={setOpenModal} />
+            <ModalAction
+              openModal={openModal}
+              setOpenModal={setOpenModal}
+              action={
+                <CButton color="danger" onClick={deleteAction}>
+                  Supprimer
+                </CButton>
+              }
+            />
           </CCol>
         </CRow>
       </Styles>
