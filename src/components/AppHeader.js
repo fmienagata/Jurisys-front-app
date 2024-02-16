@@ -33,7 +33,7 @@ const AppHeader = () => {
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
 
   const dispatch = useDispatch()
-  const sidebarShow = useSelector((state) => state.changeState.sidebarShow)
+  const sidebarShow = useSelector((state) => state.sidebarShow)
 
   useEffect(() => {
     document.addEventListener('scroll', () => {
@@ -52,6 +52,7 @@ const AppHeader = () => {
           <CIcon icon={cilMenu} size="lg" />
         </CHeaderToggler>
         <AppBreadcrumb />
+        <CHeaderNav className="d-none d-md-flex"></CHeaderNav>
         <CHeaderNav className="ms-auto">
           <CNavItem>
             <CNavLink href="#">

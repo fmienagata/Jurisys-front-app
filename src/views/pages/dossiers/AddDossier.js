@@ -231,7 +231,8 @@ const AddDossier = () => {
                   </CInputGroup>
                   <div>
                     <CButton
-                      color="light"
+                      color="info"
+                      variant="ghost"
                       onClick={() => {
                         reset()
                       }}

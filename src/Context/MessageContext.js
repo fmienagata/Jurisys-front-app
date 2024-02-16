@@ -31,17 +31,17 @@ const modalReducer = (modalState, action) => {
       }
     case messageTypes.INFO:
       return {
-        open: true,
         variant: 'INFO',
         message,
         iconName: 'INFO',
         title,
         isGeneralAlert: !title,
+        visible: true,
       }
     default:
       return {
         ...modalState,
-        open: false,
+        visible: false,
       }
   }
 }

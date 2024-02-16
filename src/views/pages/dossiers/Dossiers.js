@@ -17,6 +17,8 @@ import styled from 'styled-components'
 
 import { getDossiers } from '../../../services/dossiersService'
 import { useSelector, useDispatch } from 'react-redux'
+import ModalAction from 'src/components/Modal'
+import { useNavigate } from 'react-router-dom'
 
 const Styles = styled.div`
   padding: 1rem;
@@ -48,6 +50,8 @@ const Styles = styled.div`
 `
 
 const Dossiers = () => {
+  const navigate = useNavigate()
+
   const tableRefDossiers = useRef(typeof useRowSelect)
   const [currentPage, setCurrentPage] = useState(0)
   const [selection, setSelection] = useState([])
@@ -55,6 +59,7 @@ const Dossiers = () => {
   const [loading, setLoading] = useState(true)
   const [columns, setColumns] = useState([])
   const [error, setError] = useState(null)
+  const [openModal, setOpenModal] = useState(false)
 
   const columns2 = [
     {
@@ -122,36 +127,76 @@ const Dossiers = () => {
     fetchData()
   }, [])
 
+  const handleDelete = (dossierId) => {
+    // Implement your delete logic here
+    setOpenModal(true)
+    console.log(`Deleting Dossier with ID ${dossierId}`)
+    deleteAction()
+  }
+
+  function deleteAction() {
+    setOpenModal(true)
+  }
+
+  function DeleteMultiDossiers() {
+    console.log('selection =>', selection)
+  }
+
   return (
-    <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
-      {/* <Modal titleMessage="tester title messages" bodyMessage="tester body messages" /> */}
-      <div>
-        <Styles>
-          <CRow>
-            <CCol xs={12}>
-              <CCard className="mb-4">
-                <CCardHeader style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <strong className="align-self-start">Liste des dossiers</strong>
-                  <CButton className="align-self-end" color="success" variant="outline">
+    <div>
+      <Styles>
+        <CRow>
+          <CCol xs={12}>
+            <CCard className="mb-4">
+              <CCardHeader style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <strong className="align-self-start">Liste des dossiers</strong>
+                <div
+                  className="align-self-end"
+                  style={{ display: 'flex', justifyContent: 'space-between' }}
+                >
+                  {selection.length >= 2 && (
+                    <CButton
+                      className="mr-2"
+                      color="danger"
+                      variant="outline"
+                      shape="rounded-pill"
+                      onClick={() => DeleteMultiDossiers()}
+                    >
+                      <CIcon icon={icon.cilLibraryAdd} size="sm" /> Supprimer
+                    </CButton>
+                  )}
+                  <CButton
+                    color="success"
+                    variant="outline"
+                    shape="rounded-pill"
+                    onClick={() => navigate('/adddossier')}
+                  >
                     <CIcon icon={icon.cilLibraryAdd} size="sm" /> Ajouter
                   </CButton>
-                </CCardHeader>
-                <CCardBody>
-                  <Table
-                    ref={tableRefDossiers}
-                    columns={columns}
-                    data={dossiers}
-                    ischeckbox={true}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                    onSelectedRowChange={setSelection}
-                  />
-                </CCardBody>
-              </CCard>
-            </CCol>
-          </CRow>
-        </Styles>
-      </div>
+                </div>
+              </CCardHeader>
+              <CCardBody>
+                <Table
+                  ref={tableRefDossiers}
+                  columns={columns}
+                  data={dossiers}
+                  ischeckbox={true}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  onSelectedRowChange={setSelection}
+                  setOpenModal={setOpenModal}
+                  onDelete={handleDelete}
+                />
+              </CCardBody>
+            </CCard>
+            <ModalAction
+              openModal={openModal}
+              setOpenModal={setOpenModal}
+              action={<CButton color="danger">Supprimer</CButton>}
+            />
+          </CCol>
+        </CRow>
+      </Styles>
     </div>
   )
 }

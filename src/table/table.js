@@ -56,6 +56,7 @@ const Table = forwardRef(
     {
       columns,
       data,
+      onDelete,
       fromPage,
       manualPagination = false,
       onSelectedRowChange,
@@ -257,7 +258,7 @@ const Table = forwardRef(
                               color="danger"
                               variant="ghost"
                               size="sm"
-                              onClick={() => setOpenModal(true)}
+                              onClick={() => onDelete(row.original.id)}
                             >
                               <CIcon icon={icon.cilTrash} size="sm" />
                             </CButton>

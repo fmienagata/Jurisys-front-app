@@ -23,7 +23,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Utilisateurs',
-    to: '/user-add',
+    to: '/users',
     icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
   },
   {
@@ -85,6 +85,12 @@ const _nav = [
     name: 'Les habilitations',
     to: '/theme/typography',
     icon: <CIcon icon={cilHttps} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Widgets',
+    to: '/widgets',
+    icon: <CIcon icon={cilCalculator} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,

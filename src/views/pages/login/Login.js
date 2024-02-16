@@ -23,7 +23,7 @@ import { useMessageContext } from 'src/Context/MessageContext'
 const Login = () => {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
-  const { displaySuccess, displayError } = useMessageContext()
+  const { displayError } = useMessageContext()
 
   const { control, handleSubmit } = useForm()
 
@@ -33,12 +33,9 @@ const Login = () => {
       const response = await authService.login(data)
       localStorage.setItem('token', response.token)
       setIsLoading(false)
-      displaySuccess('yes logged - in')
-
-      //navigate('/dashboard')
+      navigate('/users')
     } catch (error) {
-      console.error('Login failed:', error.message)
-      displayError(error.message)
+      displayError('Votre Identifiant et/ou mot de passe est incorrect')
       setIsLoading(false)
     }
   }
