@@ -21,6 +21,8 @@ import {
   CTableDataCell,
   CTableBody,
   CTableHead,
+  CTableFoot,
+  CPagination,
   CTableHeaderCell,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
@@ -230,13 +232,17 @@ const Table = forwardRef(
                               color="success"
                               variant="ghost"
                               size="sm"
-                              onClick={() =>
-                                navigate('/dossier/' + row.original.id, {
-                                  state: { data: row.original },
-                                })
-                              }
+                              onClick={() => {
+                                fromPage && fromPage === 'users'
+                                  ? navigate('/user-edit/' + row.original.id, {
+                                      state: { data: row.original },
+                                    })
+                                  : navigate('/dossier/' + row.original.id, {
+                                      state: { data: row.original },
+                                    })
+                              }}
                             >
-                              <CIcon icon={icon.cilClone} size="sm" />
+                              <CIcon icon={icon.cilFolderOpen} size="sm" />
                             </CButton>
                             <CButton
                               color="primary"
@@ -272,19 +278,20 @@ const Table = forwardRef(
               })}
             </CTableBody>
           </CTable>
-
-          <TablePagination
-            rowsPerPageOptions={[10]}
-            component="div"
-            count={data.length}
-            rowsPerPage={10}
-            page={pageIndex}
-            // canNextPage={canNextPage}
-            // canPreviousPage={canPreviousPage}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={(event) => setPageSize(Number(event.target.value))}
-            ActionsComponent={TablePaginationActions}
-          />
+          <div style={{ display: 'inline-block', marginLeft: '10px', width: '100%' }}>
+            <TablePagination
+              rowsPerPageOptions={[10]}
+              component="div"
+              count={data.length}
+              rowsPerPage={10}
+              page={pageIndex}
+              // canNextPage={canNextPage}
+              // canPreviousPage={canPreviousPage}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={(event) => setPageSize(Number(event.target.value))}
+              ActionsComponent={TablePaginationActions}
+            />
+          </div>
         </Styles>
       </>
     )

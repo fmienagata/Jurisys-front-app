@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
 
-import { CPaginationItem, CPagination } from '@coreui/react'
+import { CPaginationItem, CPagination, CFormLabel } from '@coreui/react'
 
 const TablePaginationActions = (props) => {
   const { count, page, rowsPerPage, onPageChange } = props
@@ -24,63 +24,54 @@ const TablePaginationActions = (props) => {
   }
 
   return (
-    <CPagination aria-label="Page navigation example" style={{ justifyContent: 'center' }}>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          marginTop: '10PX',
-          width: '100%',
-        }}
-      >
-        <div style={{ display: 'flex' }}>
-          <CPaginationItem
-            aria-label="Previous"
-            onClick={() => {
-              handleFirstPageButtonClick()
-            }}
-            disabled={page === 0}
-          >
-            <span aria-hidden="true">&laquo;</span>
-          </CPaginationItem>
-          <CPaginationItem
-            aria-label="Previous"
-            onClick={() => {
-              handleBackButtonClick()
-            }}
-            disabled={page === 0}
-          >
-            <span aria-hidden="true">&laquo;</span>
-          </CPaginationItem>
-          <CPaginationItem>
-            <span>
-              Page
-              <strong>
-                {page + 1} of {lastPage + 1}
-              </strong>
-            </span>
-          </CPaginationItem>
-          <CPaginationItem
-            aria-label="Next"
-            onClick={() => {
-              handleNextButtonClick()
-            }}
-            disabled={page === lastPage}
-          >
-            <span aria-hidden="true">&raquo;</span>
-          </CPaginationItem>
-          <CPaginationItem
-            aria-label="Next"
-            onClick={() => {
-              handleLastPageButtonClick()
-            }}
-            disabled={page === lastPage}
-          >
-            <span aria-hidden="true">&raquo;</span>
-          </CPaginationItem>
-        </div>
-      </div>
-    </CPagination>
+    <div style={{ width: '100%', marginLeft: '70%' }}>
+      <CPagination>
+        <CPaginationItem
+          aria-label="Previous"
+          onClick={() => {
+            handleFirstPageButtonClick()
+          }}
+          disabled={page === 0}
+        >
+          <span aria-hidden="true">&laquo;</span>
+        </CPaginationItem>
+        <CPaginationItem
+          aria-label="Previous"
+          onClick={() => {
+            handleBackButtonClick()
+          }}
+          disabled={page === 0}
+        >
+          <span aria-hidden="true">&laquo;</span>
+        </CPaginationItem>
+        <CPaginationItem>
+          <span style={{ display: 'inline-block', marginLeft: '10px' }}>
+            Page
+            <strong>
+              {page + 1} of {lastPage + 1}
+            </strong>
+          </span>
+        </CPaginationItem>
+        <CPaginationItem
+          aria-label="Next"
+          onClick={() => {
+            handleNextButtonClick()
+          }}
+          disabled={page === lastPage}
+        >
+          <span aria-hidden="true">&raquo;</span>
+        </CPaginationItem>
+        <CPaginationItem
+          aria-label="Next"
+          onClick={() => {
+            handleLastPageButtonClick()
+          }}
+          disabled={page === lastPage}
+        >
+          <span aria-hidden="true">&raquo;</span>
+        </CPaginationItem>
+      </CPagination>
+    </div>
   )
 }
 

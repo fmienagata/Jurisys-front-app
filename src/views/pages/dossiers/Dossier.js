@@ -1,22 +1,24 @@
 import React, { useState } from 'react'
-import Register from '../register/Register'
-import {
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CCol,
-  CRow,
-  CPaginationItem,
-  CPagination,
-  CButton,
-} from '@coreui/react'
+import { CCol, CContainer, CRow } from '@coreui/react'
+import InformationCard from './InformationCard'
+import { useLocation } from 'react-router-dom'
+import MessagesView from './MessagesView'
 
 const Dossier = () => {
+  const location = useLocation()
+  const { state } = location
+
   return (
-    <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
-      {/* <Modal titleMessage="tester title messages" bodyMessage="tester body messages" /> */}
-      <div></div>
-    </div>
+    <CContainer>
+      <CRow xs={{ gutterX: 4 }}>
+        <CCol xs={4} direction="column">
+          <InformationCard dataDossier={state.data} />
+        </CCol>
+        <CCol xs={8}>
+          <MessagesView dataDossier={state.data} />
+        </CCol>
+      </CRow>
+    </CContainer>
   )
 }
 
