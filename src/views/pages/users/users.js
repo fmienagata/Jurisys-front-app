@@ -89,6 +89,8 @@ const Users = () => {
   const [errors, setError] = useState(true)
   const [columns, setColumns] = useState([])
 
+  const [userIDDelete, setUserIDDelete] = useState('')
+
   const fetchData = async () => {
     try {
       const usersData = await getUsers()
@@ -108,26 +110,31 @@ const Users = () => {
   }, [])
 
   const handleDeleteUser = (userId) => {
-    // Implement your delete logic here
     setOpenModal(true)
     console.log(`Deleting Dossier with ID ${userId}`)
-    deleteAction(userId)
+    setUserIDDelete(userId)
   }
 
-  async function deleteAction(userId) {
+  async function deleteAction() {
     try {
-      const usersData = await deleteUser(userId)
+      if (userIDDelete !== '') {
+        const usersData = await deleteUser(userIDDelete)
+      } else {
+        console.log('selection pour delete =>', selection)
+      }
+
       displaySuccess('Supprimer avec sucess')
     } catch (error) {
       displayError(error.messages)
     } finally {
       setOpenModal(false)
     }
+    setUserIDDelete('')
     setOpenModal(false)
   }
 
   function DeleteMultiUsers() {
-    console.log('selection =>', selection)
+    setOpenModal(true)
   }
 
   return (

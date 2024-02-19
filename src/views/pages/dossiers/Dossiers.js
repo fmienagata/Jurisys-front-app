@@ -15,10 +15,11 @@ import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
 import styled from 'styled-components'
 
-import { getDossiers } from '../../../services/dossiersService'
+import { getDossiers, deleteDossier } from '../../../services/dossiersService'
 import { useSelector, useDispatch } from 'react-redux'
-import ModalAction from 'src/components/Modal'
+import ModalAction from 'src/components/ModalAction'
 import { useNavigate } from 'react-router-dom'
+import { useMessageContext } from 'src/Context/MessageContext'
 
 const Styles = styled.div`
   padding: 1rem;
@@ -51,6 +52,7 @@ const Styles = styled.div`
 
 const Dossiers = () => {
   const navigate = useNavigate()
+  const { displayError, displaySuccess } = useMessageContext()
 
   const tableRefDossiers = useRef(typeof useRowSelect)
   const [currentPage, setCurrentPage] = useState(0)
@@ -60,6 +62,8 @@ const Dossiers = () => {
   const [columns, setColumns] = useState([])
   const [error, setError] = useState(null)
   const [openModal, setOpenModal] = useState(false)
+
+  const [dossierIDDelete, setDossierIDDelete] = useState('')
 
   const columns2 = [
     {
@@ -128,18 +132,31 @@ const Dossiers = () => {
   }, [])
 
   const handleDelete = (dossierId) => {
-    // Implement your delete logic here
     setOpenModal(true)
-    console.log(`Deleting Dossier with ID ${dossierId}`)
-    deleteAction()
+    setDossierIDDelete(dossierId)
   }
 
-  function deleteAction() {
-    setOpenModal(true)
+  async function deleteAction() {
+    try {
+      if (dossierIDDelete !== '') {
+        const usersData = await deleteDossier(dossierIDDelete)
+      } else {
+        console.log('selection pour delete =>', selection)
+      }
+
+      displaySuccess('Supprimer avec sucess')
+    } catch (error) {
+      displayError(error.messages)
+    } finally {
+      setOpenModal(false)
+    }
+    setDossierIDDelete('')
+    setOpenModal(false)
   }
 
   function DeleteMultiDossiers() {
     console.log('selection =>', selection)
+    setOpenModal(true)
   }
 
   return (
@@ -169,7 +186,7 @@ const Dossiers = () => {
                     color="success"
                     variant="outline"
                     shape="rounded-pill"
-                    onClick={() => navigate('/adddossier')}
+                    onClick={() => navigate('/dossier-add')}
                   >
                     <CIcon icon={icon.cilLibraryAdd} size="sm" /> Ajouter
                   </CButton>
@@ -192,7 +209,11 @@ const Dossiers = () => {
             <ModalAction
               openModal={openModal}
               setOpenModal={setOpenModal}
-              action={<CButton color="danger">Supprimer</CButton>}
+              action={
+                <CButton color="danger" onClick={deleteAction}>
+                  Supprimer
+                </CButton>
+              }
             />
           </CCol>
         </CRow>

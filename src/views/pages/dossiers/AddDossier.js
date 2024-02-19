@@ -4,7 +4,6 @@ import {
   CButton,
   CCard,
   CCardBody,
-  CStack,
   CCol,
   CContainer,
   CFormInput,
@@ -25,7 +24,7 @@ const AddDossier = () => {
 
   const handleEdit = async (data) => {
     console.log('handleEdit call API ', data)
-    const responseData = await getDossierID(data)
+    const responseData = await addDossier(data)
     console.log('responseData --> ', responseData)
     const dossiers = await getDossiers()
     console.log('dossiers -> ', dossiers)

@@ -11,6 +11,7 @@ import {
   CFormInput,
   CInputGroup,
   CInputGroupText,
+  CSpinner,
   CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
@@ -94,6 +95,7 @@ const Login = () => {
                     <CRow>
                       <CCol xs={6}>
                         <CButton color="success" type="submit" disabled={isLoading}>
+                          {isLoading ? <CSpinner size="sm" className="me-2" /> : null}
                           {isLoading ? labels.login.action.loading : labels.login.action.login}
                         </CButton>
                       </CCol>
