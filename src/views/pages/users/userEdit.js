@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
-import CIcon from '@coreui/icons-react'
+import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import {
   CButton,
   CCard,
   CCardBody,
-  CCardHeader,
   CCol,
   CContainer,
   CFormInput,
@@ -30,7 +28,7 @@ const UserEdit = () => {
 
   const handleEdit = async (data) => {
     try {
-      const usersData = await editUser(state.data.id, data)
+      await editUser(state.data.id, data)
       displaySuccess("L'utilisateur a bien été modifié avec sucess")
       navigate('/users')
     } catch (error) {

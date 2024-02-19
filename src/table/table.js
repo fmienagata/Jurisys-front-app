@@ -21,8 +21,6 @@ import {
   CTableDataCell,
   CTableBody,
   CTableHead,
-  CTableFoot,
-  CPagination,
   CTableHeaderCell,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'

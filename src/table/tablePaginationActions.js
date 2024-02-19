@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
 
-import { CPaginationItem, CPagination, CFormLabel } from '@coreui/react'
+import { CPaginationItem, CPagination } from '@coreui/react'
 
 const TablePaginationActions = (props) => {
   const { count, page, rowsPerPage, onPageChange } = props

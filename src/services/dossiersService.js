@@ -1,12 +1,5 @@
 import Axios from 'src/services/axiosConfig'
 import axios from 'axios'
-//import baseUrlMock from './mock-users.json' // `api/users`
-
-const baseUrlMock = './data/mock-users.json'
-
-const axiosMockInstance = axios.create({
-  baseURL: '', // You can specify an empty string if you don't want to prepend any base URL
-})
 
 axios.defaults.baseURL = ''
 
