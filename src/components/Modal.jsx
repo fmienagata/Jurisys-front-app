@@ -16,9 +16,10 @@ const Modal = (props) => {
     <>
       <CModal
         size="lg"
+        aria-labelledby="VerticallyCenteredExample"
+        alignment="center"
         visible={visible}
         onClose={handleClose}
-        aria-labelledby="OptionalSizesExample2"
       >
         <CModalHeader>
           <CModalTitle id="OptionalSizesExample2">{title}</CModalTitle>
