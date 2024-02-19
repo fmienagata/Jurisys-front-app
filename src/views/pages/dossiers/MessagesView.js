@@ -36,7 +36,12 @@ const MessagesView = ({ messages }) => {
                   </CCardTitle>
                 </CCol>
                 <CCol className="text-end" xs={4}>
-                  <CButton color="success" variant="ghost" size="sm">
+                  <CButton
+                    color="success"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setOpenMessage(true)}
+                  >
                     <CIcon icon={icon.cilFolderOpen} size="sm" />
                   </CButton>
                   <CButton color="success" variant="ghost" size="sm">
@@ -49,7 +54,7 @@ const MessagesView = ({ messages }) => {
               <CListGroupItem>
                 <CRow className="align-items-center">
                   <CCol className="text-start" xs={12}>
-                    <CCardText>
+                    <CCardText onDoubleClick={() => setOpenMessage(true)}>
                       Ce texte généré aléatoirement (lorem ipsum) peut être utilisé dans vos
                       maquettes (webdesign, sites internet, livres, affiches...) gratuitement. Ce
                       texte est entièrement libre de droit. Ce texte généré aléatoirement (lorem
@@ -75,7 +80,12 @@ const MessagesView = ({ messages }) => {
                   </CCardTitle>
                 </CCol>
                 <CCol className="text-end" xs={4}>
-                  <CButton color="success" variant="ghost" size="sm">
+                  <CButton
+                    color="success"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setOpenMessage(true)}
+                  >
                     <CIcon icon={icon.cilFolderOpen} size="sm" />
                   </CButton>
                   <CButton color="success" variant="ghost" size="sm">
@@ -88,7 +98,7 @@ const MessagesView = ({ messages }) => {
               <CListGroupItem>
                 <CRow className="align-items-center">
                   <CCol className="text-start" xs={12}>
-                    <CCardText>
+                    <CCardText onDoubleClick={() => setOpenMessage(true)}>
                       Ce texte généré aléatoirement (lorem ipsum) peut être utilisé dans vos
                       maquettes (webdesign, sites internet, livres, affiches...) gratuitement. Ce
                       texte est entièrement libre de droit. Ce texte généré aléatoirement (lorem
