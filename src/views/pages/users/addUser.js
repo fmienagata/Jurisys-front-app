@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
-import CIcon from '@coreui/icons-react'
+import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import {
   CButton,
   CCard,
   CCardBody,
-  CCardHeader,
   CCol,
   CContainer,
   CFormInput,
@@ -27,9 +25,9 @@ const AddUser = () => {
   const handleAddUser = async (data) => {
     console.log('handleAddUser call API ', data)
     try {
-      const usersData = await addUser(data)
+      await addUser(data)
       displaySuccess("L'utilisateur a bien été créé avec sucess")
-      //navigate('/users')
+      navigate('/users')
     } catch (error) {
       displayError(error.messages)
     }

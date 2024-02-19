@@ -28,7 +28,7 @@ const EditDossier = () => {
 
   const handleEdit = async (data) => {
     try {
-      const messagesData = await updateDossier(state.data.id, data)
+      await updateDossier(state.data.id, data)
     } catch (error) {
       displayError(error.message)
     } finally {

@@ -1,15 +1,15 @@
-import React, { useState, useReducer, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useRowSelect } from 'react-table'
 import Table from 'src/table/table'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
 import { CButton } from '@coreui/react'
-import { CCard, CCardBody, CCardHeader, CCol, CRow } from '@coreui/react'
+import { CCard, CCardBody, CCardHeader, CCol, CRow, CSpinner } from '@coreui/react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import ModalAction from 'src/components/ModalAction'
 
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import { getUsers, deleteUser } from '../../../services/usersService'
 import { useMessageContext } from 'src/Context/MessageContext'
@@ -86,7 +86,6 @@ const Users = () => {
 
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
-  const [errors, setError] = useState(true)
   const [columns, setColumns] = useState([])
 
   const [userIDDelete, setUserIDDelete] = useState('')
@@ -99,7 +98,6 @@ const Users = () => {
       dispatch({ type: 'GET_DATA_USERS', payload: usersData })
     } catch (error) {
       displayError(error.messages)
-      setError(error)
     } finally {
       setLoading(false)
     }
@@ -107,6 +105,7 @@ const Users = () => {
 
   useEffect(() => {
     fetchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleDeleteUser = (userId) => {
@@ -118,7 +117,7 @@ const Users = () => {
   async function deleteAction() {
     try {
       if (userIDDelete !== '') {
-        const usersData = await deleteUser(userIDDelete)
+        await deleteUser(userIDDelete)
       } else {
         console.log('selection pour delete =>', selection)
       }
@@ -169,20 +168,25 @@ const Users = () => {
                   </CButton>
                 </div>
               </CCardHeader>
-              <CCardBody>
-                <Table
-                  ref={tableRefUsers}
-                  columns={columns}
-                  data={users}
-                  ischeckbox={true}
-                  currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
-                  setOpenModal={setOpenModal}
-                  onSelectedRowChange={setSelection}
-                  fromPage={'users'}
-                  onDelete={handleDeleteUser}
-                />
-              </CCardBody>
+
+              {!loading ? (
+                <CCardBody>
+                  <Table
+                    ref={tableRefUsers}
+                    columns={columns}
+                    data={users}
+                    ischeckbox={true}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    setOpenModal={setOpenModal}
+                    onSelectedRowChange={setSelection}
+                    fromPage={'users'}
+                    onDelete={handleDeleteUser}
+                  />
+                </CCardBody>
+              ) : (
+                <CSpinner color="primary" variant="grow" />
+              )}
             </CCard>
             <ModalAction
               openModal={openModal}
