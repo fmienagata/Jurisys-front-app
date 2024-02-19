@@ -48,6 +48,18 @@ function getMessagesDossier(id) {
   })
 }
 
+function getRechercheDossiers(data) {
+  const queryString = Object.keys(data)
+    .map((key) => `${key}:${encodeURIComponent(data[key])}`)
+    .join(',')
+
+  return Axios.get(`http://www.cabinet-bogl.com/api/dossiers?criteria=${queryString}`).then(
+    async (response) => {
+      return response.data
+    },
+  )
+}
+
 export {
   addDossier,
   createDossier,
@@ -56,4 +68,5 @@ export {
   updateDossier,
   getDossierID,
   getMessagesDossier,
+  getRechercheDossiers,
 }
