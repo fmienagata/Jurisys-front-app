@@ -85,7 +85,11 @@ export const MessageProvider = ({ children }) => {
       }}
     >
       <Suspense fallback={null}>
-        <Modal {...modal} onClose={handleCloseSnackbar}></Modal>
+        <Modal
+          {...modal}
+          onClose={handleCloseSnackbar}
+          aria-labelledby="VerticallyCenteredExample"
+        ></Modal>
         {/* <AlertModal {...modal} onClose={handleCloseSnackbar} /> */}
         {children}
       </Suspense>

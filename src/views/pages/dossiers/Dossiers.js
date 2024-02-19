@@ -1,22 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react'
-import Register from '../register/Register'
-import {
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CCol,
-  CRow,
-  CPaginationItem,
-  CPagination,
-  CButton,
-} from '@coreui/react'
+import { CCard, CCardBody, CCardHeader, CCol, CRow, CButton, CSpinner } from '@coreui/react'
 import Table from 'src/table/table'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
 import styled from 'styled-components'
 
 import { getDossiers, deleteDossier } from '../../../services/dossiersService'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import ModalAction from 'src/components/ModalAction'
 import { useNavigate } from 'react-router-dom'
 import { useMessageContext } from 'src/Context/MessageContext'
@@ -58,9 +48,9 @@ const Dossiers = () => {
   const [currentPage, setCurrentPage] = useState(0)
   const [selection, setSelection] = useState([])
   const [dossiers, setDossiers] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [columns, setColumns] = useState([])
-  const [error, setError] = useState(null)
+
   const [openModal, setOpenModal] = useState(false)
 
   const [dossierIDDelete, setDossierIDDelete] = useState('')
@@ -121,7 +111,7 @@ const Dossiers = () => {
       setColumns(columns2)
       dispatch({ type: 'GET_DATA_DOSSIERS', payload: dossiersData })
     } catch (error) {
-      setError(error)
+      displayError(error.message)
     } finally {
       setLoading(false)
     }
@@ -129,6 +119,7 @@ const Dossiers = () => {
 
   useEffect(() => {
     fetchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleDelete = (dossierId) => {
@@ -139,7 +130,7 @@ const Dossiers = () => {
   async function deleteAction() {
     try {
       if (dossierIDDelete !== '') {
-        const usersData = await deleteDossier(dossierIDDelete)
+        await deleteDossier(dossierIDDelete)
       } else {
         console.log('selection pour delete =>', selection)
       }
@@ -192,19 +183,23 @@ const Dossiers = () => {
                   </CButton>
                 </div>
               </CCardHeader>
-              <CCardBody>
-                <Table
-                  ref={tableRefDossiers}
-                  columns={columns}
-                  data={dossiers}
-                  ischeckbox={true}
-                  currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
-                  onSelectedRowChange={setSelection}
-                  setOpenModal={setOpenModal}
-                  onDelete={handleDelete}
-                />
-              </CCardBody>
+              {!loading ? (
+                <CCardBody>
+                  <Table
+                    ref={tableRefDossiers}
+                    columns={columns}
+                    data={dossiers}
+                    ischeckbox={true}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    onSelectedRowChange={setSelection}
+                    setOpenModal={setOpenModal}
+                    onDelete={handleDelete}
+                  />
+                </CCardBody>
+              ) : (
+                <CSpinner color="primary" variant="grow" />
+              )}
             </CCard>
             <ModalAction
               openModal={openModal}

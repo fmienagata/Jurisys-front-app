@@ -1,4 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
+import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import {
   CButton,
@@ -10,30 +11,29 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
+  CSpinner,
 } from '@coreui/react'
 
-import {
-  addDossier,
-  getDossiers,
-  updateDossier,
-  getDossierID,
-} from '../../../services/dossiersService'
+import { updateDossier } from '../../../services/dossiersService'
 import { useLocation } from 'react-router-dom'
+import { useMessageContext } from 'src/Context/MessageContext'
 
 const EditDossier = () => {
   const location = useLocation()
   const { state } = location
+  const { displayError } = useMessageContext()
+  const [loading, setLoading] = useState(false)
 
   const { control, handleSubmit, reset } = useForm()
 
   const handleEdit = async (data) => {
-    console.log('handleEdit call API ', data)
-    // const responseData = await getDossierID(data)
-    // console.log('responseData --> ', responseData)
-    // const dossiers = await getDossiers()
-    // console.log('dossiers -> ', dossiers)
-    const responseData = await updateDossier(state.data.id, data)
-    console.log('responseData --> ', responseData)
+    try {
+      const messagesData = await updateDossier(state.data.id, data)
+    } catch (error) {
+      displayError(error.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -245,8 +245,9 @@ const EditDossier = () => {
                       Reset
                     </CButton>
 
-                    <CButton type="submit" color="success">
-                      Ajouter
+                    <CButton color="success" type="submit" disabled={loading}>
+                      {loading ? <CSpinner size="sm" className="me-2" /> : null}
+                      {loading ? 'en cours ...' : 'Modifier'}
                     </CButton>
                   </div>
                 </form>

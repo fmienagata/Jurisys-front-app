@@ -46,13 +46,13 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'Liste dossiers',
+        name: 'Active',
         to: '/dossiers/list',
       },
       {
         component: CNavItem,
         name: 'Archivés',
-        to: '/base/breadcrumbs',
+        to: '/dossiers/archive',
       },
     ],
   },

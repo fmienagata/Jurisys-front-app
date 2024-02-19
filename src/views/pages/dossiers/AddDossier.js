@@ -12,12 +12,7 @@ import {
   CRow,
 } from '@coreui/react'
 
-import {
-  addDossier,
-  getDossiers,
-  updateDossier,
-  getDossierID,
-} from '../../../services/dossiersService'
+import { addDossier, getDossiers } from '../../../services/dossiersService'
 
 const AddDossier = () => {
   const { control, handleSubmit, reset } = useForm()

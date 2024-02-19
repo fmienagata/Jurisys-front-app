@@ -48,7 +48,7 @@ const TablePaginationActions = (props) => {
           <span style={{ display: 'inline-block', marginLeft: '10px' }}>
             Page
             <strong>
-              {page + 1} of {lastPage + 1}
+              {page + 1} sur {lastPage + 1}
             </strong>
           </span>
         </CPaginationItem>

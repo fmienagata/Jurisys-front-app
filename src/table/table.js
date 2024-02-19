@@ -234,7 +234,7 @@ const Table = forwardRef(
                               size="sm"
                               onClick={() => {
                                 fromPage && fromPage === 'users'
-                                  ? navigate('/user-edit/' + row.original.id, {
+                                  ? navigate('/user-display/' + row.original.id, {
                                       state: { data: row.original },
                                     })
                                   : navigate('/dossier/' + row.original.id, {
