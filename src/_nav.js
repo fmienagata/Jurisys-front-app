@@ -2,11 +2,12 @@ import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
   cilCalculator,
+  cilCalendar,
   cilEuro,
   cilFolder,
   cilGroup,
-  cilHttps,
   cilIndustry,
+  cilSearch,
   cilSettings,
   cilSpeech,
   cilSpeedometer,
@@ -29,14 +30,14 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Entreprises',
-    to: '/theme/typography',
+    to: '/businesses',
     icon: <CIcon icon={cilIndustry} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: 'Comptabilités',
-    to: '/theme/typography',
-    icon: <CIcon icon={cilCalculator} customClassName="nav-icon" />,
+    name: 'Recherche',
+    to: '/recherche',
+    icon: <CIcon icon={cilSearch} customClassName="nav-icon" />,
   },
   {
     component: CNavGroup,
@@ -46,7 +47,7 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'Active',
+        name: 'Actifs',
         to: '/dossiers/list',
       },
       {
@@ -76,26 +77,26 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Gestion des droits',
-    to: '/theme/typography',
-    icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'Les habilitations',
-    to: '/theme/typography',
-    icon: <CIcon icon={cilHttps} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'Widgets',
-    to: '/widgets',
+    name: 'Comptabilités',
+    to: '/accounting',
     icon: <CIcon icon={cilCalculator} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
+    name: 'Gestion des droits',
+    to: '/right',
+    icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Agenda',
+    to: '/agenda',
+    icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
     name: 'Abonnements',
-    to: '/theme/typography',
+    to: '/subscriptions',
     icon: <CIcon icon={cilEuro} customClassName="nav-icon" />,
   },
 ]

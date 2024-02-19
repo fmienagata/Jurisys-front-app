@@ -1,0 +1,185 @@
+import React, { useState } from 'react'
+import {
+  CCard,
+  CCol,
+  CFormSelect,
+  CContainer,
+  CInputGroup,
+  CListGroup,
+  CListGroupItem,
+  CButton,
+  CFormInput,
+  CRow,
+  CSpinner,
+  CFormCheck,
+} from '@coreui/react'
+import { Controller, useForm } from 'react-hook-form'
+import { getRechercheDossiers } from '../../../services/dossiersService'
+import { useMessageContext } from 'src/Context/MessageContext'
+
+const Recherche = () => {
+  const { displayError, displaySuccess } = useMessageContext()
+  const [loading, setLoading] = useState(false)
+  const [dossiers, setDossiers] = useState([])
+
+  const { control, reset, handleSubmit } = useForm()
+  const handleSearch = async (data) => {
+    setLoading(true)
+    console.log('recherhce clicked -->', data)
+    try {
+      // envoie data
+      const dossiersData = await getRechercheDossiers({ reference: 'reference', nom: 'test' })
+      console.log('dossiersData -> ', dossiersData)
+      setDossiers(dossiersData)
+      setLoading(false)
+    } catch (error) {
+      displayError(error.message)
+      setLoading(false)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div>
+      <div>
+        <CContainer>
+          <CRow className="justify-content-center">
+            <CCol md={9} lg={7} xl={12}>
+              <CCard className="mx-8" md={9} lg={7} xl={6}>
+                <form onSubmit={handleSubmit(handleSearch)}>
+                  <CListGroup flush>
+                    <CListGroupItem>
+                      <CRow className="align-items-center mb-1">
+                        <CCol className="text-end" xs={4}>
+                          <CInputGroup>
+                            <Controller
+                              name="typeDossier"
+                              control={control}
+                              defaultValue=""
+                              render={({ field }) => (
+                                <CFormSelect
+                                  id="floatingSelect"
+                                  {...field}
+                                  floatingLabel="Type de dossier"
+                                  aria-label="Small select example"
+                                  floatingClassName="pt-2"
+                                >
+                                  <option value="">-- Selectionner un type de dossier --</option>
+                                  <option value="1">One</option>
+                                  <option value="2">Two</option>
+                                  <option value="3">Three</option>
+                                </CFormSelect>
+                              )}
+                            />
+                          </CInputGroup>
+                        </CCol>
+                        <CCol className="text-end" xs={4}>
+                          <CInputGroup>
+                            <Controller
+                              name="reference"
+                              control={control}
+                              defaultValue=""
+                              render={({ field }) => (
+                                <CFormInput
+                                  {...field}
+                                  id="reference"
+                                  placeholder="Reference"
+                                  floatingLabel="Reference du dossier"
+                                  floatingClassName="pt-2"
+                                  aria-label="example sm input example"
+                                />
+                              )}
+                            />
+                          </CInputGroup>
+                        </CCol>
+
+                        <CCol className="text-start" xs={4}>
+                          <CInputGroup>
+                            <Controller
+                              name="nom"
+                              control={control}
+                              defaultValue=""
+                              render={({ field }) => (
+                                <CFormInput
+                                  {...field}
+                                  id="nom"
+                                  floatingClassName="pt-2"
+                                  aria-label="example sm input example"
+                                  size="sm"
+                                  placeholder="nom"
+                                  floatingLabel="Nom du débiteur ou du demandeur"
+                                />
+                              )}
+                            />
+                          </CInputGroup>
+                        </CCol>
+                      </CRow>
+                      <CRow className="align-items-center mb-2" size="sm">
+                        <CCol size="sm" className="text-center" xs={4}>
+                          <CInputGroup className="mb-3">
+                            <Controller
+                              name="statusDossier"
+                              control={control}
+                              defaultValue={'1'}
+                              render={({ field }) => (
+                                <>
+                                  <CFormCheck
+                                    type="radio"
+                                    id="actif"
+                                    label="Dossiers actifs"
+                                    {...field}
+                                    defaultChecked
+                                    value="1"
+                                  />
+                                  <span style={{ marginRight: '20px' }}></span>
+                                  <CFormCheck
+                                    type="radio"
+                                    id="archive"
+                                    label="Dossiers archivés"
+                                    {...field}
+                                    value="0"
+                                  />
+                                </>
+                              )}
+                            />
+                          </CInputGroup>
+                        </CCol>
+                        <CCol className="text-end" xs={4}>
+                          <CButton type="submit" color="success" onClick={() => reset()}>
+                            Reset
+                          </CButton>
+                          <span style={{ marginRight: '10px' }}></span>
+                          <CButton color="success" type="submit">
+                            {loading ? <CSpinner size="sm" className="me-2" /> : null}
+                            {!loading ? 'Rechercher' : 'Charger...'}
+                          </CButton>
+                        </CCol>
+                        <CCol className="text-start" xs={4}></CCol>
+                      </CRow>
+                      {/* <CRow className="align-items-center mt-1">
+                        <CCol className="text-end" xs={6}>
+                          <CButton type="submit" color="success">
+                            Reset
+                          </CButton>
+                        </CCol>
+                        <CCol className="text-start" xs={6}>
+                          <CButton color="success" type="submit">
+                            {true ? <CSpinner size="sm" className="me-2" /> : null}
+                            {true ? 'Rechercher' : 'Charger...'}
+                          </CButton>
+                        </CCol>
+                      </CRow> */}
+                    </CListGroupItem>
+                  </CListGroup>
+                </form>
+              </CCard>
+            </CCol>
+          </CRow>
+        </CContainer>
+      </div>
+    </div>
+  )
+}
+
+export default Recherche

@@ -9,6 +9,8 @@ const dossiers = React.lazy(() => import('./views/pages/dossiers/Dossiers'))
 const dossier = React.lazy(() => import('./views/pages/dossiers/Dossier'))
 const AddDossier = React.lazy(() => import('./views/pages/dossiers/AddDossier'))
 const dossierEdit = React.lazy(() => import('./views/pages/dossiers/EditDossiers'))
+//recherche
+const recherche = React.lazy(() => import('./views/pages/recherche/recherche'))
 
 const routes = [
   { path: '/dossier-edit/:dossierId', name: 'Dossier modifier', element: dossierEdit },
@@ -22,6 +24,7 @@ const routes = [
     exact: true,
   },
   { path: '/users', name: 'utilisateurs', element: users, exact: true },
+  { path: '/recherche', name: 'Recherche', element: recherche, exact: true },
   { path: '/user-edit/:userId', name: 'Modifier un utilisateur', element: userEdit, exact: true },
   { path: '/user-add', name: 'Ajouter un utilisateur', element: addUser },
   { path: '/user-display/:userId', name: 'Utilisateur', element: user, exact: true },
