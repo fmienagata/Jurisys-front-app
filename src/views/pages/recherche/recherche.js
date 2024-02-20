@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import {
   CCard,
   CCol,
@@ -16,11 +18,14 @@ import {
 import { Controller, useForm } from 'react-hook-form'
 import { getRechercheDossiers } from '../../../services/dossiersService'
 import { useMessageContext } from 'src/Context/MessageContext'
+import { useAuth } from 'src/Context/AuthContext'
 
 const Recherche = () => {
   const { displayError, displaySuccess } = useMessageContext()
   const [loading, setLoading] = useState(false)
   const [dossiers, setDossiers] = useState([])
+  const { disconnect } = useAuth()
+  const navigate = useNavigate()
 
   const { control, reset, handleSubmit } = useForm()
   const handleSearch = async (data) => {
@@ -33,8 +38,10 @@ const Recherche = () => {
       setDossiers(dossiersData)
       setLoading(false)
     } catch (error) {
-      displayError(error.message)
+      displayError(error.response.data.message)
       setLoading(false)
+      disconnect()
+      navigate('/login')
     } finally {
       setLoading(false)
     }
@@ -129,8 +136,8 @@ const Recherche = () => {
                                     id="actif"
                                     label="Dossiers actifs"
                                     {...field}
-                                    defaultChecked
                                     value="1"
+                                    checked={field.value === '1'}
                                   />
                                   <span style={{ marginRight: '20px' }}></span>
                                   <CFormCheck
@@ -139,6 +146,7 @@ const Recherche = () => {
                                     label="Dossiers archivés"
                                     {...field}
                                     value="0"
+                                    checked={field.value === '0'}
                                   />
                                 </>
                               )}
