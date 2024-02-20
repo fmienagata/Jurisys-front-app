@@ -65,7 +65,7 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'Les messages prédéfinis',
+        name: 'Messages pré-rédigés',
         to: '/base/accordion',
       },
       {
