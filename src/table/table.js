@@ -229,6 +229,7 @@ const Table = forwardRef(
                             <CButton
                               color="success"
                               variant="ghost"
+                              title="Visualiser"
                               size="sm"
                               onClick={() => {
                                 fromPage && fromPage === 'users'
@@ -245,6 +246,7 @@ const Table = forwardRef(
                             <CButton
                               color="primary"
                               variant="ghost"
+                              title="Modifier"
                               size="sm"
                               onClick={() => {
                                 fromPage && fromPage === 'users'
@@ -259,6 +261,7 @@ const Table = forwardRef(
                               <CIcon icon={icon.cilPen} size="sm" />
                             </CButton>
                             <CButton
+                              title="Supprimer"
                               color="danger"
                               variant="ghost"
                               size="sm"
