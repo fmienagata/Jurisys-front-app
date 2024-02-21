@@ -1,11 +1,9 @@
 import Axios from 'src/services/axiosConfig'
-import axios from 'axios'
-
-axios.defaults.baseURL = ''
+import { generateQueryString } from './../utils/utils'
 
 const addDossier = async (dossier) => {
   try {
-    const response = await Axios.post('http://www.cabinet-bogl.com/api/dossiers', dossier)
+    const response = await Axios.post('api/dossiers', dossier)
     return response.data
   } catch (error) {
     console.error('Erreur lors de la récupération des données:', error)
@@ -13,7 +11,7 @@ const addDossier = async (dossier) => {
 }
 
 function createDossier(dossier) {
-  return axios.post('http://www.cabinet-bogl.com/api/dossiers', dossier).then(async (response) => {
+  return Axios.post('api/dossiers', dossier).then(async (response) => {
     return response.data
   })
 }
@@ -49,15 +47,11 @@ function getMessagesDossier(id) {
 }
 
 function getRechercheDossiers(data) {
-  const queryString = Object.keys(data)
-    .map((key) => `${key}:${encodeURIComponent(data[key])}`)
-    .join(',')
+  const queryString = generateQueryString(data)
 
-  return Axios.get(`http://www.cabinet-bogl.com/api/dossiers?criteria=${queryString}`).then(
-    async (response) => {
-      return response.data
-    },
-  )
+  return Axios.get(`api/dossiers?criteria=${queryString}`).then(async (response) => {
+    return response.data
+  })
 }
 
 export {

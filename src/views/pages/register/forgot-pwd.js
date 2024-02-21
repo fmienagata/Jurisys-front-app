@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import {
@@ -13,8 +13,6 @@ import {
   CInputGroupText,
   CRow,
   CModal,
-  CModalHeader,
-  CModalTitle,
   CModalBody,
   CModalFooter,
 } from '@coreui/react'
@@ -32,18 +30,9 @@ const ForgotPwd = () => {
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
       <CModal visible={false} aria-labelledby="VerticallyCenteredExample" alignment="center">
-        {/* <CModalHeader>
-          <img
-            style={{ width: '100%' }}
-            className="  "
-            src={`${process.env.PUBLIC_URL}/images/logo_1.png`}
-            alt="Logo"
-          />
-        </CModalHeader> */}
         <CModalBody>
           {' '}
           <div>
-            {/* <CCardHeader style={{ backgroundColor: '#785a38', width: '108%', marginLeft: '-4%' }}> */}
             <img
               style={{ width: '107%', marginLeft: '-3.4%' }}
               className="  "

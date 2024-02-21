@@ -1,190 +1,123 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useEffect, useRef } from 'react'
+import { CCard, CCardBody, CCardHeader, CCol, CRow, CButton, CSpinner } from '@coreui/react'
 
-import {
-  CCard,
-  CCol,
-  CFormSelect,
-  CContainer,
-  CInputGroup,
-  CListGroup,
-  CListGroupItem,
-  CButton,
-  CFormInput,
-  CRow,
-  CSpinner,
-  CFormCheck,
-} from '@coreui/react'
-import { Controller, useForm } from 'react-hook-form'
-import { getRechercheDossiers } from '../../../services/dossiersService'
+import FormRecherche from './formRecherche'
 import { useMessageContext } from 'src/Context/MessageContext'
-import { useAuth } from 'src/Context/AuthContext'
+import ModalAction from 'src/components/ModalAction'
+import { deleteDossier } from '../../../services/dossiersService'
+import Styles from './../../../table/TableStyles'
+import Table from 'src/table/table'
+import CIcon from '@coreui/icons-react'
+import * as icon from '@coreui/icons'
 
 const Recherche = () => {
+  const tableRefDossiersRecherche = useRef(typeof useRowSelect)
   const { displayError, displaySuccess } = useMessageContext()
-  const [loading, setLoading] = useState(false)
   const [dossiers, setDossiers] = useState([])
-  const { disconnect } = useAuth()
-  const navigate = useNavigate()
+  const [currentPage, setCurrentPage] = useState(0)
+  const [selection, setSelection] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [columns, setColumns] = useState([])
 
-  const { control, reset, handleSubmit } = useForm()
-  const handleSearch = async (data) => {
+  const [openModal, setOpenModal] = useState(false)
+
+  const [dossierIDDelete, setDossierIDDelete] = useState('')
+
+  useEffect(() => {
     setLoading(true)
-    console.log('recherhce clicked -->', data)
+    console.log('dossiers--> ', dossiers)
+    setLoading(false)
+    setColumns([])
+  }, [dossiers])
+
+  const handleDelete = (dossierId) => {
+    setOpenModal(true)
+    setDossierIDDelete(dossierId)
+  }
+
+  async function deleteAction() {
     try {
-      // envoie data
-      const dossiersData = await getRechercheDossiers({ reference: 'reference', nom: 'test' })
-      console.log('dossiersData -> ', dossiersData)
-      setDossiers(dossiersData)
-      setLoading(false)
+      if (dossierIDDelete !== '') {
+        await deleteDossier(dossierIDDelete)
+      } else {
+        console.log('selection pour delete =>', selection)
+      }
+
+      displaySuccess('Supprimer avec sucess')
     } catch (error) {
-      displayError(error.response.data.message)
-      setLoading(false)
-      disconnect()
-      navigate('/login')
+      displayError(error.messages)
     } finally {
-      setLoading(false)
+      setOpenModal(false)
     }
+    setDossierIDDelete('')
+    setOpenModal(false)
+  }
+
+  function DeleteMultiDossiers() {
+    console.log('selection =>', selection)
+    setOpenModal(true)
   }
 
   return (
     <div>
+      <FormRecherche setDossiers={setDossiers} />
       <div>
-        <CContainer>
-          <CRow className="justify-content-center">
-            <CCol md={9} lg={7} xl={12}>
-              <CCard className="mx-8" md={9} lg={7} xl={6}>
-                <form onSubmit={handleSubmit(handleSearch)}>
-                  <CListGroup flush>
-                    <CListGroupItem>
-                      <CRow className="align-items-center mb-1">
-                        <CCol className="text-end" xs={4}>
-                          <CInputGroup>
-                            <Controller
-                              name="typeDossier"
-                              control={control}
-                              defaultValue=""
-                              render={({ field }) => (
-                                <CFormSelect
-                                  id="floatingSelect"
-                                  {...field}
-                                  floatingLabel="Type de dossier"
-                                  aria-label="Small select example"
-                                  floatingClassName="pt-2"
-                                >
-                                  <option value="">-- Selectionner un type de dossier --</option>
-                                  <option value="1">One</option>
-                                  <option value="2">Two</option>
-                                  <option value="3">Three</option>
-                                </CFormSelect>
-                              )}
-                            />
-                          </CInputGroup>
-                        </CCol>
-                        <CCol className="text-end" xs={4}>
-                          <CInputGroup>
-                            <Controller
-                              name="reference"
-                              control={control}
-                              defaultValue=""
-                              render={({ field }) => (
-                                <CFormInput
-                                  {...field}
-                                  id="reference"
-                                  placeholder="Reference"
-                                  floatingLabel="Reference du dossier"
-                                  floatingClassName="pt-2"
-                                  aria-label="example sm input example"
-                                />
-                              )}
-                            />
-                          </CInputGroup>
-                        </CCol>
+        <Styles>
+          <CRow>
+            <CCol xs={12}>
+              {!loading ? (
+                <CCard className="mb-4">
+                  <CCardHeader style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <strong className="align-self-start">Liste des dossiers</strong>
+                    <div
+                      className="align-self-end"
+                      style={{ display: 'flex', justifyContent: 'space-between' }}
+                    >
+                      {selection.length >= 2 && (
+                        <CButton
+                          className="mr-2"
+                          color="danger"
+                          variant="outline"
+                          shape="rounded-pill"
+                          onClick={() => DeleteMultiDossiers()}
+                        >
+                          <CIcon icon={icon.cilLibraryAdd} size="sm" /> Supprimer
+                        </CButton>
+                      )}
+                    </div>
+                  </CCardHeader>
 
-                        <CCol className="text-start" xs={4}>
-                          <CInputGroup>
-                            <Controller
-                              name="nom"
-                              control={control}
-                              defaultValue=""
-                              render={({ field }) => (
-                                <CFormInput
-                                  {...field}
-                                  id="nom"
-                                  floatingClassName="pt-2"
-                                  aria-label="example sm input example"
-                                  size="sm"
-                                  placeholder="nom"
-                                  floatingLabel="Nom du débiteur ou du demandeur"
-                                />
-                              )}
-                            />
-                          </CInputGroup>
-                        </CCol>
-                      </CRow>
-                      <CRow className="align-items-center mb-2" size="sm">
-                        <CCol size="sm" className="text-center" xs={4}>
-                          <CInputGroup className="mb-3">
-                            <Controller
-                              name="statusDossier"
-                              control={control}
-                              defaultValue={'1'}
-                              render={({ field }) => (
-                                <>
-                                  <CFormCheck
-                                    type="radio"
-                                    id="actif"
-                                    label="Dossiers actifs"
-                                    {...field}
-                                    value="1"
-                                    checked={field.value === '1'}
-                                  />
-                                  <span style={{ marginRight: '20px' }}></span>
-                                  <CFormCheck
-                                    type="radio"
-                                    id="archive"
-                                    label="Dossiers archivés"
-                                    {...field}
-                                    value="0"
-                                    checked={field.value === '0'}
-                                  />
-                                </>
-                              )}
-                            />
-                          </CInputGroup>
-                        </CCol>
-                        <CCol className="text-end" xs={4}>
-                          <CButton type="submit" color="success" onClick={() => reset()}>
-                            Reset
-                          </CButton>
-                          <span style={{ marginRight: '10px' }}></span>
-                          <CButton color="success" type="submit">
-                            {loading ? <CSpinner size="sm" className="me-2" /> : null}
-                            {!loading ? 'Rechercher' : 'Charger...'}
-                          </CButton>
-                        </CCol>
-                        <CCol className="text-start" xs={4}></CCol>
-                      </CRow>
-                      {/* <CRow className="align-items-center mt-1">
-                        <CCol className="text-end" xs={6}>
-                          <CButton type="submit" color="success">
-                            Reset
-                          </CButton>
-                        </CCol>
-                        <CCol className="text-start" xs={6}>
-                          <CButton color="success" type="submit">
-                            {true ? <CSpinner size="sm" className="me-2" /> : null}
-                            {true ? 'Rechercher' : 'Charger...'}
-                          </CButton>
-                        </CCol>
-                      </CRow> */}
-                    </CListGroupItem>
-                  </CListGroup>
-                </form>
-              </CCard>
+                  {dossiers.length > 1 && Array.isArray(dossiers) && (
+                    <CCardBody>
+                      <Table
+                        ref={tableRefDossiersRecherche}
+                        columns={columns}
+                        data={dossiers}
+                        ischeckbox={true}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                        onSelectedRowChange={setSelection}
+                        setOpenModal={setOpenModal}
+                        onDelete={handleDelete}
+                      />
+                    </CCardBody>
+                  )}
+                </CCard>
+              ) : (
+                loading && <CSpinner color="primary" variant="grow" />
+              )}
+              <ModalAction
+                openModal={openModal}
+                setOpenModal={setOpenModal}
+                action={
+                  <CButton color="danger" onClick={deleteAction}>
+                    Supprimer
+                  </CButton>
+                }
+              />
             </CCol>
           </CRow>
-        </CContainer>
+        </Styles>
       </div>
     </div>
   )

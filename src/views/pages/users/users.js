@@ -5,7 +5,6 @@ import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
 import { CButton } from '@coreui/react'
 import { CCard, CCardBody, CCardHeader, CCol, CRow, CSpinner } from '@coreui/react'
-import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import ModalAction from 'src/components/ModalAction'
 
@@ -13,35 +12,7 @@ import { useDispatch } from 'react-redux'
 
 import { getUsers, deleteUser } from '../../../services/usersService'
 import { useMessageContext } from 'src/Context/MessageContext'
-
-const Styles = styled.div`
-  padding: 1rem;
-
-  table {
-    border-spacing: 0;
-    border: 1px solid black;
-    width: -webkit-fill-available;
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-
-    th,
-    td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-
-      :last-child {
-        border-right: 0;
-      }
-    }
-  }
-`
+import Styles from './../../../table/TableStyles'
 
 const Users = () => {
   const tableRefUsers = useRef(typeof useRowSelect)
@@ -91,16 +62,23 @@ const Users = () => {
   const [userIDDelete, setUserIDDelete] = useState('')
 
   const fetchData = async () => {
+    setLoading(true)
     try {
       const usersData = await getUsers()
-      setUsers(usersData)
-      setColumns(columns2)
-      dispatch({ type: 'GET_DATA_USERS', payload: usersData })
+      if (Array.isArray(usersData)) {
+        setUsers(usersData)
+        setColumns(columns2)
+        dispatch({ type: 'GET_DATA_USERS', payload: usersData })
+      } else {
+        displayError(
+          'Erreur : Impossible de récupérer les données ou données malformé . Veuillez réessayer plus tard.',
+        )
+      }
     } catch (error) {
       displayError(error.messages)
     } finally {
-      setLoading(false)
     }
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -169,7 +147,7 @@ const Users = () => {
                 </div>
               </CCardHeader>
 
-              {!loading ? (
+              {users.length > 1 && Array.isArray(users) ? (
                 <CCardBody>
                   <Table
                     ref={tableRefUsers}
@@ -185,7 +163,7 @@ const Users = () => {
                   />
                 </CCardBody>
               ) : (
-                <CSpinner color="primary" variant="grow" />
+                loading && <CSpinner color="primary" variant="grow" />
               )}
             </CCard>
             <ModalAction

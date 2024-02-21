@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { Controller, useForm } from 'react-hook-form'
 import {
   CButton,
@@ -14,9 +13,6 @@ import {
   CSpinner,
   CRow,
   CModal,
-  CModalHeader,
-  CModalTitle,
-  CModalBody,
   CCardHeader,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
