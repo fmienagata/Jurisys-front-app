@@ -3,42 +3,12 @@ import { CCard, CCardBody, CCardHeader, CCol, CRow, CButton, CSpinner } from '@c
 import Table from 'src/table/table'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
-import styled from 'styled-components'
-
 import { getDossiers, deleteDossier } from '../../../services/dossiersService'
 import { useDispatch } from 'react-redux'
 import ModalAction from 'src/components/ModalAction'
 import { useNavigate } from 'react-router-dom'
 import { useMessageContext } from 'src/Context/MessageContext'
-
-const Styles = styled.div`
-  padding: 1rem;
-
-  table {
-    border-spacing: 0;
-    border: 1px solid black;
-    width: -webkit-fill-available;
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-
-    th,
-    td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-
-      :last-child {
-        border-right: 0;
-      }
-    }
-  }
-`
+import Styles from './../../../table/TableStyles'
 
 const Dossiers = () => {
   const navigate = useNavigate()
@@ -105,16 +75,24 @@ const Dossiers = () => {
   const dispatch = useDispatch()
 
   const fetchData = async () => {
+    setLoading(true)
     try {
       const dossiersData = await getDossiers()
-      setDossiers(dossiersData)
-      setColumns(columns2)
-      dispatch({ type: 'GET_DATA_DOSSIERS', payload: dossiersData })
+      if (Array.isArray(dossiersData)) {
+        setDossiers(dossiersData)
+        setDossiers(dossiersData)
+        setColumns(columns2)
+        dispatch({ type: 'GET_DATA_DOSSIERS', payload: dossiersData })
+      } else {
+        displayError(
+          'Erreur : Impossible de récupérer les données ou données malformé . Veuillez réessayer plus tard.',
+        )
+      }
     } catch (error) {
       displayError(error.message)
     } finally {
-      setLoading(false)
     }
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -155,52 +133,55 @@ const Dossiers = () => {
       <Styles>
         <CRow>
           <CCol xs={12}>
-            <CCard className="mb-4">
-              <CCardHeader style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <strong className="align-self-start">Liste des dossiers</strong>
-                <div
-                  className="align-self-end"
-                  style={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  {selection.length >= 2 && (
+            {!loading ? (
+              <CCard className="mb-4">
+                <CCardHeader style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <strong className="align-self-start">Liste des dossiers</strong>
+                  <div
+                    className="align-self-end"
+                    style={{ display: 'flex', justifyContent: 'space-between' }}
+                  >
+                    {selection.length >= 2 && (
+                      <CButton
+                        className="mr-2"
+                        color="danger"
+                        variant="outline"
+                        shape="rounded-pill"
+                        onClick={() => DeleteMultiDossiers()}
+                      >
+                        <CIcon icon={icon.cilLibraryAdd} size="sm" /> Supprimer
+                      </CButton>
+                    )}
                     <CButton
-                      className="mr-2"
-                      color="danger"
+                      color="success"
                       variant="outline"
                       shape="rounded-pill"
-                      onClick={() => DeleteMultiDossiers()}
+                      onClick={() => navigate('/dossier-add')}
                     >
-                      <CIcon icon={icon.cilLibraryAdd} size="sm" /> Supprimer
+                      <CIcon icon={icon.cilLibraryAdd} size="sm" /> Ajouter
                     </CButton>
-                  )}
-                  <CButton
-                    color="success"
-                    variant="outline"
-                    shape="rounded-pill"
-                    onClick={() => navigate('/dossier-add')}
-                  >
-                    <CIcon icon={icon.cilLibraryAdd} size="sm" /> Ajouter
-                  </CButton>
-                </div>
-              </CCardHeader>
-              {!loading ? (
-                <CCardBody>
-                  <Table
-                    ref={tableRefDossiers}
-                    columns={columns}
-                    data={dossiers}
-                    ischeckbox={true}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                    onSelectedRowChange={setSelection}
-                    setOpenModal={setOpenModal}
-                    onDelete={handleDelete}
-                  />
-                </CCardBody>
-              ) : (
-                <CSpinner color="primary" variant="grow" />
-              )}
-            </CCard>
+                  </div>
+                </CCardHeader>
+
+                {dossiers.length > 1 && Array.isArray(dossiers) && (
+                  <CCardBody>
+                    <Table
+                      ref={tableRefDossiers}
+                      columns={columns}
+                      data={dossiers}
+                      ischeckbox={true}
+                      currentPage={currentPage}
+                      setCurrentPage={setCurrentPage}
+                      onSelectedRowChange={setSelection}
+                      setOpenModal={setOpenModal}
+                      onDelete={handleDelete}
+                    />
+                  </CCardBody>
+                )}
+              </CCard>
+            ) : (
+              loading && <CSpinner color="primary" variant="grow" />
+            )}
             <ModalAction
               openModal={openModal}
               setOpenModal={setOpenModal}
