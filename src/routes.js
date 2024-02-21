@@ -17,6 +17,7 @@ const routes = [
   { path: '/dossier/:dossierId', name: 'Dossier', element: dossier, exact: true },
   { path: '/dossier-add', name: 'Ajouter un dossier', element: AddDossier, exact: true },
   { path: '/dossiers/list', name: 'Liste des dossiers en cours', element: dossiers, exact: true },
+  { path: '/recherche', name: 'Recherche', element: recherche, exact: true },
   {
     path: '/dossiers/archive',
     name: 'Liste des dossiers archivés',
@@ -24,7 +25,6 @@ const routes = [
     exact: true,
   },
   { path: '/users', name: 'utilisateurs', element: users, exact: true },
-  { path: '/recherche', name: 'Recherche', element: recherche, exact: true },
   { path: '/user-edit/:userId', name: 'Modifier un utilisateur', element: userEdit, exact: true },
   { path: '/user-add', name: 'Ajouter un utilisateur', element: addUser },
   { path: '/user-display/:userId', name: 'Utilisateur', element: user, exact: true },

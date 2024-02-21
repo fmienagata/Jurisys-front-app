@@ -13,6 +13,11 @@ import {
   CInputGroupText,
   CSpinner,
   CRow,
+  CModal,
+  CModalHeader,
+  CModalTitle,
+  CModalBody,
+  CCardHeader,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
@@ -100,7 +105,11 @@ const Login = () => {
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
-                        <CButton color="link" className="px-0">
+                        <CButton
+                          color="link"
+                          className="px-0"
+                          onClick={() => navigate('/forgot-pwd')}
+                        >
                           {labels.login.action.forgotPassword}
                         </CButton>
                       </CCol>
@@ -111,13 +120,16 @@ const Login = () => {
               <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
                 <CCardBody className="text-center">
                   <div>
-                    <h2>{labels.login.action.inscrire}</h2>
+                    {/* <h2>{labels.login.action.inscrire}</h2> */}
+                    <h2> </h2>
+                    <br></br>
+                    <br></br>
                     <p>{labels.description}</p>
-                    <Link to="/register">
+                    {/* <Link to="/register">
                       <CButton color="secondary" className="mt-3" active tabIndex={-1}>
                         {labels.login.action.inscrire}
                       </CButton>
-                    </Link>
+                    </Link> */}
                   </div>
                 </CCardBody>
               </CCard>
@@ -125,6 +137,45 @@ const Login = () => {
           </CCol>
         </CRow>
       </CContainer>
+      <CModal visible={false} aria-labelledby="VerticallyCenteredExample" alignment="center">
+        <CCardHeader style={{ backgroundColor: '#785a38' }}>
+          <img
+            style={{ width: '100%' }}
+            src={`${process.env.PUBLIC_URL}/images/logo_1.png`}
+            alt="Logo"
+          />
+        </CCardHeader>
+        <CCardBody className="p-4">
+          <form>
+            <h3 className="d-flex justify-content-center">Récupération de Mot de Passe</h3>
+            <p className="text-body-secondary"> </p>
+
+            <CInputGroup className="mb-3">
+              <CInputGroupText>@</CInputGroupText>
+              <Controller
+                name="email"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <CFormInput
+                    {...field}
+                    id="email"
+                    type="email"
+                    placeholder="Email"
+                    autoComplete="email"
+                  />
+                )}
+              />
+            </CInputGroup>
+
+            <div className="d-flex justify-content-center">
+              <CButton type="submit" color="success" className="mx-3">
+                Envoyer
+              </CButton>
+            </div>
+          </form>
+        </CCardBody>
+      </CModal>
     </div>
   )
 }
