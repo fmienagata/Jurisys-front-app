@@ -16,10 +16,10 @@ const routes = [
   { path: '/dossier-edit/:dossierId', name: 'Dossier modifier', element: dossierEdit },
   { path: '/dossier/:dossierId', name: 'Dossier', element: dossier, exact: true },
   { path: '/dossier-add', name: 'Ajouter un dossier', element: AddDossier, exact: true },
-  { path: '/dossiers/list', name: 'Liste des dossiers en cours', element: dossiers, exact: true },
+  { path: '/dossiers/actifs', name: 'Liste des dossiers en cours', element: dossiers, exact: true },
   { path: '/recherche', name: 'Recherche', element: recherche, exact: true },
   {
-    path: '/dossiers/archive',
+    path: '/dossiers/archives',
     name: 'Liste des dossiers archivés',
     element: dossiers,
     exact: true,

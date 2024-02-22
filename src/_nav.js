@@ -48,12 +48,12 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Actifs',
-        to: '/dossiers/list',
+        to: '/dossiers/actifs',
       },
       {
         component: CNavItem,
         name: 'Archivés',
-        to: '/dossiers/archive',
+        to: '/dossiers/archives',
       },
     ],
   },
