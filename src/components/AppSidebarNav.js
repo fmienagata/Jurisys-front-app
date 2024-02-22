@@ -60,9 +60,7 @@ export const AppSidebarNav = ({ items }) => {
       </Component>
     )
   }
-  {
-    console.log('items --> ', items)
-  }
+
   return (
     <React.Fragment>
       {items &&
