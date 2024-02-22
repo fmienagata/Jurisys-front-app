@@ -12,29 +12,29 @@ import {
   cilSpeech,
   cilSpeedometer,
 } from '@coreui/icons'
-import { CNavGroup, CNavLink } from '@coreui/react'
+import { CNavGroup, CNavItem } from '@coreui/react'
 
 const _nav = [
   {
-    component: CNavLink,
+    component: CNavItem,
     name: 'Dashboard',
     to: '/dashboard',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
   },
   {
-    component: CNavLink,
+    component: CNavItem,
     name: 'Utilisateurs',
     to: '/users',
     icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
   },
   {
-    component: CNavLink,
+    component: CNavItem,
     name: 'Entreprises',
     to: '/businesses',
     icon: <CIcon icon={cilIndustry} customClassName="nav-icon" />,
   },
   {
-    component: CNavLink,
+    component: CNavItem,
     name: 'Recherche',
     to: '/recherche',
     icon: <CIcon icon={cilSearch} customClassName="nav-icon" />,
@@ -46,12 +46,12 @@ const _nav = [
     icon: <CIcon icon={cilFolder} customClassName="nav-icon" />,
     items: [
       {
-        component: CNavLink,
+        component: CNavItem,
         name: 'Actifs',
         to: '/dossiers/actifs',
       },
       {
-        component: CNavLink,
+        component: CNavItem,
         name: 'Archivés',
         to: '/dossiers/archives',
       },
@@ -64,37 +64,37 @@ const _nav = [
     icon: <CIcon icon={cilSpeech} customClassName="nav-icon" />,
     items: [
       {
-        component: CNavLink,
+        component: CNavItem,
         name: 'Messages pré-rédigés',
         to: '/base/accordion',
       },
       {
-        component: CNavLink,
+        component: CNavItem,
         name: 'La messagerie',
         to: '/base/breadcrumbs',
       },
     ],
   },
   {
-    component: CNavLink,
+    component: CNavItem,
     name: 'Comptabilités',
     to: '/accounting',
     icon: <CIcon icon={cilCalculator} customClassName="nav-icon" />,
   },
   {
-    component: CNavLink,
+    component: CNavItem,
     name: 'Gestion des droits',
     to: '/right',
     icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
   },
   {
-    component: CNavLink,
+    component: CNavItem,
     name: 'Agenda',
     to: '/agenda',
     icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
   },
   {
-    component: CNavLink,
+    component: CNavItem,
     name: 'Abonnements',
     to: '/subscriptions',
     icon: <CIcon icon={cilEuro} customClassName="nav-icon" />,
