@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://www.cabinet-bogl.com',
+  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://api.cabinet-bogl.com',
 })
 
 api.interceptors.request.use(
