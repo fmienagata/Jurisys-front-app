@@ -1,7 +1,8 @@
-import { legacy_createStore as createStore, combineReducers } from 'redux'
+import { legacy_createStore as createStore, combineReducers, compose } from 'redux'
 
 import { userReducer, postReducer, changeStateReducer } from './userReducer'
 import { dossiersReducer } from './dossiersReducer'
+const composerEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 const rootReducer = combineReducers({
   dataDossiers: dossiersReducer,
@@ -10,6 +11,6 @@ const rootReducer = combineReducers({
   changeState: changeStateReducer,
 })
 
-const store = createStore(rootReducer)
+const store = createStore(rootReducer, composerEnhancer())
 
 export default store
