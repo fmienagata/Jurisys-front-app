@@ -48,7 +48,7 @@ const App = () => {
           <Route exact path="/forgot-pwd" name="Recuperer-mot-de-passe" element={<ForgotPwd />} />
           <Route exact path="/404" name="Page 404" element={<Page404 />} />
           <Route exact path="/500" name="Page 500" element={<Page500 />} />
-          <Route path="*" name="Acceuil" element={<DefaultLayout />} />
+          <Route path="*" name="Accueil" element={<DefaultLayout />} />
         </Routes>
       </Suspense>
     </HashRouter>

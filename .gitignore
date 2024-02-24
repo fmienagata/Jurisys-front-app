@@ -11,6 +11,12 @@ yarn.lock
 # production
 /build
 
+#docker file
+000-default.conf
+docker-compose.yml
+docker-compose.yml.bak
+Dockerfile
+
 # misc
 .eslintcache
 .DS_Store

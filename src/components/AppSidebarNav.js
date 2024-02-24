@@ -27,7 +27,7 @@ export const AppSidebarNav = ({ items }) => {
   }
 
   const navItem = (item, index, indent = false) => {
-    const { component, name, badge, icon, ...rest } = item
+    const { component, name, to, badge, icon, ...rest } = item
     const Component = component
     return (
       <Component
@@ -38,7 +38,16 @@ export const AppSidebarNav = ({ items }) => {
         key={index}
         {...rest}
       >
-        {navLink(name, icon, badge, indent)}
+        <NavLink to={to} className="nav-link">
+          {icon
+            ? icon
+            : indent && (
+                <span className="nav-icon">
+                  <span className="nav-icon-bullet"></span>
+                </span>
+              )}
+          {name}
+        </NavLink>
       </Component>
     )
   }
@@ -60,7 +69,6 @@ export const AppSidebarNav = ({ items }) => {
       </Component>
     )
   }
-
   return (
     <React.Fragment>
       {items &&
