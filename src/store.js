@@ -1,5 +1,5 @@
 import { legacy_createStore as createStore, applyMiddleware, combineReducers, compose } from 'redux'
-import { thunk } from 'redux-thunk'
+import { thunk, withExtraArgument } from 'redux-thunk'
 import { userReducer, changeStateReducer } from './userReducer'
 import { dossiersReducer } from './dossiersReducer'
 import { dataMessagesTypesReducer } from 'src/MessagesTypesReducer'
