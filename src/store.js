@@ -1,11 +1,11 @@
 import { legacy_createStore as createStore, applyMiddleware, combineReducers, compose } from 'redux'
-import { thunk, withExtraArgument } from 'redux-thunk'
+import { thunk } from 'redux-thunk'
 import { userReducer, changeStateReducer } from './userReducer'
 import { dossiersReducer } from './dossiersReducer'
 import { dataMessagesTypesReducer } from 'src/MessagesTypesReducer'
 
 const composerEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-const middleware = applyMiddleware(thunk.default ? thunk.default : thunk)
+const middleware = applyMiddleware(thunk)
 
 const rootReducer = combineReducers({
   dataDossiers: dossiersReducer,
