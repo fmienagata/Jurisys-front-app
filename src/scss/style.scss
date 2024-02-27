@@ -36,6 +36,16 @@
   border-color: var(--cui-table-border-color);
 }
 
+.header > .container-fluid,
+.header > .container-sm,
+.header > .container-md,
+.header > .container-lg,
+.header > .container-xl,
+.header > .container-xxl,
+.sidebar-header {
+  min-height: calc(7rem + 0px);
+}
+
 // Import Chart.js custom tooltips styles
 @import '@coreui/chartjs/scss/coreui-chartjs';
 

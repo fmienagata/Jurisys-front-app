@@ -4,19 +4,15 @@ body {
 
 .wrapper {
   width: 100%;
-  @include ltr-rtl("padding-left", var(--cui-sidebar-occupy-start, 0));
+  @include ltr-rtl('padding-left', var(--cui-sidebar-occupy-start, 0));
   will-change: auto;
-  @include transition(padding .15s);
+  @include transition(padding 0.15s);
 }
 
-// @if $enable-dark-mode {
-//   @include color-mode(dark) {
-//     body {
-//       background-color: var(--cui-dark-bg-subtle);
-//     }
+body {
+  background-color: var(--cui-dark-bg-subtle);
+}
 
-//     .footer {
-//       --cui-footer-bg: var(--cui-body-bg);
-//     }
-//   }
-// }
+.footer {
+  --cui-footer-bg: var(--cui-body-bg);
+}
