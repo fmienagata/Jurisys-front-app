@@ -1,5 +1,6 @@
-import { legacy_createStore as createStore, applyMiddleware, combineReducers, compose } from 'redux'
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import { thunk } from 'redux-thunk'
+
 import { userReducer, changeStateReducer } from './userReducer'
 import { dossiersReducer } from './dossiersReducer'
 import { dataMessagesTypesReducer } from 'src/MessagesTypesReducer'

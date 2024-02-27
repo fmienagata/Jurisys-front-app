@@ -1,23 +1,11 @@
 import React from 'react'
-import {
-  CButton,
-  CCol,
-  CModal,
-  CModalBody,
-  CModalFooter,
-  CModalHeader,
-  CModalTitle,
-  CListGroupItem,
-  CListGroup,
-  CRow,
-} from '@coreui/react'
+import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react'
 import PropTypes from 'prop-types'
 
 const ModalMessageType = (props) => {
   // eslint-disable-next-line react/prop-types
   const { openModal, setOpenModal, action, dataMessage } = props
 
-  const { id, ...newData } = dataMessage
   return (
     <>
       <CModal

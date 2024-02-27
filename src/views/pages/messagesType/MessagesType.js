@@ -15,8 +15,6 @@ const MessagesType = () => {
   const navigate = useNavigate()
 
   const [currentPage, setCurrentPage] = useState(0)
-  const [selection, setSelection] = useState([])
-  const [openModal, setOpenModal] = useState(false)
 
   const dispatch = useDispatch()
   const { displayError } = useMessageContext()
