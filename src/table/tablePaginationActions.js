@@ -24,7 +24,7 @@ const TablePaginationActions = (props) => {
   }
 
   return (
-    <div style={{ width: '100%', marginLeft: '70%' }}>
+    <div style={{ width: '100%', marginLeft: '60%' }}>
       <CPagination>
         <CPaginationItem
           aria-label="Previous"
@@ -45,8 +45,7 @@ const TablePaginationActions = (props) => {
           <span aria-hidden="true">&laquo;</span>
         </CPaginationItem>
         <CPaginationItem>
-          <span style={{ display: 'inline-block', marginLeft: '10px' }}>
-            Page
+          <span style={{ display: 'inline-block' }}>
             <strong>
               {page + 1} sur {lastPage + 1}
             </strong>

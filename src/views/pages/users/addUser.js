@@ -42,7 +42,7 @@ const AddUser = () => {
               <CCardBody className="p-4">
                 <form onSubmit={handleSubmit(handleAddUser)}>
                   {/* <h1>{labels.registre.titleHeader}</h1> */}
-                  <p className="text-body-secondary">Ajouter un client</p>
+                  <p className="text-body-secondary">Ajouter un utilisateur</p>
                   <CInputGroup className="mb-3">
                     <Controller
                       name="userType"

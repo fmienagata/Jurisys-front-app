@@ -18,11 +18,7 @@ const AddDossier = () => {
   const { control, handleSubmit, reset } = useForm()
 
   const handleEdit = async (data) => {
-    console.log('handleEdit call API ', data)
-    const responseData = await addDossier(data)
-    console.log('responseData --> ', responseData)
     const dossiers = await getDossiers()
-    console.log('dossiers -> ', dossiers)
   }
 
   return (

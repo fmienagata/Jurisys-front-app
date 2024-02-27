@@ -9,11 +9,11 @@ import ModalAction from 'src/components/ModalAction'
 import { useNavigate } from 'react-router-dom'
 import { useMessageContext } from 'src/Context/MessageContext'
 import Styles from './../../../table/TableStyles'
+import { handleErrorResponse } from '../../../utils/handleErrorResponse'
 
 const Dossiers = () => {
   const navigate = useNavigate()
   const { displayError, displaySuccess } = useMessageContext()
-
   const tableRefDossiers = useRef(typeof useRowSelect)
   const [currentPage, setCurrentPage] = useState(0)
   const [selection, setSelection] = useState([])
@@ -25,45 +25,45 @@ const Dossiers = () => {
 
   const [dossierIDDelete, setDossierIDDelete] = useState('')
 
-  const columns2 = [
+  const columnsDossiers = [
     {
       Header: 'Nom',
       accessor: 'nom',
     },
     {
-      Header: 'prenom',
+      Header: 'Prenom',
       accessor: 'prenom',
     },
     {
-      Header: 'adresse',
+      Header: 'Adresse',
       accessor: 'adresse',
     },
     {
-      Header: 'email',
+      Header: 'Email',
       accessor: 'email',
     },
     {
-      Header: 'telephone',
+      Header: 'Telephone',
       accessor: 'telephone',
     },
     {
-      Header: 'societe',
+      Header: 'Societe',
       accessor: 'societe',
     },
     {
-      Header: 'ville',
+      Header: 'Ville',
       accessor: 'ville',
     },
     {
-      Header: 'pays',
+      Header: 'Pays',
       accessor: 'pays',
     },
     {
-      Header: 'juridiction',
+      Header: 'Juridiction',
       accessor: 'juridiction',
     },
     {
-      Header: 'montant',
+      Header: 'Montant',
       accessor: 'montantPrejudice',
     },
     {
@@ -81,7 +81,7 @@ const Dossiers = () => {
       if (Array.isArray(dossiersData)) {
         setDossiers(dossiersData)
         setDossiers(dossiersData)
-        setColumns(columns2)
+        setColumns(columnsDossiers)
         dispatch({ type: 'GET_DATA_DOSSIERS', payload: dossiersData })
       } else {
         displayError(
@@ -89,7 +89,8 @@ const Dossiers = () => {
         )
       }
     } catch (error) {
-      displayError(error.message)
+      let msg = handleErrorResponse(error)
+      displayError(msg)
     } finally {
     }
     setLoading(false)
@@ -167,6 +168,7 @@ const Dossiers = () => {
                   <CCardBody>
                     <Table
                       ref={tableRefDossiers}
+                      fromPage={'dossiers'}
                       columns={columns}
                       data={dossiers}
                       ischeckbox={true}

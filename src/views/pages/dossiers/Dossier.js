@@ -4,7 +4,6 @@ import InformationCard from './InformationCard'
 import { useLocation } from 'react-router-dom'
 import MessagesView from './MessagesView'
 import { useMessageContext } from 'src/Context/MessageContext'
-
 import { getMessagesDossier } from '../../../services/dossiersService'
 
 const Dossier = () => {

@@ -6,7 +6,7 @@ import { useAuth } from 'src/Context/AuthContext'
 //eslint-disable-next-line react/prop-types
 const PrivateRoute = ({ element, ...rest }) => {
   const { isLogged } = useAuth()
-  return isLogged ? <Route {...rest} element={element} /> : <Navigate to="/login" />
+  return isLogged ? <Route {...rest} element={element} /> : <React.Fragment />
 }
 
 export default PrivateRoute

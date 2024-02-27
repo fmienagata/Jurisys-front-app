@@ -46,7 +46,7 @@ const UserEdit = () => {
               <CCardBody className="p-4">
                 <form onSubmit={handleSubmit(handleEdit)}>
                   {/* <h1>{labels.registre.titleHeader}</h1> */}
-                  <p className="text-body-secondary">Modifier votre compte</p>
+                  <p className="text-body-secondary">Modifier un utilisateur</p>
                   <CInputGroup className="mb-3">
                     <Controller
                       name="userType"

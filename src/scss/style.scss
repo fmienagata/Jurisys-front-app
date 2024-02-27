@@ -22,6 +22,20 @@
 .MuiTablePagination-spacer {
 }
 
+.table-primary {
+  --cui-table-color: #080a0c;
+  --cui-table-bg: #fef9ef;
+  --cui-table-border-color: #a5a5a6;
+  --cui-table-striped-bg: #c2c2c2;
+  --cui-table-striped-color: #080a0c;
+  --cui-table-active-bg: #b8b9b9;
+  --cui-table-active-color: #080a0c;
+  --cui-table-hover-bg: #bdbdbe;
+  --cui-table-hover-color: #080a0c;
+  color: var(--cui-table-color);
+  border-color: var(--cui-table-border-color);
+}
+
 // Import Chart.js custom tooltips styles
 @import '@coreui/chartjs/scss/coreui-chartjs';
 

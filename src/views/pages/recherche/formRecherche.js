@@ -35,7 +35,7 @@ const FormRecherche = ({ setDossiers }) => {
     let criteria = removeEmptyAttributes(data)
     try {
       const dossiersData = await getRechercheDossiers(criteria)
-      setDossiers([dossiersData])
+      setDossiers(dossiersData)
       setLoading(false)
     } catch (error) {
       displayError(error.response.data.message)
