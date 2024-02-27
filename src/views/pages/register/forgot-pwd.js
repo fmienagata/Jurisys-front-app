@@ -24,7 +24,6 @@ const ForgotPwd = () => {
   const navigate = useNavigate()
 
   const handleRegistre = (data) => {
-    console.log('handleRegistre', data)
   }
 
   return (
@@ -90,11 +89,11 @@ const ForgotPwd = () => {
                   </CInputGroup>
 
                   <div className="d-flex justify-content-center">
-                    <CButton color="success" onClick={() => navigate('/login')}>
-                      Connecter
-                    </CButton>
                     <CButton type="submit" color="success" className="mx-3">
                       Envoyer
+                    </CButton>
+                    <CButton color="secondary" onClick={() => navigate('/login')}>
+                      Retour
                     </CButton>
                   </div>
                 </form>

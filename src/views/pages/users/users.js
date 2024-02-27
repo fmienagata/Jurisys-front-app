@@ -20,29 +20,29 @@ const Users = () => {
   const dispatch = useDispatch()
   const { displayError, displaySuccess } = useMessageContext()
 
-  const columns2 = [
+  const columnsUsers = [
     {
-      Header: 'nom',
+      Header: 'Nom',
       accessor: 'nom',
     },
     {
-      Header: 'prenom',
+      Header: 'Prenom',
       accessor: 'prenom',
     },
     {
-      Header: 'username',
+      Header: 'Username',
       accessor: 'username',
     },
     {
-      Header: 'userIdentifier',
+      Header: 'UserIdentifier',
       accessor: 'userIdentifier',
     },
     {
-      Header: 'societe',
+      Header: 'Societe',
       accessor: 'societe',
     },
     {
-      Header: 'email',
+      Header: 'Email',
       accessor: 'email',
     },
     {
@@ -67,7 +67,7 @@ const Users = () => {
       const usersData = await getUsers()
       if (Array.isArray(usersData)) {
         setUsers(usersData)
-        setColumns(columns2)
+        setColumns(columnsUsers)
         dispatch({ type: 'GET_DATA_USERS', payload: usersData })
       } else {
         displayError(
@@ -88,7 +88,6 @@ const Users = () => {
 
   const handleDeleteUser = (userId) => {
     setOpenModal(true)
-    console.log(`Deleting Dossier with ID ${userId}`)
     setUserIDDelete(userId)
   }
 
@@ -121,7 +120,7 @@ const Users = () => {
           <CCol xs={12}>
             <CCard className="mb-4">
               <CCardHeader style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <strong className="align-self-start">Liste des Clients</strong>
+                <strong className="align-self-start">Liste des utilisateurs</strong>
                 <div
                   className="align-self-end"
                   style={{ display: 'flex', justifyContent: 'space-between' }}

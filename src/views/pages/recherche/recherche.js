@@ -17,17 +17,63 @@ const Recherche = () => {
   const [currentPage, setCurrentPage] = useState(0)
   const [selection, setSelection] = useState([])
   const [loading, setLoading] = useState(false)
-  const [columns, setColumns] = useState([])
+  // const [columns, setColumns] = useState([])
 
   const [openModal, setOpenModal] = useState(false)
 
   const [dossierIDDelete, setDossierIDDelete] = useState('')
 
+  const columnsDossiers = [
+    {
+      Header: 'Nom',
+      accessor: 'nom',
+    },
+    {
+      Header: 'Prenom',
+      accessor: 'prenom',
+    },
+    {
+      Header: 'Adresse',
+      accessor: 'adresse',
+    },
+    {
+      Header: 'Email',
+      accessor: 'email',
+    },
+    {
+      Header: 'Telephone',
+      accessor: 'telephone',
+    },
+    {
+      Header: 'Societe',
+      accessor: 'societe',
+    },
+    {
+      Header: 'Ville',
+      accessor: 'ville',
+    },
+    {
+      Header: 'Pays',
+      accessor: 'pays',
+    },
+    {
+      Header: 'Juridiction',
+      accessor: 'juridiction',
+    },
+    {
+      Header: 'Montant',
+      accessor: 'montantPrejudice',
+    },
+    {
+      Header: 'Actions',
+      accessor: 'actions',
+    },
+  ]
+
   useEffect(() => {
     setLoading(true)
-    console.log('dossiers--> ', dossiers)
+    console.log('useEffect --> dossiers--> ', dossiers)
     setLoading(false)
-    setColumns([])
   }, [dossiers])
 
   const handleDelete = (dossierId) => {
@@ -87,12 +133,13 @@ const Recherche = () => {
                     </div>
                   </CCardHeader>
 
-                  {dossiers.length > 1 && Array.isArray(dossiers) && (
+                  {dossiers && dossiers.length >= 1 && (
                     <CCardBody>
                       <Table
                         ref={tableRefDossiersRecherche}
-                        columns={columns}
+                        columns={columnsDossiers}
                         data={dossiers}
+                        fromPage={'dossiers'}
                         ischeckbox={true}
                         currentPage={currentPage}
                         setCurrentPage={setCurrentPage}

@@ -14,20 +14,6 @@ const userReducer = (state = initialStateData, action) => {
   }
 }
 
-// postReducer.js
-const initialStatePost = {
-  posts: [],
-}
-
-const postReducer = (state = initialStatePost, action) => {
-  switch (action.type) {
-    case 'ADD_POST':
-      return { ...state, posts: [...state.posts, action.payload] }
-    default:
-      return state
-  }
-}
-
 const initialState = {
   sidebarShow: true,
   theme: 'light',
@@ -42,4 +28,4 @@ const changeStateReducer = (state = initialState, { type, ...rest }) => {
   }
 }
 
-export { userReducer, postReducer, changeStateReducer }
+export { userReducer, changeStateReducer }

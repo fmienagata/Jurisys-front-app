@@ -29,6 +29,7 @@ import * as icon from '@coreui/icons'
 import { Checkbox } from './checkbox'
 
 import TablePaginationActions from './tablePaginationActions'
+import ModalMessageType from 'src/components/ModalMessageType'
 
 import styled from 'styled-components'
 
@@ -81,6 +82,8 @@ const Table = forwardRef(
     const [openMenu, setOpenMenu] = useState(false)
     const toggleMenu = () => setOpenMenu(!openMenu)
     const navigate = useNavigate()
+    const [openMessage, setOpenMessage] = useState(false)
+    const [message, setMmessage] = useState(false)
 
     const generateIconMenu = (hooks) =>
       hooks.visibleColumns.push((columns) => [
@@ -171,7 +174,6 @@ const Table = forwardRef(
       return selectedIds.map((x) => data[x]).filter((x) => x !== null)
     }
 
-    // Renew selected rows header count
     useMountedLayoutEffect(() => {
       if (onSelectedRowChange !== undefined) {
         onSelectedRowChange(getSelectedRows())
@@ -180,6 +182,45 @@ const Table = forwardRef(
 
     const handleLineClick = (row) => {
       return onLineClick !== undefined ? onLineClick(row.original) : null
+    }
+
+    function handleEdit(row) {
+      let navigatePath
+      switch (fromPage) {
+        case 'users':
+          navigatePath = '/user-edit/' + row.original.id
+          break
+        case 'msgtype':
+          navigatePath = '/messages/prewritten-edit/' + row.original.id
+          break
+        default:
+          navigatePath = '/dossier-edit/' + row.original.id
+      }
+      navigate(navigatePath, {
+        state: { data: row.original },
+      })
+    }
+
+    function handleDisplay(row) {
+      let navigatePath = ''
+      switch (fromPage) {
+        case 'users':
+          navigatePath = '/user-display/' + row.original.id
+          break
+        case 'dossiers':
+          navigatePath = '/dossier/' + row.original.id
+          break
+        default:
+          navigatePath = ''
+      }
+      if (navigatePath !== '') {
+        navigate(navigatePath, {
+          state: { data: row.original },
+        })
+      } else {
+        setMmessage(row.original)
+        setOpenMessage(true)
+      }
     }
 
     return (
@@ -229,17 +270,9 @@ const Table = forwardRef(
                             <CButton
                               color="success"
                               variant="ghost"
-                              title="Visualiser"
+                              title="Consulter"
                               size="sm"
-                              onClick={() => {
-                                fromPage && fromPage === 'users'
-                                  ? navigate('/user-display/' + row.original.id, {
-                                      state: { data: row.original },
-                                    })
-                                  : navigate('/dossier/' + row.original.id, {
-                                      state: { data: row.original },
-                                    })
-                              }}
+                              onClick={() => handleDisplay(row)}
                             >
                               <CIcon icon={icon.cilFolderOpen} size="sm" />
                             </CButton>
@@ -248,15 +281,7 @@ const Table = forwardRef(
                               variant="ghost"
                               title="Modifier"
                               size="sm"
-                              onClick={() => {
-                                fromPage && fromPage === 'users'
-                                  ? navigate('/user-edit/' + row.original.id, {
-                                      state: { data: row.original },
-                                    })
-                                  : navigate('/dossier-edit/' + row.original.id, {
-                                      state: { data: row.original },
-                                    })
-                              }}
+                              onClick={() => handleEdit(row)}
                             >
                               <CIcon icon={icon.cilPen} size="sm" />
                             </CButton>
@@ -265,7 +290,7 @@ const Table = forwardRef(
                               color="danger"
                               variant="ghost"
                               size="sm"
-                              onClick={() => onDelete(row.original.id)}
+                              // onClick={() => onDelete(row.original.id)}
                             >
                               <CIcon icon={icon.cilTrash} size="sm" />
                             </CButton>
@@ -278,8 +303,19 @@ const Table = forwardRef(
                 )
               })}
             </CTableBody>
+            <ModalMessageType
+              openModal={openMessage}
+              setOpenModal={setOpenMessage}
+              dataMessage={message}
+            />
           </CTable>
-          <div style={{ display: 'inline-block', marginLeft: '10px', width: '100%' }}>
+          <div
+            style={{
+              display: 'inline-block',
+              marginLeft: '10px',
+              width: '100%',
+            }}
+          >
             <TablePagination
               rowsPerPageOptions={[10]}
               component="div"

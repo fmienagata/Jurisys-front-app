@@ -36,7 +36,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Recherche',
-    to: '/recherche',
+    to: '/research',
     icon: <CIcon icon={cilSearch} customClassName="nav-icon" />,
   },
   {
@@ -60,18 +60,18 @@ const _nav = [
   {
     component: CNavGroup,
     name: 'Messageries',
-    to: '/base',
+    to: '/messages',
     icon: <CIcon icon={cilSpeech} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
         name: 'Messages pré-rédigés',
-        to: '/base/accordion',
+        to: '/messages/prewritten',
       },
       {
         component: CNavItem,
         name: 'La messagerie',
-        to: '/base/breadcrumbs',
+        to: '/messages/messaging',
       },
     ],
   },
@@ -90,13 +90,13 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Agenda',
-    to: '/agenda',
+    to: '/diary',
     icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: 'Abonnements',
-    to: '/subscriptions',
+    name: 'Abonnement',
+    to: '/subscription',
     icon: <CIcon icon={cilEuro} customClassName="nav-icon" />,
   },
 ]

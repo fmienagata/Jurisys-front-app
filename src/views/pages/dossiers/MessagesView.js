@@ -24,13 +24,13 @@ const MessagesView = ({ messages }) => {
         <CListGroup flush>
           <CListGroupItem>
             <CCardHeader className="text-center">
-              <CRow sm className="align-items-center">
-                <CCol sm className="text-start" xs={4}>
+              <CRow className="align-items-center">
+                <CCol className="text-start" xs={4}>
                   <CRow>
                     <small className="text-medium-emphasis">12/01/2024</small>
                   </CRow>
                 </CCol>
-                <CCol sm className="text-start" xs={4}>
+                <CCol className="text-start" xs={4}>
                   <CCardTitle>
                     <small>Title messages</small>
                   </CCardTitle>
@@ -68,13 +68,13 @@ const MessagesView = ({ messages }) => {
           </CListGroupItem>
           <CListGroupItem>
             <CCardHeader className="text-center">
-              <CRow sm className="align-items-center">
-                <CCol sm className="text-start" xs={4}>
+              <CRow className="align-items-center">
+                <CCol className="text-start" xs={4}>
                   <CRow>
                     <small className="text-medium-emphasis">12/01/2024</small>
                   </CRow>
                 </CCol>
-                <CCol sm className="text-start" xs={4}>
+                <CCol className="text-start" xs={4}>
                   <CCardTitle>
                     <small>Title messages</small>
                   </CCardTitle>
@@ -112,13 +112,13 @@ const MessagesView = ({ messages }) => {
           </CListGroupItem>
           <CListGroupItem>
             <CCardHeader className="text-center">
-              <CRow sm className="align-items-center">
-                <CCol sm className="text-start" xs={4}>
+              <CRow className="align-items-center">
+                <CCol className="text-start" xs={4}>
                   <CRow>
                     <small className="text-medium-emphasis">12/01/2024</small>
                   </CRow>
                 </CCol>
-                <CCol sm className="text-start" xs={4}>
+                <CCol className="text-start" xs={4}>
                   <CCardTitle>
                     <small>Title messages</small>
                   </CCardTitle>
