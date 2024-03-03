@@ -25,6 +25,10 @@ const Recherche = () => {
 
   const columnsDossiers = [
     {
+      Header: 'Reference',
+      accessor: 'reference',
+    },
+    {
       Header: 'Nom',
       accessor: 'nom',
     },
@@ -134,7 +138,7 @@ const Recherche = () => {
                   </CCardHeader>
 
                   {dossiers && dossiers.length >= 1 && (
-                    <CCardBody>
+                    <CCardBody className="custom-card-body">
                       <Table
                         ref={tableRefDossiersRecherche}
                         columns={columnsDossiers}

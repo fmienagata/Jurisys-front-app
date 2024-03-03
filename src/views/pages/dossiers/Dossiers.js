@@ -27,6 +27,10 @@ const Dossiers = () => {
 
   const columnsDossiers = [
     {
+      Header: 'Reference',
+      accessor: 'reference',
+    },
+    {
       Header: 'Nom',
       accessor: 'nom',
     },
@@ -165,7 +169,7 @@ const Dossiers = () => {
                 </CCardHeader>
 
                 {dossiers.length > 1 && Array.isArray(dossiers) && (
-                  <CCardBody>
+                  <CCardBody className="custom-card-body">
                     <Table
                       ref={tableRefDossiers}
                       fromPage={'dossiers'}

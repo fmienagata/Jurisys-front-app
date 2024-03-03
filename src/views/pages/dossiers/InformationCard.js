@@ -12,7 +12,7 @@ const InformationCard = ({ dataDossier }) => {
   const slicedData = Object.fromEntries(dataEntries.slice(0, lengthLimit))
 
   function getKeyName(key) {
-    let result
+    let result = ''
     switch (key) {
       case 'createdAt':
         result = 'Créé le'

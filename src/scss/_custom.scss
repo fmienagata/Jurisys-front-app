@@ -1,12 +1,19 @@
 // Custom styles for this theme
-
+.header {
+  --cui-header-min-height: 5rem;
+  --cui-header-border: 0;
+}
 .header > .container-fluid,
 .sidebar-header {
   min-height: calc(7rem + 0px); // stylelint-disable-line function-disallowed-list
 }
 
 .header > .container-fluid + .container-fluid {
-  min-height: 3rem;
+  min-height: 0rem;
+}
+.custom-card-body {
+  margin: 0;
+  padding: 0;
 }
 
 .sidebar-brand-full {

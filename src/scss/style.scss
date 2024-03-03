@@ -46,6 +46,11 @@
   min-height: calc(7rem + 0px);
 }
 
+.center {
+  justify-content: center; /* Centre horizontalement */
+  align-items: center; /* Centre verticalement */
+}
+
 // Import Chart.js custom tooltips styles
 @import '@coreui/chartjs/scss/coreui-chartjs';
 

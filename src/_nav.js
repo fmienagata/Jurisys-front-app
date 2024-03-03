@@ -1,5 +1,7 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
+import * as icon from '@coreui/icons'
+
 import {
   cilCalculator,
   cilCalendar,
@@ -43,7 +45,7 @@ const _nav = [
     component: CNavGroup,
     name: 'Dossiers',
     to: '/dossiers',
-    icon: <CIcon icon={cilFolder} customClassName="nav-icon" />,
+    icon: <CIcon icon={icon.cilFolderOpen} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,

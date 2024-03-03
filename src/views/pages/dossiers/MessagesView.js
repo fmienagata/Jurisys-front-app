@@ -15,7 +15,7 @@ import * as icon from '@coreui/icons'
 import PropTypes from 'prop-types'
 import ModalMessage from '../../../components/ModalMessage'
 
-const MessagesView = ({ messages }) => {
+const MessagesView = ({ messages, isDashboard }) => {
   const [openMessage, setOpenMessage] = useState(false)
   return (
     <>
@@ -35,19 +35,21 @@ const MessagesView = ({ messages }) => {
                     <small>Title messages</small>
                   </CCardTitle>
                 </CCol>
-                <CCol className="text-end" xs={4}>
-                  <CButton
-                    color="success"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setOpenMessage(true)}
-                  >
-                    <CIcon icon={icon.cilFolderOpen} size="sm" />
-                  </CButton>
-                  <CButton color="success" variant="ghost" size="sm">
-                    <CIcon icon={icon.cilTrash} size="sm" />
-                  </CButton>
-                </CCol>
+                {!isDashboard && (
+                  <CCol className="text-end" xs={4}>
+                    <CButton
+                      color="success"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setOpenMessage(true)}
+                    >
+                      <CIcon icon={icon.cilFolderOpen} size="sm" />
+                    </CButton>
+                    <CButton color="success" variant="ghost" size="sm">
+                      <CIcon icon={icon.cilTrash} size="sm" />
+                    </CButton>
+                  </CCol>
+                )}
               </CRow>
             </CCardHeader>
             <CListGroup flush>
@@ -79,19 +81,21 @@ const MessagesView = ({ messages }) => {
                     <small>Title messages</small>
                   </CCardTitle>
                 </CCol>
-                <CCol className="text-end" xs={4}>
-                  <CButton
-                    color="success"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setOpenMessage(true)}
-                  >
-                    <CIcon icon={icon.cilFolderOpen} size="sm" />
-                  </CButton>
-                  <CButton color="success" variant="ghost" size="sm">
-                    <CIcon icon={icon.cilTrash} size="sm" />
-                  </CButton>
-                </CCol>
+                {!isDashboard && (
+                  <CCol className="text-end" xs={4}>
+                    <CButton
+                      color="success"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setOpenMessage(true)}
+                    >
+                      <CIcon icon={icon.cilFolderOpen} size="sm" />
+                    </CButton>
+                    <CButton color="success" variant="ghost" size="sm">
+                      <CIcon icon={icon.cilTrash} size="sm" />
+                    </CButton>
+                  </CCol>
+                )}
               </CRow>
             </CCardHeader>
             <CListGroup flush>
@@ -123,19 +127,113 @@ const MessagesView = ({ messages }) => {
                     <small>Title messages</small>
                   </CCardTitle>
                 </CCol>
-                <CCol className="text-end" xs={4}>
-                  <CButton
-                    color="success"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setOpenMessage(true)}
-                  >
-                    <CIcon icon={icon.cilFolderOpen} size="sm" />
-                  </CButton>
-                  <CButton color="success" variant="ghost" size="sm">
-                    <CIcon icon={icon.cilTrash} size="sm" />
-                  </CButton>
+                {!isDashboard && (
+                  <CCol className="text-end" xs={4}>
+                    <CButton
+                      color="success"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setOpenMessage(true)}
+                    >
+                      <CIcon icon={icon.cilFolderOpen} size="sm" />
+                    </CButton>
+                    <CButton color="success" variant="ghost" size="sm">
+                      <CIcon icon={icon.cilTrash} size="sm" />
+                    </CButton>
+                  </CCol>
+                )}
+              </CRow>
+            </CCardHeader>
+            <CListGroup flush>
+              <CListGroupItem>
+                <CRow className="align-items-center">
+                  <CCol className="text-start" xs={12}>
+                    <CCardText onDoubleClick={() => setOpenMessage(true)}>
+                      Ce texte généré aléatoirement (lorem ipsum) peut être utilisé dans vos
+                      maquettes (webdesign, sites internet, livres, affiches...) gratuitement. Ce
+                      texte est entièrement libre de droit. Ce texte généré aléatoirement (lorem
+                      ipsum) peut être utilisé dans vos maquettes (webdesign, sites internet,
+                      livres, affiches...) gratuitement. Ce texte est entièrement libre de droit.
+                    </CCardText>
+                  </CCol>
+                </CRow>
+              </CListGroupItem>
+            </CListGroup>
+          </CListGroupItem>
+          <CListGroupItem>
+            <CCardHeader className="text-center">
+              <CRow className="align-items-center">
+                <CCol className="text-start" xs={4}>
+                  <CRow>
+                    <small className="text-medium-emphasis">12/01/2024</small>
+                  </CRow>
                 </CCol>
+                <CCol className="text-start" xs={4}>
+                  <CCardTitle>
+                    <small>Title messages</small>
+                  </CCardTitle>
+                </CCol>
+                {!isDashboard && (
+                  <CCol className="text-end" xs={4}>
+                    <CButton
+                      color="success"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setOpenMessage(true)}
+                    >
+                      <CIcon icon={icon.cilFolderOpen} size="sm" />
+                    </CButton>
+                    <CButton color="success" variant="ghost" size="sm">
+                      <CIcon icon={icon.cilTrash} size="sm" />
+                    </CButton>
+                  </CCol>
+                )}
+              </CRow>
+            </CCardHeader>
+            <CListGroup flush>
+              <CListGroupItem>
+                <CRow className="align-items-center">
+                  <CCol className="text-start" xs={12}>
+                    <CCardText onDoubleClick={() => setOpenMessage(true)}>
+                      Ce texte généré aléatoirement (lorem ipsum) peut être utilisé dans vos
+                      maquettes (webdesign, sites internet, livres, affiches...) gratuitement. Ce
+                      texte est entièrement libre de droit. Ce texte généré aléatoirement (lorem
+                      ipsum) peut être utilisé dans vos maquettes (webdesign, sites internet,
+                      livres, affiches...) gratuitement. Ce texte est entièrement libre de droit.
+                    </CCardText>
+                  </CCol>
+                </CRow>
+              </CListGroupItem>
+            </CListGroup>
+          </CListGroupItem>
+          <CListGroupItem>
+            <CCardHeader className="text-center">
+              <CRow className="align-items-center">
+                <CCol className="text-start" xs={4}>
+                  <CRow>
+                    <small className="text-medium-emphasis">12/01/2024</small>
+                  </CRow>
+                </CCol>
+                <CCol className="text-start" xs={4}>
+                  <CCardTitle>
+                    <small>Title messages</small>
+                  </CCardTitle>
+                </CCol>
+                {!isDashboard && (
+                  <CCol className="text-end" xs={4}>
+                    <CButton
+                      color="success"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setOpenMessage(true)}
+                    >
+                      <CIcon icon={icon.cilFolderOpen} size="sm" />
+                    </CButton>
+                    <CButton color="success" variant="ghost" size="sm">
+                      <CIcon icon={icon.cilTrash} size="sm" />
+                    </CButton>
+                  </CCol>
+                )}
               </CRow>
             </CCardHeader>
             <CListGroup flush>
@@ -156,7 +254,7 @@ const MessagesView = ({ messages }) => {
           </CListGroupItem>
         </CListGroup>
       </CCard>
-      {messages[0] && (
+      {!isDashboard && messages[0] && (
         <ModalMessage
           openModal={openMessage}
           setOpenModal={setOpenMessage}
@@ -168,6 +266,7 @@ const MessagesView = ({ messages }) => {
 }
 
 MessagesView.propTypes = {
+  isDashboard: PropTypes.bool,
   messages: PropTypes.shape({
     messages: PropTypes.array,
   }),
