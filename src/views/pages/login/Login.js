@@ -35,7 +35,7 @@ const Login = () => {
       const response = await authService.login(data)
       localStorage.setItem('token', response.token)
       setIsLoading(false)
-      navigate('/users')
+      navigate('/dashboard')
     } catch (error) {
       displayError('Votre Identifiant et/ou mot de passe est incorrect')
       setIsLoading(false)

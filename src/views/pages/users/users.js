@@ -147,7 +147,7 @@ const Users = () => {
               </CCardHeader>
 
               {users.length > 1 && Array.isArray(users) ? (
-                <CCardBody>
+                <CCardBody className="custom-card-body">
                   <Table
                     ref={tableRefUsers}
                     columns={columns}

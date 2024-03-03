@@ -15,7 +15,9 @@ function generateQueryString(data) {
 }
 
 function capitalizeFirstLetter(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1)
+  console.log('str --> ', typeof str)
+  if (typeof str === 'string') return str.charAt(0).toUpperCase() + str.slice(1)
+  return str
 }
 
 export { removeEmptyAttributes, generateQueryString, capitalizeFirstLetter }

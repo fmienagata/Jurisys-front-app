@@ -2,12 +2,14 @@
 import styled from 'styled-components'
 
 const Styles = styled.div`
-  padding: 1rem;
+  padding: 0rem;
 
   table {
     border-spacing: 0;
-    border: 1px solid black;
+
     width: -webkit-fill-available;
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
 
     tr {
       :last-child {
@@ -17,17 +19,20 @@ const Styles = styled.div`
       }
     }
 
-    th,
+    th {
+      padding: 0.2rem;
+    }
     td {
       margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-
+      padding: 0.2rem;
       :last-child {
         border-right: 0;
       }
     }
+  }
+  .center {
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
   }
 `
 

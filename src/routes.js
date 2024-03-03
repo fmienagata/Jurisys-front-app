@@ -15,6 +15,10 @@ const recherche = React.lazy(() => import('./views/pages/recherche/recherche'))
 const messagesType = React.lazy(() => import('./views/pages/messagesType/MessagesType'))
 const newMessagesType = React.lazy(() => import('./views/pages/messagesType/addMessagesTypes'))
 const editMessagesType = React.lazy(() => import('./views/pages/messagesType/editMessageType'))
+// Agenda
+const diary = React.lazy(() => import('./views/pages/Agenda/MyCalendar'))
+// dashboard
+const dashboard = React.lazy(() => import('./views/pages/dashboard/dashboard'))
 
 const routes = [
   { path: '/dossier-edit/:dossierId', name: 'Dossier modifier', element: dossierEdit },
@@ -48,6 +52,19 @@ const routes = [
     path: '/messages/prewritten-edit/:msgId',
     name: 'Modifier un message pré-rédigés',
     element: editMessagesType,
+    exact: true,
+  },
+
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    element: dashboard,
+    exact: true,
+  },
+  {
+    path: '/diary',
+    name: 'Mon agenda',
+    element: diary,
     exact: true,
   },
 

@@ -21,7 +21,7 @@ const MessagesType = () => {
   const messagesDataStore = useSelector((state) => state.dataMessagesTypes.data)
 
   const [loading, setLoading] = useState(false)
-  const [columns, setColumns] = useState([])
+  const [setColumns] = useState([])
 
   const columnsMessages = [
     {
@@ -46,7 +46,6 @@ const MessagesType = () => {
     setLoading(true)
     try {
       const messagesData = await getAllMessagesTypes()
-      console.log('messagesData ---> ', messagesData)
       if (Array.isArray(messagesData)) {
         dispatch({ type: 'GET_DATA_MESSAGES_TYPES', payload: messagesData })
         setColumns(columnsMessages)
@@ -96,7 +95,7 @@ const MessagesType = () => {
                   </div>
                 </CCardHeader>
 
-                <CCardBody>
+                <CCardBody className="custom-card-body">
                   {messagesDataStore && (
                     <Table
                       ref={tableRefMsgsTypes}

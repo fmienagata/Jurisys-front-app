@@ -25,33 +25,11 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
-
 import { Checkbox } from './checkbox'
-
 import TablePaginationActions from './tablePaginationActions'
 import ModalMessageType from 'src/components/ModalMessageType'
+import Styles from 'src/table/TableStyles.js'
 
-import styled from 'styled-components'
-
-const Styles = styled.div`
-  .table > :not(caption) > * > * {
-    padding: 0rem 0rem;
-    color: var(--cui-table-color-state, var(--cui-table-color-type, var(--cui-table-color)));
-    background-color: var(--cui-table-bg);
-    border-bottom-width: var(--cui-border-width);
-    box-shadow: inset 0 0 0 9999px
-      var(--cui-table-bg-state, var(--cui-table-bg-type, var(--cui-table-accent-bg)));
-  }
-
-  .muStyle {
-    margin: 0;
-    /* padding: 0.5rem; */
-    border-bottom: 1px solid black;
-    border-right: 1px solid black;
-    vertical-align: middle;
-    text-align: center;
-  }
-`
 const Table = forwardRef(
   (
     {
@@ -224,26 +202,27 @@ const Table = forwardRef(
     }
 
     return (
-      <>
-        <Styles>
-          <CTable {...getTableProps()}>
-            <CTableHead>
+      <Styles>
+        <div className="table-responsive">
+          <CTable {...getTableProps()} class="table table-striped align-middle text-center">
+            <CTableHead class="align-middle table-light">
               {headerGroups.map((headerGroup) => (
-                <CTableRow {...headerGroup.getHeaderGroupProps()} className="muStyle">
+                <CTableRow {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
                     <CTableHeaderCell
-                      className="muStyle"
+                      class="align-middle"
                       {...column.getHeaderProps(column.getSortByToggleProps())}
                       {...column.getHeaderProps()}
                     >
-                      <i className="cis-sort-ascending"></i>
+                      {/* <i className="cis-sort-ascending"></i> */}
 
                       {column.canSort ? (
                         <TableSortLabel
                           active={column.isSorted}
                           direction={column.isSortedDesc ? 'desc' : 'asc'}
                         >
-                          <i className="cis-sort-ascending">{column.render('Header')}</i>
+                          <i className="cis-sort-ascending"></i>
+                          {column.render('Header')}
                         </TableSortLabel>
                       ) : (
                         column.render('Header')
@@ -253,20 +232,19 @@ const Table = forwardRef(
                 </CTableRow>
               ))}
             </CTableHead>
-            <CTableBody {...getTableBodyProps()}>
+            <CTableBody {...getTableBodyProps()} class="table-group-divider align-middle">
               {page.map((row, i) => {
                 prepareRow(row)
                 return (
                   <CTableRow
-                    className="muStyle"
-                    color={i % 2 === 0 ? '#563d7c' : 'primary'}
+                    // color={i % 2 === 0 ? '#563d7c' : 'primary'}
                     {...row.getRowProps()}
                     onClick={() => handleLineClick(row)}
                   >
                     {row.cells.map((cell) => {
                       if (cell.column.Header === 'Actions') {
                         return (
-                          <CTableDataCell className="muStyle">
+                          <CTableDataCell>
                             <CButton
                               color="success"
                               variant="ghost"
@@ -303,34 +281,35 @@ const Table = forwardRef(
                 )
               })}
             </CTableBody>
+
             <ModalMessageType
               openModal={openMessage}
               setOpenModal={setOpenMessage}
               dataMessage={message}
             />
           </CTable>
-          <div
-            style={{
-              display: 'inline-block',
-              marginLeft: '10px',
-              width: '100%',
-            }}
-          >
-            <TablePagination
-              rowsPerPageOptions={[10]}
-              component="div"
-              count={data.length}
-              rowsPerPage={10}
-              page={pageIndex}
-              // canNextPage={canNextPage}
-              // canPreviousPage={canPreviousPage}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={(event) => setPageSize(Number(event.target.value))}
-              ActionsComponent={TablePaginationActions}
-            />
-          </div>
-        </Styles>
-      </>
+        </div>
+        <div
+          style={{
+            display: 'inline-block',
+            marginLeft: '10px',
+            width: '100%',
+          }}
+        >
+          <TablePagination
+            rowsPerPageOptions={[10]}
+            component="div"
+            count={data.length}
+            rowsPerPage={10}
+            page={pageIndex}
+            // canNextPage={canNextPage}
+            // canPreviousPage={canPreviousPage}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={(event) => setPageSize(Number(event.target.value))}
+            ActionsComponent={TablePaginationActions}
+          />
+        </div>
+      </Styles>
     )
   },
 )
