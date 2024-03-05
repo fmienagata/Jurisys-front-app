@@ -49,7 +49,7 @@ const routes = [
     exact: true,
   },
   {
-    path: '/messages/prewritten-edit/:msgId',
+    path: '/messages/prewritten-edit/:msgid',
     name: 'Modifier un message pré-rédigés',
     element: editMessagesType,
     exact: true,

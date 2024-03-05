@@ -20,4 +20,12 @@ function capitalizeFirstLetter(str) {
   return str
 }
 
-export { removeEmptyAttributes, generateQueryString, capitalizeFirstLetter }
+function filtredValues(data, filter) {
+  return data.filter((item) =>
+    Object.values(item)
+      .filter((value) => typeof value === 'string') // Filter only string properties
+      .some((prop) => prop.toLowerCase().includes(filter)),
+  )
+}
+
+export { removeEmptyAttributes, generateQueryString, capitalizeFirstLetter, filtredValues }
