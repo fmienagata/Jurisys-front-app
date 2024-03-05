@@ -9,8 +9,12 @@ body {
   @include transition(padding 0.15s);
 }
 
-body {
-  background-color: var(--cui-dark-bg-subtle);
+@if $enable-dark-mode {
+  @include color-mode(dark) {
+    body {
+      background-color: var(--cui-dark-bg-subtle);
+    }
+  }
 }
 
 .footer {

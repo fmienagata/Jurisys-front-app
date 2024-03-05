@@ -1,5 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { CCard, CCardBody, CCardHeader, CCol, CRow, CButton, CSpinner } from '@coreui/react'
+import {
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CCol,
+  CRow,
+  CFormInput,
+  CButton,
+  CSpinner,
+} from '@coreui/react'
 import Table from 'src/table/table'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
@@ -10,6 +19,7 @@ import { useNavigate } from 'react-router-dom'
 import { useMessageContext } from 'src/Context/MessageContext'
 import Styles from './../../../table/TableStyles'
 import { handleErrorResponse } from '../../../utils/handleErrorResponse'
+import { filtredValues } from 'src/utils/utils'
 
 const Dossiers = () => {
   const navigate = useNavigate()
@@ -18,6 +28,7 @@ const Dossiers = () => {
   const [currentPage, setCurrentPage] = useState(0)
   const [selection, setSelection] = useState([])
   const [dossiers, setDossiers] = useState([])
+  const [dossiersInitial, setDossiersInitial] = useState([])
   const [loading, setLoading] = useState(false)
   const [columns, setColumns] = useState([])
 
@@ -84,7 +95,7 @@ const Dossiers = () => {
       const dossiersData = await getDossiers()
       if (Array.isArray(dossiersData)) {
         setDossiers(dossiersData)
-        setDossiers(dossiersData)
+        setDossiersInitial(dossiersData)
         setColumns(columnsDossiers)
         dispatch({ type: 'GET_DATA_DOSSIERS', payload: dossiersData })
       } else {
@@ -133,39 +144,55 @@ const Dossiers = () => {
     setOpenModal(true)
   }
 
+  function handleChange(event) {
+    const filter = event.target.value.trim().toLowerCase()
+    const result = filtredValues(dossiersInitial, filter)
+    setDossiers(filter === '' ? dossiersInitial : result)
+  }
+
   return (
     <div>
       <Styles>
         <CRow>
           <CCol xs={12}>
             {!loading ? (
-              <CCard className="mb-4">
-                <CCardHeader style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <strong className="align-self-start">Liste des dossiers</strong>
-                  <div
-                    className="align-self-end"
-                    style={{ display: 'flex', justifyContent: 'space-between' }}
-                  >
-                    {selection.length >= 2 && (
+              <CCard className="mb-2">
+                <CCardHeader>
+                  <CRow>
+                    <CCol xs={4} className="d-flex align-items-center">
+                      <strong className="text-primary">Liste des dossiers</strong>
+                    </CCol>
+
+                    <CCol xs={4} className="align-self-center">
+                      <CFormInput
+                        id="recherche"
+                        size="sm"
+                        placeholder="Chercher ..."
+                        onChange={handleChange}
+                      />
+                    </CCol>
+
+                    <CCol xs={4} className="d-flex align-items-center justify-content-end">
+                      {selection.length >= 1 && (
+                        <CButton
+                          color="danger"
+                          className="align-middle mx-3"
+                          variant="outline"
+                          onClick={() => DeleteMultiDossiers()}
+                        >
+                          <CIcon icon={icon.cilLibraryAdd} size="sm" /> Supprimer
+                        </CButton>
+                      )}
                       <CButton
-                        className="mr-2"
-                        color="danger"
+                        className="align-middle ml-2"
+                        color="success"
                         variant="outline"
-                        shape="rounded-pill"
-                        onClick={() => DeleteMultiDossiers()}
+                        onClick={() => navigate('/dossier-add')}
                       >
-                        <CIcon icon={icon.cilLibraryAdd} size="sm" /> Supprimer
+                        <CIcon icon={icon.cilLibraryAdd} size="sm" /> Ajouter
                       </CButton>
-                    )}
-                    <CButton
-                      color="success"
-                      variant="outline"
-                      shape="rounded-pill"
-                      onClick={() => navigate('/dossier-add')}
-                    >
-                      <CIcon icon={icon.cilLibraryAdd} size="sm" /> Ajouter
-                    </CButton>
-                  </div>
+                    </CCol>
+                  </CRow>
                 </CCardHeader>
 
                 {dossiers.length > 1 && Array.isArray(dossiers) && (

@@ -10,7 +10,7 @@ const Dashboard = () => {
   return (
     <div>
       <CRow>
-        <CCol xs={3}>
+        <CCol xs={3} style={{ padding: 0 }}>
           <CWidgetStatsF
             className="mb-3"
             color="teal"
@@ -55,8 +55,7 @@ const Dashboard = () => {
       <CRow>
         <CCol xs={6}>
           <CRow>
-            {' '}
-            <CCard className="mb-4">
+            <CCard className="mb-2" style={{ margin: 0, padding: 0 }}>
               <CCardHeader>Répartition de dossiers</CCardHeader>
               <CCardBody>
                 <CChartBar

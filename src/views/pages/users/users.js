@@ -4,11 +4,12 @@ import Table from 'src/table/table'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
 import { CButton } from '@coreui/react'
-import { CCard, CCardBody, CCardHeader, CCol, CRow, CSpinner } from '@coreui/react'
+import { CCard, CCardBody, CCardHeader, CCol, CRow, CSpinner, CFormInput } from '@coreui/react'
 import { useNavigate } from 'react-router-dom'
 import ModalAction from 'src/components/ModalAction'
 
 import { useDispatch } from 'react-redux'
+import { filtredValues } from 'src/utils/utils'
 
 import { getUsers, deleteUser } from '../../../services/usersService'
 import { useMessageContext } from 'src/Context/MessageContext'
@@ -56,6 +57,7 @@ const Users = () => {
   const [openModal, setOpenModal] = useState(false)
 
   const [users, setUsers] = useState([])
+  const [initialUsers, setInitialUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [columns, setColumns] = useState([])
 
@@ -67,6 +69,7 @@ const Users = () => {
       const usersData = await getUsers()
       if (Array.isArray(usersData)) {
         setUsers(usersData)
+        setInitialUsers(usersData)
         setColumns(columnsUsers)
         dispatch({ type: 'GET_DATA_USERS', payload: usersData })
       } else {
@@ -113,40 +116,56 @@ const Users = () => {
     setOpenModal(true)
   }
 
+  function handleChange(event) {
+    const filter = event.target.value.trim().toLowerCase()
+    const result = filtredValues(initialUsers, filter)
+    setUsers(filter === '' ? initialUsers : result)
+  }
+
   return (
     <div>
       <Styles>
         <CRow>
           <CCol xs={12}>
-            <CCard className="mb-4">
-              <CCardHeader style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <strong className="align-self-start">Liste des utilisateurs</strong>
-                <div
-                  className="align-self-end"
-                  style={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  {selection.length >= 2 && (
+            <CCard className="mb-2">
+              <CCardHeader>
+                <CRow>
+                  <CCol xs={4} className="d-flex align-items-center">
+                    <strong className="text-primary">Liste des utilisateurs</strong>
+                  </CCol>
+
+                  <CCol xs={4} className="align-self-center">
+                    <CFormInput
+                      id="recherche"
+                      size="sm"
+                      placeholder="Chercher ..."
+                      onChange={handleChange}
+                    />
+                  </CCol>
+                  <CCol xs={4} className="d-flex align-items-center justify-content-end">
+                    {selection.length >= 1 && (
+                      <CButton
+                        color="danger"
+                        className="align-middle mx-3"
+                        variant="outline"
+                        onClick={() => DeleteMultiUsers()}
+                      >
+                        <CIcon icon={icon.cilLibraryAdd} size="sm" /> Supprimer
+                      </CButton>
+                    )}
                     <CButton
-                      className="mr-2"
-                      color="danger"
+                      className="align-middle ml-2"
+                      color="success"
                       variant="outline"
-                      onClick={() => DeleteMultiUsers()}
+                      onClick={() => navigate('/user-add')}
                     >
-                      <CIcon icon={icon.cilLibraryAdd} size="sm" /> Supprimer
+                      <CIcon icon={icon.cilLibraryAdd} size="sm" /> Ajouter
                     </CButton>
-                  )}
-                  <CButton
-                    className="align-self-end"
-                    color="success"
-                    variant="outline"
-                    onClick={() => navigate('/user-add')}
-                  >
-                    <CIcon icon={icon.cilLibraryAdd} size="sm" /> Ajouter
-                  </CButton>
-                </div>
+                  </CCol>
+                </CRow>
               </CCardHeader>
 
-              {users.length > 1 && Array.isArray(users) ? (
+              {users.length >= 1 && Array.isArray(users) ? (
                 <CCardBody className="custom-card-body">
                   <Table
                     ref={tableRefUsers}

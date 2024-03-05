@@ -304,6 +304,11 @@ const Table = forwardRef(
             page={pageIndex}
             // canNextPage={canNextPage}
             // canPreviousPage={canPreviousPage}
+            labelDisplayedRows={({ from, to, count }) =>
+              `${'Éléments'} ${from}
+            ${'à'} ${to}
+            ${'sur'} ${count}`
+            }
             onPageChange={handleChangePage}
             onRowsPerPageChange={(event) => setPageSize(Number(event.target.value))}
             ActionsComponent={TablePaginationActions}
