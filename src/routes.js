@@ -20,6 +20,16 @@ const diary = React.lazy(() => import('./views/pages/Agenda/MyCalendar'))
 // dashboard
 const dashboard = React.lazy(() => import('./views/pages/dashboard/dashboard'))
 
+//Societes
+const addSociete = React.lazy(() => import('./views/pages/societes/addSociete'))
+const societes = React.lazy(() => import('./views/pages/societes/societes'))
+const editSocietes = React.lazy(() => import('./views/pages/societes/editSocietes'))
+
+//factures
+const factures = React.lazy(() => import('./views/pages/factures/factures'))
+const addfacture = React.lazy(() => import('./views/pages/factures/addFacture'))
+const editfacture = React.lazy(() => import('./views/pages/factures/editFacture'))
+
 const routes = [
   { path: '/dossier-edit/:dossierId', name: 'Dossier modifier', element: dossierEdit },
   { path: '/dossier/:dossierId', name: 'Dossier', element: dossier, exact: true },
@@ -67,7 +77,48 @@ const routes = [
     element: diary,
     exact: true,
   },
-
+  {
+    path: '/diary',
+    name: 'Mon agenda',
+    element: diary,
+    exact: true,
+  },
+  {
+    path: '/new-societe',
+    name: 'Ajouter une societe',
+    element: addSociete,
+    exact: true,
+  },
+  {
+    path: '/societes',
+    name: 'Liste des entreprises',
+    element: societes,
+    exact: true,
+  },
+  {
+    path: '/societe-edit/:id',
+    name: 'Modifier une societe',
+    element: editSocietes,
+    exact: true,
+  },
+  {
+    path: '/factures',
+    name: 'Liste des factures',
+    element: factures,
+    exact: true,
+  },
+  {
+    path: '/add-facture',
+    name: 'Ajouter une facture',
+    element: addfacture,
+    exact: true,
+  },
+  {
+    path: '/facture-edit/:id',
+    name: 'Modifier une facture',
+    element: editfacture,
+    exact: true,
+  },
   { path: '/', exact: true, name: 'Home' },
 ]
 

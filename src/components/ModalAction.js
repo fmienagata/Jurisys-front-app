@@ -13,9 +13,9 @@ const ModalAction = (props) => {
         alignment="center"
       >
         <CModalHeader>
-          <CModalTitle>Suppression </CModalTitle>
+          <CModalTitle>Désactiver </CModalTitle>
         </CModalHeader>
-        <CModalBody>Voulez vous vraiment le(s) supprimer ?</CModalBody>
+        <CModalBody>Voulez vous vraiment le(s) désactiver ?</CModalBody>
         <CModalFooter>
           <CButton color="secondary" onClick={() => setOpenModal(false)}>
             Fermer

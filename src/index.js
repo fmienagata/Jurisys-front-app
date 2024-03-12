@@ -7,16 +7,28 @@ import reportWebVitals from './reportWebVitals'
 import { Provider } from 'react-redux'
 import store from './store'
 import { MessageProvider } from './Context/MessageContext'
-import { AuthProvider } from './Context/AuthContext'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
+import { AuthProvider } from './Context/AuthContext'
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+      staleTime: 10000,
+    },
+  },
+})
 createRoot(document.getElementById('root')).render(
-  <Provider store={store}>
-    <AuthProvider>
-      <MessageProvider>
-        <App />
-      </MessageProvider>
-    </AuthProvider>
-  </Provider>,
+  <QueryClientProvider client={queryClient}>
+    <Provider store={store}>
+      <AuthProvider>
+        <MessageProvider>
+          <App />
+        </MessageProvider>
+      </AuthProvider>
+    </Provider>
+  </QueryClientProvider>,
 )
 
 // If you want to start measuring performance in your app, pass a function

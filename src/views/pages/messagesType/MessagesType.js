@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import {
   CCard,
   CCardBody,
@@ -14,11 +14,10 @@ import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
 import { useMessageContext } from 'src/Context/MessageContext'
 import Styles from './../../../table/TableStyles'
-import { getAllMessagesTypes } from 'src/services/messagesTypesService'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchData } from 'src/MessagesTypesActions'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { filtredValues } from 'src/utils/utils'
+import { useGetAllMessagesTypes } from 'src/services/messagesTypesService'
 
 const MessagesType = () => {
   const tableRefMsgsTypes = useRef(typeof useRowSelect)
@@ -27,13 +26,12 @@ const MessagesType = () => {
   const [currentPage, setCurrentPage] = useState(0)
   const [selection, setSelection] = useState([])
 
-  const dispatch = useDispatch()
   const { displayError } = useMessageContext()
   const messagesDataStore = useSelector((state) => state.dataMessagesTypes.data)
-  const [initialMessages, setInitialMessages] = useState(messagesDataStore)
+  const [initialMessages, setInitialMessages] = useState([])
+  const [dataSave, setDataSave] = useState([])
 
   const [loading, setLoading] = useState(false)
-  const [setColumns] = useState([])
 
   const columnsMessages = [
     {
@@ -54,42 +52,21 @@ const MessagesType = () => {
     },
   ]
 
-  const fetchAllMessages = async () => {
-    setLoading(true)
-    try {
-      const messagesData = await getAllMessagesTypes()
-      if (Array.isArray(messagesData)) {
-        dispatch({ type: 'GET_DATA_MESSAGES_TYPES', payload: messagesData })
-        setColumns(columnsMessages)
-        //setInitialMessages(messagesData)
-      } else {
-        displayError(
-          'Erreur : Impossible de récupérer les données ou données malformé . Veuillez réessayer plus tard.',
-        )
-      }
-    } catch (error) {
-      displayError(error.messages)
-    } finally {
-    }
-    setLoading(false)
-  }
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-
-    if (messagesDataStore !== null && messagesDataStore !== undefined) {
-      setInitialMessages(messagesDataStore)
-    } else {
-      dispatch(fetchData())
-    }
-
-    //}
-  }, [dispatch, messagesDataStore])
+  const { dataMessagesTypes, isLoading, refetch } = useGetAllMessagesTypes({
+    onSuccess: (dataMessagesTypes) => {
+      console.log('Requête réussie dans le composant !', dataMessagesTypes)
+      setInitialMessages(dataMessagesTypes.data)
+      setDataSave(dataMessagesTypes.data)
+    },
+    onError: (error) => {
+      displayError('Erreur lors de la requête dans le composant !')
+    },
+  })
 
   function handleChange(event) {
     const filter = event.target.value.trim().toLowerCase()
-    const result = initialMessages && filtredValues(messagesDataStore, filter)
-    setInitialMessages(filter === '' ? messagesDataStore : result)
+    const result = initialMessages && filtredValues(dataSave, filter)
+    setInitialMessages(filter === '' ? dataSave : result)
   }
 
   return (
@@ -137,17 +114,19 @@ const MessagesType = () => {
                 </CCardHeader>
 
                 <CCardBody className="custom-card-body">
-                  {initialMessages && (
+                  {!isLoading && initialMessages && (
                     <Table
                       ref={tableRefMsgsTypes}
                       columns={columnsMessages}
                       data={initialMessages}
                       currentPage={currentPage}
                       setCurrentPage={setCurrentPage}
+                      onSelectedRowChange={setSelection}
                       ischeckbox={true}
                       fromPage={'msgtype'}
                     />
                   )}
+                  {isLoading && <CSpinner color="primary" variant="grow" />}
                 </CCardBody>
               </CCard>
             ) : (

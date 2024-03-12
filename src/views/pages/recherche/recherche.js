@@ -162,7 +162,7 @@ const Recherche = () => {
                 setOpenModal={setOpenModal}
                 action={
                   <CButton color="danger" onClick={deleteAction}>
-                    Supprimer
+                    Désactiver
                   </CButton>
                 }
               />

@@ -19,6 +19,21 @@ const ModalMessage = (props) => {
   const { openModal, setOpenModal, action, dataMessage } = props
   console.log('dataMessage =>', dataMessage)
   const { id, messageFiles, ...newData } = dataMessage
+
+  function getKeyName(key) {
+    let result = ''
+    switch (key) {
+      case 'createdAt':
+        result = 'Créé le'
+        break
+      case 'updatedAt':
+        result = 'Mis à jour'
+        break
+      default:
+        result = key
+    }
+    return capitalizeFirstLetter(result)
+  }
   return (
     <>
       <CModal
@@ -34,13 +49,13 @@ const ModalMessage = (props) => {
         <CModalBody>
           {/* <CCardHeader className="text-center">Information</CCardHeader> */}
           {/* <CListGroup flush>{generateMetadatas(slicedData)}</CListGroup> */}
-          {/*<CListGroup flush>
-             {dataMessage &&
+          <CListGroup flush>
+            {dataMessage &&
               Object.entries(newData).map(([key, value]) => (
                 <CListGroupItem key={key}>
                   <CRow className="align-items-center">
                     <CCol className="text-start" xs={6}>
-                      {key}
+                      {getKeyName(key)}
                     </CCol>
                     <CCol className="text-start" xs={6}>
                       <b>{value === null ? '---' : value}</b>
@@ -48,9 +63,9 @@ const ModalMessage = (props) => {
                   </CRow>
                 </CListGroupItem>
               ))}
-          </CListGroup> */}
+          </CListGroup>
 
-          {dataMessage && (
+          {/* {dataMessage && (
             <CListGroup flush>
               <CListGroupItem key={'type'}>
                 <CRow className="align-items-center">
@@ -133,7 +148,7 @@ const ModalMessage = (props) => {
                 </CRow>
               </CListGroupItem>
             </CListGroup>
-          )}
+          )} */}
         </CModalBody>
         <CModalFooter>
           <CButton color="secondary" onClick={() => setOpenModal(false)}>

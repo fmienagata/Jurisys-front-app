@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import { useRowSelect } from 'react-table'
 import Table from 'src/table/table'
 import CIcon from '@coreui/icons-react'
@@ -7,44 +7,45 @@ import { CButton } from '@coreui/react'
 import { CCard, CCardBody, CCardHeader, CCol, CRow, CSpinner, CFormInput } from '@coreui/react'
 import { useNavigate } from 'react-router-dom'
 import ModalAction from 'src/components/ModalAction'
-
-import { useDispatch } from 'react-redux'
 import { filtredValues } from 'src/utils/utils'
-
-import { getUsers, deleteUser } from '../../../services/usersService'
 import { useMessageContext } from 'src/Context/MessageContext'
 import Styles from './../../../table/TableStyles'
+import { useGetAllSocietes } from 'src/services/societeService'
 
-const Users = () => {
+const Societes = () => {
   const tableRefUsers = useRef(typeof useRowSelect)
   const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const { displayError, displaySuccess } = useMessageContext()
+  const { displayError } = useMessageContext()
+  const [dataSocietes, setDataSocietes] = useState([])
+  const [initialSocietes, setInitialSocietes] = useState([])
 
-  const columnsUsers = [
+  const [currentPage, setCurrentPage] = useState(0)
+  const [selection, setSelection] = useState([])
+  const [openModal, setOpenModal] = useState(false)
+  //  const [IDDelete, setIDDelete] = useState('')
+
+  const { data, isLoading, refetch } = useGetAllSocietes({
+    onSuccess: (data) => {
+      setDataSocietes(data.data)
+      setInitialSocietes(data.data)
+    },
+    onError: (error) => {
+      displayError('Erreur lors de la requête dans le composant !')
+    },
+  })
+
+  const columnsSocietes = [
     {
-      Header: 'Nom',
-      accessor: 'nom',
+      Header: 'Code',
+      accessor: 'code',
     },
     {
-      Header: 'Prenom',
-      accessor: 'prenom',
+      Header: 'Label',
+      accessor: 'label',
     },
     {
-      Header: 'Username',
-      accessor: 'username',
-    },
-    {
-      Header: 'UserIdentifier',
-      accessor: 'userIdentifier',
-    },
-    {
-      Header: 'Societe',
-      accessor: 'societe',
-    },
-    {
-      Header: 'Email',
-      accessor: 'email',
+      Header: 'Crée',
+      accessor: 'createdAt',
     },
     {
       Header: 'Actions',
@@ -52,74 +53,34 @@ const Users = () => {
     },
   ]
 
-  const [currentPage, setCurrentPage] = useState(0)
-  const [selection, setSelection] = useState([])
-  const [openModal, setOpenModal] = useState(false)
-
-  const [users, setUsers] = useState([])
-  const [initialUsers, setInitialUsers] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [columns, setColumns] = useState([])
-
-  const [userIDDelete, setUserIDDelete] = useState('')
-
-  const fetchData = async () => {
-    setLoading(true)
-    try {
-      const usersData = await getUsers()
-      if (Array.isArray(usersData)) {
-        setUsers(usersData)
-        setInitialUsers(usersData)
-        setColumns(columnsUsers)
-        dispatch({ type: 'GET_DATA_USERS', payload: usersData })
-      } else {
-        displayError(
-          'Erreur : Impossible de récupérer les données ou données malformé . Veuillez réessayer plus tard.',
-        )
-      }
-    } catch (error) {
-      displayError(error.messages)
-    } finally {
-    }
-    setLoading(false)
-  }
-
-  useEffect(() => {
-    fetchData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   const handleDeleteUser = (userId) => {
-    setOpenModal(true)
-    setUserIDDelete(userId)
+    // setOpenModal(true)
+    // setUserIDDelete(userId)
   }
 
   async function deleteAction() {
-    try {
-      if (userIDDelete !== '') {
-        await deleteUser(userIDDelete)
-      } else {
-        console.log('selection pour delete =>', selection)
-      }
-
-      displaySuccess('Supprimer avec sucess')
-    } catch (error) {
-      displayError(error.messages)
-    } finally {
-      setOpenModal(false)
-    }
-    setUserIDDelete('')
-    setOpenModal(false)
+    // try {
+    //   if (IDDelete !== '') {
+    //     await deleteUser(IDDelete)
+    //   } else {
+    //     console.log('selection pour delete =>', selection)
+    //   }
+    //   displaySuccess('Supprimer avec sucess')
+    // } catch (error) {
+    //   displayError(error.messages)
+    // } finally {
+    //   setOpenModal(false)
+    // }
+    // setIDDelete('')
+    // setOpenModal(false)
   }
 
-  function DeleteMultiUsers() {
-    setOpenModal(true)
-  }
+  function DeleteMultiSocietes() {}
 
   function handleChange(event) {
     const filter = event.target.value.trim().toLowerCase()
-    const result = filtredValues(initialUsers, filter)
-    setUsers(filter === '' ? initialUsers : result)
+    const result = filtredValues(initialSocietes, filter)
+    setDataSocietes(filter === '' ? initialSocietes : result)
   }
 
   return (
@@ -131,7 +92,7 @@ const Users = () => {
               <CCardHeader>
                 <CRow>
                   <CCol xs={4} className="d-flex align-items-center">
-                    <strong className="text-primary">Liste des utilisateurs</strong>
+                    <strong className="text-primary">Liste des entreprises</strong>
                   </CCol>
 
                   <CCol xs={4} className="align-self-center">
@@ -149,7 +110,7 @@ const Users = () => {
                         className="align-middle mx-3"
                         variant="outline"
                         shape="rounded-pill"
-                        onClick={() => DeleteMultiUsers()}
+                        onClick={() => DeleteMultiSocietes()}
                       >
                         <CIcon icon={icon.cilLibraryAdd} size="sm" /> Supprimer
                       </CButton>
@@ -159,7 +120,7 @@ const Users = () => {
                       color="success"
                       variant="outline"
                       shape="rounded-pill"
-                      onClick={() => navigate('/user-add')}
+                      onClick={() => navigate('/new-societe')}
                     >
                       <CIcon icon={icon.cilLibraryAdd} size="sm" /> Ajouter
                     </CButton>
@@ -167,23 +128,23 @@ const Users = () => {
                 </CRow>
               </CCardHeader>
 
-              {users.length >= 1 && Array.isArray(users) ? (
+              {!isLoading ? (
                 <CCardBody className="custom-card-body">
                   <Table
                     ref={tableRefUsers}
-                    columns={columns}
-                    data={users}
+                    columns={columnsSocietes}
+                    data={dataSocietes}
                     ischeckbox={true}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
                     setOpenModal={setOpenModal}
                     onSelectedRowChange={setSelection}
-                    fromPage={'users'}
+                    fromPage={'societes'}
                     onDelete={handleDeleteUser}
                   />
                 </CCardBody>
               ) : (
-                loading && <CSpinner color="primary" variant="grow" />
+                isLoading && <CSpinner color="primary" variant="grow" />
               )}
             </CCard>
             <ModalAction
@@ -202,4 +163,4 @@ const Users = () => {
   )
 }
 
-export default Users
+export default Societes

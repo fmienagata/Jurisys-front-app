@@ -6,7 +6,6 @@ import {
   cilCalculator,
   cilCalendar,
   cilEuro,
-  cilFolder,
   cilGroup,
   cilIndustry,
   cilSearch,
@@ -32,7 +31,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Entreprises',
-    to: '/businesses',
+    to: '/societes',
     icon: <CIcon icon={cilIndustry} customClassName="nav-icon" />,
   },
   {
@@ -98,7 +97,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Abonnement',
-    to: '/subscription',
+    to: '/factures',
     icon: <CIcon icon={cilEuro} customClassName="nav-icon" />,
   },
 ]

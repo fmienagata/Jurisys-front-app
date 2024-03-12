@@ -45,7 +45,7 @@ const EditDossier = () => {
               <CCardBody className="p-4">
                 <form onSubmit={handleSubmit(handleEdit)}>
                   {/* <h1>{labels.registre.titleHeader}</h1> */}
-                  <p className="text-body-secondary">Ajouter un dossier</p>
+                  <p className="text-body-secondary">Modifier un dossier</p>
                   <CInputGroup className="mb-3">
                     <Controller
                       name="reference"
@@ -236,7 +236,7 @@ const EditDossier = () => {
                   </CInputGroup>
                   <div>
                     <CButton
-                      color="info"
+                      color="dark"
                       variant="ghost"
                       onClick={() => {
                         reset()

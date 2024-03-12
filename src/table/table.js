@@ -22,12 +22,14 @@ import {
   CTableBody,
   CTableHead,
   CTableHeaderCell,
+  CBadge,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
 import { Checkbox } from './checkbox'
 import TablePaginationActions from './tablePaginationActions'
 import ModalMessageType from 'src/components/ModalMessageType'
+import ModalSociete from 'src/components/ModalSocietes'
 import Styles from 'src/table/TableStyles.js'
 
 const Table = forwardRef(
@@ -61,7 +63,10 @@ const Table = forwardRef(
     const toggleMenu = () => setOpenMenu(!openMenu)
     const navigate = useNavigate()
     const [openMessage, setOpenMessage] = useState(false)
-    const [message, setMmessage] = useState(false)
+    const [message, setMessage] = useState(false)
+
+    const [openSociete, setOpenSociete] = useState(false)
+    const [societe, setSociete] = useState(false)
 
     const generateIconMenu = (hooks) =>
       hooks.visibleColumns.push((columns) => [
@@ -171,6 +176,12 @@ const Table = forwardRef(
         case 'msgtype':
           navigatePath = '/messages/prewritten-edit/' + row.original.id
           break
+        case 'societes':
+          navigatePath = '/societe-edit/' + row.original.id
+          break
+        case 'facture':
+          navigatePath = '/facture-edit/' + row.original.id
+          break
         default:
           navigatePath = '/dossier-edit/' + row.original.id
       }
@@ -196,8 +207,13 @@ const Table = forwardRef(
           state: { data: row.original },
         })
       } else {
-        setMmessage(row.original)
-        setOpenMessage(true)
+        if (fromPage === 'societes' || fromPage === 'facture') {
+          setSociete(row.original)
+          setOpenSociete(true)
+        } else {
+          setMessage(row.original)
+          setOpenMessage(true)
+        }
       }
     }
 
@@ -264,18 +280,33 @@ const Table = forwardRef(
                               <CIcon icon={icon.cilPen} size="sm" />
                             </CButton>
                             <CButton
-                              title="Supprimer"
+                              title="Désactiver / Supprimer"
                               color="danger"
                               variant="ghost"
                               size="sm"
-                              // onClick={() => onDelete(row.original.id)}
+                              onClick={() => onDelete(row.original.id)}
                             >
                               <CIcon icon={icon.cilTrash} size="sm" />
                             </CButton>
                           </CTableDataCell>
                         )
                       }
-                      return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+
+                      if (cell.column.Header === 'Statut') {
+                        return (
+                          <CTableDataCell {...cell.getCellProps()}>
+                            <CBadge color={cell.value === 'Payer' ? 'dark' : 'danger'}>
+                              {cell.render('Cell')}
+                            </CBadge>
+                          </CTableDataCell>
+                        )
+                      }
+
+                      return (
+                        <CTableDataCell {...cell.getCellProps()}>
+                          {cell.render('Cell')}
+                        </CTableDataCell>
+                      )
                     })}
                   </CTableRow>
                 )
@@ -286,6 +317,11 @@ const Table = forwardRef(
               openModal={openMessage}
               setOpenModal={setOpenMessage}
               dataMessage={message}
+            />
+            <ModalSociete
+              openSociete={openSociete}
+              setOpenSociete={setOpenSociete}
+              dataSocietes={societe}
             />
           </CTable>
         </div>

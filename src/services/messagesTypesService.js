@@ -1,4 +1,5 @@
 import Axios from 'src/services/axiosConfig'
+import { useQuery } from 'react-query'
 
 const getAllMessagesTypes = async () => {
   const response = await Axios.get('/api/messages_type')
@@ -15,4 +16,22 @@ const updateMessageType = async (id, data) => {
   return response.data
 }
 
-export { getAllMessagesTypes, addMessageType, updateMessageType }
+const useGetAllMessagesTypes = (config = {}) => {
+  const {
+    data: dataMessagesTypes,
+    isLoading,
+    refetch,
+    ...rest
+  } = useQuery(['getAllMsgs'], () => Axios.get('/api/messages_type'), {
+    ...config,
+  })
+
+  return {
+    dataMessagesTypes: dataMessagesTypes,
+    isLoading,
+    refetch: refetch,
+    ...rest,
+  }
+}
+
+export { getAllMessagesTypes, addMessageType, updateMessageType, useGetAllMessagesTypes }

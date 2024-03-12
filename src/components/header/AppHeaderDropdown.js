@@ -15,7 +15,7 @@ import { cilCreditCard, cilEnvelopeOpen, cilLockLocked, cilSettings, cilUser } f
 import CIcon from '@coreui/icons-react'
 import { useAuth } from 'src/Context/AuthContext'
 
-import avatar8 from './../../assets/images/avatars/8.jpg'
+import avatar from './../../assets/images/avatars/avatar2.jpg'
 import labels from 'src/translations/labels.json'
 
 const AppHeaderDropdown = () => {
@@ -30,7 +30,7 @@ const AppHeaderDropdown = () => {
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
-        <CAvatar src={avatar8} size="md" />
+        <CAvatar src={avatar} size="md"></CAvatar>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-body-secondary fw-semibold py-2">Compte</CDropdownHeader>

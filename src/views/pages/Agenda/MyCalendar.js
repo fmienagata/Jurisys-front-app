@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -8,7 +8,6 @@ import frLang from '@fullcalendar/core/locales/fr'
 
 const MyCalendar = ({ isDashboard }) => {
   const handleDateClick2 = (info) => {
-    const clickedDate = info.dateStr
     const eventsOnDate = events.filter((event) => {
       const eventDate = new Date(event.start)
       return (
@@ -25,9 +24,9 @@ const MyCalendar = ({ isDashboard }) => {
     console.log(`Clic  :`, info.event.title)
   }
 
-  const handleDayClick = (info) => {
-    console.log('tooltipRef.current -->', info)
-  }
+  // const handleDayClick = (info) => {
+  //   console.log('tooltipRef.current -->', info)
+  // }
 
   const events = [
     {
