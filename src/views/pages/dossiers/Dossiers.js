@@ -178,6 +178,7 @@ const Dossiers = () => {
                           color="danger"
                           className="align-middle mx-3"
                           variant="outline"
+                          shape="rounded-pill"
                           onClick={() => DeleteMultiDossiers()}
                         >
                           <CIcon icon={icon.cilLibraryAdd} size="sm" /> Supprimer
@@ -187,6 +188,7 @@ const Dossiers = () => {
                         className="align-middle ml-2"
                         color="success"
                         variant="outline"
+                        shape="rounded-pill"
                         onClick={() => navigate('/dossier-add')}
                       >
                         <CIcon icon={icon.cilLibraryAdd} size="sm" /> Ajouter
@@ -220,7 +222,7 @@ const Dossiers = () => {
               setOpenModal={setOpenModal}
               action={
                 <CButton color="danger" onClick={deleteAction}>
-                  Supprimer
+                  Désactiver
                 </CButton>
               }
             />

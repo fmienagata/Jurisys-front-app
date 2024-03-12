@@ -1,4 +1,4 @@
-import React, { Suspense, useContext, useReducer } from 'react'
+import React, { Suspense, useContext, useReducer, useCallback } from 'react'
 
 import Modal from 'src/components/Modal'
 
@@ -56,13 +56,13 @@ export const MessageProvider = ({ children }) => {
     dispatch({ type: messageTypes.SUCCESS, message, title: 'title' })
   }
 
-  const displayError = (message) => {
+  const displayError = useCallback((message) => {
     dispatch({
       type: messageTypes.ERROR,
       message: message || 'Une erreur est survenue',
       title: 'Une erreur est survenue',
     })
-  }
+  }, [])
 
   const displayInfo = (title, message) => {
     dispatch({

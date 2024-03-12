@@ -113,8 +113,11 @@ const Login = () => {
                   </form>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
-                <CCardBody className="text-center">
+              <CCard
+                className="text-white bg-gray py-5"
+                style={{ width: '44%', 'background-color': 'gray' }}
+              >
+                <CCardBody className="text-center fw-semibold">
                   <div>
                     {/* <h2>{labels.login.action.inscrire}</h2> */}
                     <h2> </h2>
