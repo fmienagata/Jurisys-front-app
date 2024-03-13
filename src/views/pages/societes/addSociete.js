@@ -44,7 +44,7 @@ const AddSociete = () => {
               <CCardBody className="p-4">
                 <form onSubmit={handleSubmit(handleAddSociete)}>
                   {/* <h1>{labels.registre.titleHeader}</h1> */}
-                  <p className="text-body-secondary">Ajouter une societe</p>
+                  <p className="text-body-secondary">Ajouter une entreprise</p>
 
                   <CInputGroup className="mb-3">
                     <CCol>

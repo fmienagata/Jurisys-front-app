@@ -38,6 +38,7 @@ const Table = forwardRef(
       columns,
       data,
       onDelete,
+      isActif,
       fromPage,
       manualPagination = false,
       onSelectedRowChange,
@@ -67,6 +68,13 @@ const Table = forwardRef(
 
     const [openSociete, setOpenSociete] = useState(false)
     const [societe, setSociete] = useState(false)
+
+    console.log('title=>', isActif)
+    const title =
+      isActif === undefined ? 'Désactiver / Supprimer' : isActif ? 'Archiver' : 'Activer'
+    const titleIcon =
+      isActif === undefined ? icon.cilTrash : isActif ? icon.cilPowerStandby : icon.cilFont
+    const colorIcon = isActif === undefined ? 'danger' : isActif ? 'danger' : 'dark'
 
     const generateIconMenu = (hooks) =>
       hooks.visibleColumns.push((columns) => [
@@ -280,13 +288,13 @@ const Table = forwardRef(
                               <CIcon icon={icon.cilPen} size="sm" />
                             </CButton>
                             <CButton
-                              title="Désactiver / Supprimer"
-                              color="danger"
+                              title={title}
+                              color={colorIcon}
                               variant="ghost"
                               size="sm"
                               onClick={() => onDelete(row.original.id)}
                             >
-                              <CIcon icon={icon.cilTrash} size="sm" />
+                              <CIcon icon={titleIcon} size="sm" />
                             </CButton>
                           </CTableDataCell>
                         )

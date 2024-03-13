@@ -26,14 +26,13 @@ const useDashboardData = (property, fetchDataAction) => {
           setLoading(false)
         })
         .catch((error) => {
-          displayError('yes error' + property)
-
-          setLoading(false)
+          displayError('erreur lors de chargements des données')
+          // setLoading(false)
         })
     } else {
       setCount(dashboardDataStore[property])
     }
-  }, [dashboardDataStore, dispatch, displayError, fetchDataAction, property])
+  }, [dashboardDataStore, dispatch, fetchDataAction])
 
   return { count, loading }
 }

@@ -78,16 +78,16 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Comptabilités',
-    to: '/accounting',
+    name: 'Factures',
+    to: '/factures',
     icon: <CIcon icon={cilCalculator} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: 'Gestion des droits',
-    to: '/right',
-    icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'Gestion des droits',
+  //   to: '/right',
+  //   icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
+  // },
   {
     component: CNavItem,
     name: 'Agenda',
@@ -97,7 +97,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Abonnement',
-    to: '/factures',
+    to: '/abonnement',
     icon: <CIcon icon={cilEuro} customClassName="nav-icon" />,
   },
 ]

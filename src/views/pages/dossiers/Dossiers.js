@@ -15,7 +15,7 @@ import * as icon from '@coreui/icons'
 import { getDossiers, deleteDossier } from '../../../services/dossiersService'
 import { useDispatch } from 'react-redux'
 import ModalAction from 'src/components/ModalAction'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useMessageContext } from 'src/Context/MessageContext'
 import Styles from './../../../table/TableStyles'
 import { handleErrorResponse } from '../../../utils/handleErrorResponse'
@@ -23,6 +23,9 @@ import { filtredValues } from 'src/utils/utils'
 
 const Dossiers = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+  const [isActif, setIsActif] = useState()
+
   const { displayError, displaySuccess } = useMessageContext()
   const tableRefDossiers = useRef(typeof useRowSelect)
   const [currentPage, setCurrentPage] = useState(0)
@@ -94,10 +97,11 @@ const Dossiers = () => {
     try {
       const dossiersData = await getDossiers()
       if (Array.isArray(dossiersData)) {
-        setDossiers(dossiersData)
-        setDossiersInitial(dossiersData)
+        const filteredData = dossiersData.filter((item) => item.statut === isActif)
+        setDossiers(filteredData)
+        setDossiersInitial(filteredData)
         setColumns(columnsDossiers)
-        dispatch({ type: 'GET_DATA_DOSSIERS', payload: dossiersData })
+        dispatch({ type: 'GET_DATA_DOSSIERS', payload: filteredData })
       } else {
         displayError(
           'Erreur : Impossible de récupérer les données ou données malformé . Veuillez réessayer plus tard.',
@@ -110,11 +114,16 @@ const Dossiers = () => {
     }
     setLoading(false)
   }
+  useEffect(() => {
+    // Code à exécuter à chaque changement de route
+    console.log('Nouvelle route :', isActif)
+    setIsActif(location.pathname.includes('actifs')) // Votre logique de gestion des routes ici
+  }, [location])
 
   useEffect(() => {
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [isActif])
 
   const handleDelete = (dossierId) => {
     setOpenModal(true)
@@ -210,6 +219,7 @@ const Dossiers = () => {
                       onSelectedRowChange={setSelection}
                       setOpenModal={setOpenModal}
                       onDelete={handleDelete}
+                      isActif={isActif}
                     />
                   </CCardBody>
                 )}
