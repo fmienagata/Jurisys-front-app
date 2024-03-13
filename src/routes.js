@@ -85,7 +85,7 @@ const routes = [
   },
   {
     path: '/new-societe',
-    name: 'Ajouter une societe',
+    name: 'Ajouter une entreprise',
     element: addSociete,
     exact: true,
   },

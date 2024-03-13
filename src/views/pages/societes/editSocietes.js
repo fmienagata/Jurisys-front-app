@@ -45,11 +45,11 @@ const EditSociete = () => {
               <CCardBody className="p-4">
                 <form onSubmit={handleSubmit(handleEditSociete)}>
                   {/* <h1>{labels.registre.titleHeader}</h1> */}
-                  <p className="text-body-secondary">Modifier une societe</p>
+                  <p className="text-body-secondary">Modifier une entreprise</p>
 
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Nom de la société/Syndic </CHeaderText>
+                      <CHeaderText> Nom de l entreprise/Syndic </CHeaderText>
                       <Controller
                         name="label"
                         control={control}
