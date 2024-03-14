@@ -5,7 +5,6 @@ import { capitalizeFirstLetter } from 'src/utils/utils'
 
 const InformationCard = ({ dataDossier }) => {
   const { id, dossierFiles, messages, ...dataInfos } = dataDossier
-  console.log('messages -> ', typeof messages)
   const [lengthLimit, setLengthLimit] = useState(8)
 
   const dataEntries = Object.entries(dataInfos)

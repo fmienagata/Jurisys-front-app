@@ -99,7 +99,7 @@ const Users = () => {
       if (userIDDelete !== '') {
         await deleteUser(userIDDelete)
       } else {
-        console.log('selection pour delete =>', selection)
+        // console.log('selection pour delete =>', selection)
       }
 
       displaySuccess('Supprimer avec sucess')

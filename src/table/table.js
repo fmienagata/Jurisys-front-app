@@ -69,7 +69,6 @@ const Table = forwardRef(
     const [openSociete, setOpenSociete] = useState(false)
     const [societe, setSociete] = useState(false)
 
-    console.log('title=>', isActif)
     const title =
       isActif === undefined ? 'Désactiver / Supprimer' : isActif ? 'Archiver' : 'Activer'
     const titleIcon =

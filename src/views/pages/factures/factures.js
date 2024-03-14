@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useRowSelect } from 'react-table'
 import Table from 'src/table/table'
 import CIcon from '@coreui/icons-react'
@@ -11,6 +11,7 @@ import { filtredValues } from 'src/utils/utils'
 import { useMessageContext } from 'src/Context/MessageContext'
 import Styles from './../../../table/TableStyles'
 import { useGetAllFactures } from 'src/services/factureService'
+import { useQueryClient } from 'react-query'
 
 const Factures = () => {
   const tableRefFacture = useRef(typeof useRowSelect)
@@ -23,8 +24,9 @@ const Factures = () => {
   const [selection, setSelection] = useState([])
   const [openModal, setOpenModal] = useState(false)
   //const [IDDelete, setIDDelete] = useState('')
+  const queryClient = useQueryClient()
 
-  const { isLoading } = useGetAllFactures({
+  const { dataFactures: dataFacturesAPI, isLoading } = useGetAllFactures({
     onSuccess: (data) => {
       setDataFactures(data.data)
       setInitialFactures(data.data)
@@ -33,6 +35,15 @@ const Factures = () => {
       displayError('Erreur lors de la requête dans le composant !')
     },
   })
+
+  useEffect(() => {
+    if (!isLoading && dataFacturesAPI) {
+      setDataFactures(dataFacturesAPI.data)
+      setInitialFactures(dataFacturesAPI.data)
+    } else {
+      queryClient.invalidateQueries(['getAllFactures'])
+    }
+  }, [isLoading, dataFacturesAPI])
 
   const columnsFacture = [
     {

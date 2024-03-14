@@ -5,7 +5,7 @@ import {
   getCountBusiness,
   getDashboardMessages,
   getDashboardGraphes,
-} from 'src/services/dashboard'
+} from 'src/services/dashboardService'
 
 export const fetchDataCountUsers = () => {
   return async (dispatch) => {
@@ -55,7 +55,6 @@ export const fetchDataMessages = () => {
   return async (dispatch) => {
     try {
       const response = await getDashboardMessages()
-      console.log('response-->', response)
       dispatch({ type: 'GET_MESSAGES', payload: response })
     } catch (error) {
       // dispatch(fetchCountUsersError(error.message))
@@ -67,7 +66,6 @@ export const fetchDataGraphs = () => {
   return async (dispatch) => {
     try {
       const response = await getDashboardGraphes()
-      console.log('response fetchDataGraphs-->', response)
       dispatch({ type: 'GET_DATA_GRAPH', payload: response })
     } catch (error) {
       // dispatch(fetchCountUsersError(error.message))

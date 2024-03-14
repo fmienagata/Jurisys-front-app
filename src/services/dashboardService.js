@@ -1,4 +1,5 @@
 import Axios from 'src/services/axiosConfig'
+import { useQuery } from 'react-query'
 
 const getCountUsersActifs = async () => {
   const response = await Axios.get('/api/users?count=true')
@@ -30,6 +31,30 @@ const getDashboardGraphes = async () => {
   return response.data
 }
 
+const useGetAllAgenda = (config = {}) => {
+  const {
+    data: dataMessagesTypes,
+    isLoading,
+    refetch,
+    ...rest
+  } = useQuery(
+    ['getAgenda'],
+    () =>
+      Axios.get('/api/messages?criteria=dateAudienceStart:2024-03-01,dateAudienceEnd:2024-03-31'),
+    {
+      ...config,
+      staleTime: Infinity,
+    },
+  )
+
+  return {
+    dataMessagesTypes: dataMessagesTypes,
+    isLoading,
+    refetch: refetch,
+    ...rest,
+  }
+}
+
 export {
   getCountUsersActifs,
   getCountDossiersActifs,
@@ -37,4 +62,5 @@ export {
   getCountBusiness,
   getDashboardMessages,
   getDashboardGraphes,
+  useGetAllAgenda,
 }

@@ -17,16 +17,17 @@ const updateSociete = async (id, data) => {
 }
 
 const useGetAllSocietes = (config = {}) => {
-  const { data, isLoading, refetch, ...rest } = useQuery(
-    ['getAllSocietes'],
-    () => Axios.get('/api/societes'),
-    {
-      ...config,
-    },
-  )
+  const {
+    data: dataSocietesAPI,
+    isLoading,
+    refetch,
+    ...rest
+  } = useQuery(['getAllSocietes'], () => Axios.get('/api/societes'), {
+    ...config,
+  })
 
   return {
-    data,
+    dataSocietesAPI,
     isLoading,
     refetch: refetch,
     ...rest,

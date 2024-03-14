@@ -18,7 +18,6 @@ import { capitalizeFirstLetter } from 'src/utils/utils'
 const ModalSociete = (props) => {
   // eslint-disable-next-line react/prop-types
   const { openSociete, setOpenSociete, action, dataSocietes } = props
-  console.log('dataMessage =>', dataSocietes)
   const { id, ...newData } = dataSocietes
 
   function getKeyName(key) {
