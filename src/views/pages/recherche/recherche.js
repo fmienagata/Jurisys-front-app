@@ -76,7 +76,6 @@ const Recherche = () => {
 
   useEffect(() => {
     setLoading(true)
-    console.log('useEffect --> dossiers--> ', dossiers)
     setLoading(false)
   }, [dossiers])
 
@@ -90,7 +89,7 @@ const Recherche = () => {
       if (dossierIDDelete !== '') {
         await deleteDossier(dossierIDDelete)
       } else {
-        console.log('selection pour delete =>', selection)
+        //console.log('selection pour delete =>', selection)
       }
 
       displaySuccess('Supprimer avec sucess')

@@ -22,19 +22,12 @@ import { getUsers } from 'src/services/usersService'
 const Register = () => {
   const { control, handleSubmit } = useForm()
 
-  const handleRegistre = (data) => {
-    console.log('handleRegistre', data)
-  }
+  const handleRegistre = (data) => {}
 
   useEffect(() => {
-    // Use the getUsers function from the userService
     getUsers()
-      .then((data) => {
-        console.log('data -->', data)
-      })
-      .catch((error) => {
-        // Handle errors if needed
-      })
+      .then((data) => {})
+      .catch((error) => {})
   }, [])
 
   return (

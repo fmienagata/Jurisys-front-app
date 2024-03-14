@@ -23,7 +23,6 @@ const AddUser = () => {
   const { displaySuccess, displayError } = useMessageContext()
 
   const handleAddUser = async (data) => {
-    console.log('handleAddUser call API ', data)
     try {
       await addUser(data)
       displaySuccess("L'utilisateur a bien été créé avec sucess")

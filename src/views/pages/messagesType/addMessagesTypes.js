@@ -25,7 +25,6 @@ const CreateMessageType = () => {
   const { displaySuccess, displayError } = useMessageContext()
 
   const handleCreateMessagesTypes = async (data) => {
-    console.log('new message call API ', data)
     try {
       await addMessageType(data)
       displaySuccess('Le message a bien été créé avec sucess')

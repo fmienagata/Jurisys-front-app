@@ -25,7 +25,6 @@ const EditSociete = () => {
   const { control, handleSubmit } = useForm()
 
   const handleEditSociete = async (data) => {
-    console.log('handleAddSociete call API ', data)
     try {
       await updateSociete(state.data.id, data)
       displaySuccess('Societe a bien été créé avec sucess')

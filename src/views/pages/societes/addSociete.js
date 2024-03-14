@@ -24,7 +24,6 @@ const AddSociete = () => {
   const { displaySuccess, displayError } = useMessageContext()
 
   const handleAddSociete = async (data) => {
-    console.log('handleAddSociete call API ', data)
     try {
       await addSociete(data)
       displaySuccess("L'utilisateur a bien été créé avec sucess")

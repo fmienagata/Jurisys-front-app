@@ -17,7 +17,6 @@ import { capitalizeFirstLetter } from 'src/utils/utils'
 const ModalMessage = (props) => {
   // eslint-disable-next-line react/prop-types
   const { openModal, setOpenModal, action, dataMessage } = props
-  console.log('dataMessage =>', dataMessage)
   const { id, messageFiles, ...newData } = dataMessage
 
   function getKeyName(key) {

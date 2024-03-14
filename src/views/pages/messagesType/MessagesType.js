@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import {
   CCard,
   CCardBody,
@@ -18,9 +18,12 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { filtredValues } from 'src/utils/utils'
 import { useGetAllMessagesTypes } from 'src/services/messagesTypesService'
+import { useQueryClient } from 'react-query'
 
 const MessagesType = () => {
   const tableRefMsgsTypes = useRef(typeof useRowSelect)
+  const queryClient = useQueryClient()
+
   const navigate = useNavigate()
 
   const [currentPage, setCurrentPage] = useState(0)
@@ -54,7 +57,6 @@ const MessagesType = () => {
 
   const { dataMessagesTypes, isLoading, refetch } = useGetAllMessagesTypes({
     onSuccess: (dataMessagesTypes) => {
-      console.log('Requête réussie dans le composant !', dataMessagesTypes)
       setInitialMessages(dataMessagesTypes.data)
       setDataSave(dataMessagesTypes.data)
     },
@@ -68,6 +70,15 @@ const MessagesType = () => {
     const result = initialMessages && filtredValues(dataSave, filter)
     setInitialMessages(filter === '' ? dataSave : result)
   }
+
+  useEffect(() => {
+    if (!isLoading && dataMessagesTypes) {
+      setInitialMessages(dataMessagesTypes.data)
+      setDataSave(dataMessagesTypes.data)
+    } else {
+      queryClient.invalidateQueries(['getAllMsgs'])
+    }
+  }, [isLoading, dataMessagesTypes])
 
   return (
     <div>

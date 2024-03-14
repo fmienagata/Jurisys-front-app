@@ -128,7 +128,7 @@ const FormRecherche = ({ setDossiers }) => {
                             <Controller
                               name="statusDossier"
                               control={control}
-                              defaultValue={'1'}
+                              defaultValue={'true'}
                               render={({ field }) => (
                                 <>
                                   <CFormCheck
@@ -136,8 +136,8 @@ const FormRecherche = ({ setDossiers }) => {
                                     id="actif"
                                     label="Dossiers actifs"
                                     {...field}
-                                    value="1"
-                                    checked={field.value === '1'}
+                                    value={true}
+                                    checked={field.value === 'true'}
                                   />
                                   <span style={{ marginRight: '20px' }}></span>
                                   <CFormCheck
@@ -145,8 +145,8 @@ const FormRecherche = ({ setDossiers }) => {
                                     id="archive"
                                     label="Dossiers archivés"
                                     {...field}
-                                    value="0"
-                                    checked={field.value === '0'}
+                                    value={false}
+                                    checked={field.value === 'false'}
                                   />
                                 </>
                               )}

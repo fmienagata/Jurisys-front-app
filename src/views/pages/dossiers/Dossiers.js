@@ -116,7 +116,6 @@ const Dossiers = () => {
   }
   useEffect(() => {
     // Code à exécuter à chaque changement de route
-    console.log('Nouvelle route :', isActif)
     setIsActif(location.pathname.includes('actifs')) // Votre logique de gestion des routes ici
   }, [location])
 
@@ -135,7 +134,7 @@ const Dossiers = () => {
       if (dossierIDDelete !== '') {
         await deleteDossier(dossierIDDelete)
       } else {
-        console.log('selection pour delete =>', selection)
+        //console.log('selection pour delete =>', selection)
       }
 
       displaySuccess('Supprimer avec sucess')
@@ -149,7 +148,7 @@ const Dossiers = () => {
   }
 
   function DeleteMultiDossiers() {
-    console.log('selection =>', selection)
+    //console.log('selection =>', selection)
     setOpenModal(true)
   }
 

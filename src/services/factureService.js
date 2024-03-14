@@ -17,16 +17,17 @@ const updateFacture = async (id, data) => {
 }
 
 const useGetAllFactures = (config = {}) => {
-  const { data, isLoading, refetch, ...rest } = useQuery(
-    ['getAllFactures'],
-    () => Axios.get('/api/factures'),
-    {
-      ...config,
-    },
-  )
+  const {
+    data: dataFactures,
+    isLoading,
+    refetch,
+    ...rest
+  } = useQuery(['getAllFactures'], () => Axios.get('/api/factures'), {
+    ...config,
+  })
 
   return {
-    data,
+    dataFactures,
     isLoading,
     refetch: refetch,
     ...rest,

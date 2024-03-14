@@ -22,7 +22,7 @@ const useGetAllMessagesTypes = (config = {}) => {
     isLoading,
     refetch,
     ...rest
-  } = useQuery(['getAllMsgs'], () => Axios.get('/api/messages_type'), {
+  } = useQuery(['getAllMsgsType'], () => Axios.get('/api/messages_type'), {
     ...config,
   })
 

@@ -8,7 +8,7 @@ const AppFooter = () => {
         <span className="ms-1">&copy; jurisys-soft 2024 .</span>
       </div>
       <div>
-        <span className="ml-6">V1.0.7</span>
+        <span className="ml-6">V1.0.8</span>
       </div>
       <div className="ms-auto">
         <span className="me-1">Cabinet Brudey Ondziel Gnelenga Locko</span>

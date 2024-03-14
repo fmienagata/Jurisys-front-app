@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useRowSelect } from 'react-table'
 import Table from 'src/table/table'
 import CIcon from '@coreui/icons-react'
@@ -11,8 +11,13 @@ import { filtredValues } from 'src/utils/utils'
 import { useMessageContext } from 'src/Context/MessageContext'
 import Styles from './../../../table/TableStyles'
 import { useGetAllSocietes } from 'src/services/societeService'
+import { useQueryClient } from 'react-query'
+import { useAuth } from 'src/Context/AuthContext'
 
 const Societes = () => {
+  const { disconnect } = useAuth()
+  const queryClient = useQueryClient()
+
   const tableRefUsers = useRef(typeof useRowSelect)
   const navigate = useNavigate()
   const { displayError } = useMessageContext()
@@ -24,15 +29,26 @@ const Societes = () => {
   const [openModal, setOpenModal] = useState(false)
   //  const [IDDelete, setIDDelete] = useState('')
 
-  const { data, isLoading, refetch } = useGetAllSocietes({
+  const { dataSocietesAPI, isLoading, refetch } = useGetAllSocietes({
     onSuccess: (data) => {
       setDataSocietes(data.data)
       setInitialSocietes(data.data)
     },
     onError: (error) => {
       displayError('Erreur lors de la requête dans le composant !')
+      disconnect()
+      navigate('/login')
     },
   })
+
+  useEffect(() => {
+    if (!isLoading && dataSocietesAPI) {
+      setDataSocietes(dataSocietesAPI.data)
+      setInitialSocietes(dataSocietesAPI.data)
+    } else {
+      queryClient.invalidateQueries(['getAllSocietes'])
+    }
+  }, [isLoading, dataSocietesAPI])
 
   const columnsSocietes = [
     {

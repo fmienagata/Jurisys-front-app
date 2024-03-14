@@ -17,7 +17,6 @@ const Dossier = () => {
     setLoading(true)
     try {
       const messagesData = await getMessagesDossier(state.data.id)
-      console.log('messagesData -> ', messagesData)
       setMessages(messagesData)
       setLoading(false)
     } catch (error) {

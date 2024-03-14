@@ -14,7 +14,6 @@ const Dashboard = () => {
   const dispatch = useDispatch()
   const { displayError } = useMessageContext()
   const messagesStore = useSelector((state) => state.dashboard.messages)
-  console.log('messagesStore-->', messagesStore)
   const [loading, setLoading] = useState(false)
 
   const [messages, setMessages] = useState([])
@@ -22,7 +21,6 @@ const Dashboard = () => {
   const fetchData = async () => {
     try {
       const messagesData = await getAllMessages()
-      console.log('messagesData -->', messagesData.slice(0, 5))
       if (Array.isArray(messagesData)) {
         setMessages(messagesData.slice(0, 5))
         // setColumns(columnsMessages)
@@ -71,7 +69,7 @@ const Dashboard = () => {
             <GraphDashBoard />
           </CRow>
           <CRow>
-            <CCard style={{ margin: 0, padding: 0 }}>
+            <CCard>
               <CCardHeader>Audiences du mois</CCardHeader>
               <CCardBody>
                 <MyCalendar isDashboard={true} />
