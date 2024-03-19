@@ -60,22 +60,28 @@ const _nav = [
   },
   {
     component: CNavGroup,
-    name: 'Messageries',
+    name: 'La messagerie',
     to: '/messages',
     icon: <CIcon icon={cilSpeech} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Messages pré-rédigés',
-        to: '/messages/prewritten',
+        name: 'Messages reçus',
+        to: '/messages/messaging',
       },
       {
         component: CNavItem,
-        name: 'La messagerie',
-        to: '/messages/messaging',
+        name: 'Messages transmises',
+        to: '/messages/send',
+      },
+      {
+        component: CNavItem,
+        name: 'Messages pré-rédigés',
+        to: '/messages/prewritten',
       },
     ],
   },
+
   {
     component: CNavItem,
     name: 'Factures',

@@ -48,17 +48,13 @@ const EditSociete = () => {
 
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Nom de l entreprise/Syndic </CHeaderText>
+                      <CHeaderText> Nom de l entreprise </CHeaderText>
                       <Controller
                         name="label"
                         control={control}
                         defaultValue={state.data.label}
                         render={({ field }) => (
-                          <CFormInput
-                            {...field}
-                            id="label"
-                            placeholder="Nom de la société/Syndic"
-                          />
+                          <CFormInput {...field} id="label" placeholder={`Nom de l'entreprise`} />
                         )}
                       />
                     </CCol>

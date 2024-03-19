@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { CCard, CCardHeader, CListGroup, CListGroupItem, CCol, CRow, CButton } from '@coreui/react'
 import PropTypes from 'prop-types'
-import { capitalizeFirstLetter } from 'src/utils/utils'
+import { capitalizeFirstLetter, formatFrenchDate } from 'src/utils/utils'
 
 const InformationCard = ({ dataDossier }) => {
   const { id, dossierFiles, messages, ...dataInfos } = dataDossier
@@ -25,6 +25,14 @@ const InformationCard = ({ dataDossier }) => {
     return capitalizeFirstLetter(result)
   }
 
+  function getKeyValue(key, value) {
+    let result = ''
+    if (key === 'updatedAt' || key === 'createdAt') result = formatFrenchDate(value)
+    else result = value
+
+    return capitalizeFirstLetter(result)
+  }
+
   const generateMetadatas = (metadataSpliced) => {
     return (
       <div>
@@ -35,7 +43,7 @@ const InformationCard = ({ dataDossier }) => {
                 {getKeyName(key)}
               </CCol>
               <CCol className="text-start" xs={6}>
-                <b>{value === null ? '---' : capitalizeFirstLetter(value)}</b>
+                <b>{value === null ? '---' : getKeyValue(key, value)}</b>
               </CCol>
             </CRow>
           </CListGroupItem>

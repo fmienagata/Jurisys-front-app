@@ -27,4 +27,23 @@ function filtredValues(data, filter) {
   )
 }
 
-export { removeEmptyAttributes, generateQueryString, capitalizeFirstLetter, filtredValues }
+function formatFrenchDate(dateString) {
+  const dateObj = new Date(dateString)
+  const options = {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }
+  const formattedDate = dateObj.toLocaleDateString('fr-FR', options)
+  return formattedDate.replace(',', ' à')
+}
+
+export {
+  formatFrenchDate,
+  removeEmptyAttributes,
+  generateQueryString,
+  capitalizeFirstLetter,
+  filtredValues,
+}
