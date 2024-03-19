@@ -19,10 +19,11 @@ import moment from 'moment'
 const MessagesView = ({ messages, isDashboard }) => {
   const [openMessage, setOpenMessage] = useState(false)
   const [keyForModal, setKeyForModal] = useState(0)
+  const title = isDashboard ? 'Derniers messages' : 'Listes des messages'
   return (
     <>
       <CCard>
-        <CCardHeader className="text-center">Listes des messages</CCardHeader>
+        <CCardHeader className="text-center">{title}</CCardHeader>
         <CListGroup flush>
           {messages &&
             messages.map((item, key) => (

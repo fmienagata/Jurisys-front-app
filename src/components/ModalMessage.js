@@ -28,6 +28,9 @@ const ModalMessage = (props) => {
       case 'updatedAt':
         result = 'Mis à jour'
         break
+      case 'user':
+        result = 'Utilisateur'
+        break
       default:
         result = key
     }

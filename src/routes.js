@@ -13,6 +13,7 @@ const dossierEdit = React.lazy(() => import('./views/pages/dossiers/EditDossiers
 const recherche = React.lazy(() => import('./views/pages/recherche/recherche'))
 //messagesTypes
 const messagesType = React.lazy(() => import('./views/pages/messagesType/MessagesType'))
+const messageries = React.lazy(() => import('./views/pages/messagesType/Messageries'))
 const newMessagesType = React.lazy(() => import('./views/pages/messagesType/addMessagesTypes'))
 const editMessagesType = React.lazy(() => import('./views/pages/messagesType/editMessageType'))
 // Agenda
@@ -56,6 +57,12 @@ const routes = [
     path: '/messages/prewritten/new',
     name: 'Ajouter un messages pré-rédigés',
     element: newMessagesType,
+    exact: true,
+  },
+  {
+    path: '/messages/messaging',
+    name: 'Messageries',
+    element: messageries,
     exact: true,
   },
   {

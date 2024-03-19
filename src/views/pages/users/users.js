@@ -34,10 +34,10 @@ const Users = () => {
       Header: 'Username',
       accessor: 'username',
     },
-    {
-      Header: 'UserIdentifier',
-      accessor: 'userIdentifier',
-    },
+    // {
+    //   Header: 'UserIdentifier',
+    //   accessor: 'userIdentifier',
+    // },
     {
       Header: 'Societe',
       accessor: 'societe',

@@ -1,4 +1,5 @@
 import Axios from 'src/services/axiosConfig'
+import { useQuery } from 'react-query'
 import { generateQueryString } from './../utils/utils'
 
 const addDossier = async (dossier) => {
@@ -54,6 +55,25 @@ function getRechercheDossiers(data) {
   })
 }
 
+const useGetAllDossiers = (config = {}) => {
+  const {
+    data: dossiers,
+    isLoading,
+    refetch,
+    ...rest
+  } = useQuery(['getAllDossiers'], () => getDossiers(), {
+    ...config,
+    staleTime: Infinity,
+  })
+
+  return {
+    dossiers: dossiers,
+    isLoading,
+    refetch: refetch,
+    ...rest,
+  }
+}
+
 export {
   addDossier,
   createDossier,
@@ -63,4 +83,5 @@ export {
   getDossierID,
   getMessagesDossier,
   getRechercheDossiers,
+  useGetAllDossiers,
 }

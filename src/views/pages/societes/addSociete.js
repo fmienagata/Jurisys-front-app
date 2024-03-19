@@ -47,13 +47,13 @@ const AddSociete = () => {
 
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Nom de la société/Syndic </CHeaderText>
+                      <CHeaderText>{`Nom de l'entreprise`}</CHeaderText>
                       <Controller
                         name="nom"
                         control={control}
                         defaultValue=""
                         render={({ field }) => (
-                          <CFormInput {...field} id="nom" placeholder="Nom de la société/Syndic" />
+                          <CFormInput {...field} id="nom" placeholder={`Nom de l'entreprise`} />
                         )}
                       />
                     </CCol>
