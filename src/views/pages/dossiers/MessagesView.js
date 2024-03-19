@@ -16,7 +16,7 @@ import PropTypes from 'prop-types'
 import ModalMessage from '../../../components/ModalMessage'
 import moment from 'moment'
 
-const MessagesView = ({ messages, isDashboard }) => {
+const MessagesView = ({ messages, isDashboard, setListPJ, setOpenModalPJ, setTitleModal }) => {
   const [openMessage, setOpenMessage] = useState(false)
   const [keyForModal, setKeyForModal] = useState(0)
   const title = isDashboard ? 'Derniers messages' : 'Listes des messages'
@@ -35,7 +35,7 @@ const MessagesView = ({ messages, isDashboard }) => {
                         <small className="text-medium-emphasis">
                           {item.createdAt === null
                             ? '---'
-                            : moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}
+                            : moment(item.createdAt).format('YYYY-MM-DD HH:mm')}
                         </small>
                       </CRow>
                     </CCol>
@@ -46,17 +46,22 @@ const MessagesView = ({ messages, isDashboard }) => {
                     </CCol>
                     {!isDashboard && (
                       <CCol className="text-end" xs={4}>
-                        <CButton
-                          color="success"
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => {
-                            setKeyForModal(key)
-                            setOpenMessage(true)
-                          }}
-                        >
-                          <CIcon icon={icon.cilFolderOpen} size="sm" />
-                        </CButton>
+                        {messages[key].messageFiles.length > 0 && (
+                          <CButton
+                            color="success"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              setKeyForModal(key)
+                              //setOpenMessage(true)
+                              setTitleModal('Listes des piéces jointes du message' + item.type)
+                              setListPJ(messages[key].messageFiles)
+                              setOpenModalPJ(true)
+                            }}
+                          >
+                            <CIcon icon={icon.cilFolderOpen} size="sm" />
+                          </CButton>
+                        )}
                         <CButton color="success" variant="ghost" size="sm">
                           <CIcon icon={icon.cilTrash} size="sm" />
                         </CButton>
@@ -329,6 +334,9 @@ const MessagesView = ({ messages, isDashboard }) => {
 MessagesView.propTypes = {
   isDashboard: PropTypes.bool,
   messages: PropTypes.array,
+  setListPJ: PropTypes.func,
+  setTitleModal: PropTypes.string,
+  setOpenModalPJ: PropTypes.func,
 }
 
 export default MessagesView

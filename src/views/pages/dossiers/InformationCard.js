@@ -1,9 +1,20 @@
 import React, { useState } from 'react'
-import { CCard, CCardHeader, CListGroup, CListGroupItem, CCol, CRow, CButton } from '@coreui/react'
+import {
+  CCard,
+  CCardHeader,
+  CListGroup,
+  CListGroupItem,
+  CCol,
+  CRow,
+  CButton,
+  CCardTitle,
+} from '@coreui/react'
 import PropTypes from 'prop-types'
 import { capitalizeFirstLetter, formatFrenchDate } from 'src/utils/utils'
+import CIcon from '@coreui/icons-react'
+import * as icon from '@coreui/icons'
 
-const InformationCard = ({ dataDossier }) => {
+const InformationCard = ({ dataDossier, setListPJ, setOpenModalPJ, setTitleModal }) => {
   const { id, dossierFiles, messages, ...dataInfos } = dataDossier
   const [lengthLimit, setLengthLimit] = useState(8)
 
@@ -54,7 +65,32 @@ const InformationCard = ({ dataDossier }) => {
 
   return (
     <CCard>
-      <CCardHeader className="text-center">Information</CCardHeader>
+      <CCardHeader className="text-center">
+        <CRow>
+          <CCol className="text-start" xs={6}>
+            <CCardTitle>
+              <small>Information</small>
+            </CCardTitle>
+          </CCol>
+          {/* <CCol className="text-center" xs={3}></CCol> */}
+          <CCol className="text-end" xs={6}>
+            <CButton
+              color="success"
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                console.log('dossierFiles --> ', dossierFiles)
+
+                setTitleModal('Listes des piéces jointes du dossier' + slicedData['reference'])
+                setListPJ(dossierFiles)
+                setOpenModalPJ(true)
+              }}
+            >
+              <CIcon icon={icon.cilFolderOpen} size="sm" />
+            </CButton>
+          </CCol>
+        </CRow>
+      </CCardHeader>
       <CListGroup flush>{generateMetadatas(slicedData)}</CListGroup>
       {lengthLimit === 8 ? (
         <CButton
@@ -74,6 +110,9 @@ const InformationCard = ({ dataDossier }) => {
 }
 
 InformationCard.propTypes = {
+  setListPJ: PropTypes.string,
+  setOpenModalPJ: PropTypes.string,
+  setTitleModal: PropTypes.string,
   dataDossier: PropTypes.shape({
     id: PropTypes.string,
     dossierFiles: PropTypes.array,

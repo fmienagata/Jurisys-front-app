@@ -1,0 +1,83 @@
+import React from 'react'
+import {
+  CButton,
+  CCol,
+  CModal,
+  CModalBody,
+  CModalFooter,
+  CModalHeader,
+  CModalTitle,
+  CListGroupItem,
+  CCardHeader,
+  CListGroup,
+  CRow,
+} from '@coreui/react'
+import CIcon from '@coreui/icons-react'
+import * as icon from '@coreui/icons'
+import PropTypes from 'prop-types'
+import { capitalizeFirstLetter, formatFrenchDate } from 'src/utils/utils'
+
+const ModalPiecesJointes = (props) => {
+  // eslint-disable-next-line react/prop-types
+  const { openModal, action, titleModal, setOpenModalPJ, listPJ } = props
+
+  return (
+    <>
+      <CModal
+        visible={openModal}
+        onClose={() => setOpenModalPJ(false)}
+        aria-labelledby="VerticallyCenteredExample"
+        alignment="center"
+        size="lg"
+      >
+        <CModalHeader>
+          <CModalTitle className="text-end">Listes des piéces jointes</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <CListGroup flush>
+            {listPJ &&
+              // eslint-disable-next-line react/prop-types
+              listPJ.map(
+                (value, key) => (
+                  <CListGroupItem key={key}>
+                    <CRow className="align-items-center">
+                      <CCol className="text-start" xs={1}>
+                        {key + 1}
+                      </CCol>
+                      <CCol className="text-start" xs={8}>
+                        <b>{value === null ? '---' : value.fileName}</b>
+                      </CCol>
+                      <CCol className="text-start" xs={3}>
+                        <CButton color="dark" variant="ghost" size="sm">
+                          <CIcon icon={icon.cilCloudDownload} size="sm" /> Télécharger
+                        </CButton>
+                      </CCol>
+                    </CRow>
+                  </CListGroupItem>
+                ),
+                //console.log('item ', value.fileName),
+              )}
+          </CListGroup>
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setOpenModalPJ(false)}>
+            Fermer
+          </CButton>
+          {action}
+        </CModalFooter>
+      </CModal>
+    </>
+  )
+}
+
+ModalPiecesJointes.propTypes = {
+  listPJ: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    filePath: PropTypes.string,
+    fileName: PropTypes.string,
+    updatedAt: PropTypes.string,
+    createdAt: PropTypes.string,
+  }),
+}
+
+export default ModalPiecesJointes
