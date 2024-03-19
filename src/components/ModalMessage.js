@@ -12,12 +12,14 @@ import {
   CRow,
 } from '@coreui/react'
 import PropTypes from 'prop-types'
-import { capitalizeFirstLetter } from 'src/utils/utils'
+import { capitalizeFirstLetter, formatFrenchDate } from 'src/utils/utils'
 
 const ModalMessage = (props) => {
   // eslint-disable-next-line react/prop-types
   const { openModal, setOpenModal, action, dataMessage } = props
   const { id, messageFiles, ...newData } = dataMessage
+
+  console.log('newData --> ', newData)
 
   function getKeyName(key) {
     let result = ''
@@ -33,6 +35,27 @@ const ModalMessage = (props) => {
         break
       default:
         result = key
+    }
+    return capitalizeFirstLetter(result)
+  }
+
+  function getValue(key, value) {
+    let result = ''
+    switch (key) {
+      case 'createdAt':
+        result = formatFrenchDate(value)
+        break
+      case 'updatedAt':
+        result = formatFrenchDate(value)
+        break
+      case 'dateAudience':
+        result = formatFrenchDate(value)
+        break
+      case 'user':
+        result = value.username
+        break
+      default:
+        result = value
     }
     return capitalizeFirstLetter(result)
   }
@@ -60,7 +83,7 @@ const ModalMessage = (props) => {
                       {getKeyName(key)}
                     </CCol>
                     <CCol className="text-start" xs={6}>
-                      <b>{value === null ? '---' : value}</b>
+                      <b>{value === null ? '---' : getValue(key, value)}</b>
                     </CCol>
                   </CRow>
                 </CListGroupItem>
