@@ -13,6 +13,7 @@ import Styles from './../../../table/TableStyles'
 import { useGetAllSocietes } from 'src/services/societeService'
 import { useQueryClient } from 'react-query'
 import { useAuth } from 'src/Context/AuthContext'
+import { handleErrorResponse } from 'src/utils/handleErrorResponse'
 
 const Societes = () => {
   const { disconnect } = useAuth()
@@ -35,9 +36,7 @@ const Societes = () => {
       setInitialSocietes(data.data)
     },
     onError: (error) => {
-      displayError('Erreur lors de la requête dans le composant !')
-      disconnect()
-      navigate('/login')
+      handleErrorResponse(error, disconnect, displayError, navigate)
     },
   })
 
@@ -52,16 +51,28 @@ const Societes = () => {
 
   const columnsSocietes = [
     {
-      Header: 'Code',
-      accessor: 'code',
+      Header: 'Societe',
+      accessor: 'nomSociete',
     },
     {
-      Header: 'Label',
-      accessor: 'label',
+      Header: 'Pays',
+      accessor: 'pays',
     },
     {
-      Header: 'Crée',
-      accessor: 'createdAt',
+      Header: 'Ville',
+      accessor: 'ville',
+    },
+    // {
+    //   Header: 'Code',
+    //   accessor: 'code',
+    // },
+    {
+      Header: 'Adresse',
+      accessor: 'adresse',
+    },
+    {
+      Header: 'Telephone',
+      accessor: 'telephone',
     },
     {
       Header: 'Actions',
