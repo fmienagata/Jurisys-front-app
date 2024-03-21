@@ -10,8 +10,13 @@ import {
   fetchDataCountBusiness,
 } from 'src/dashboardActions'
 import { useMessageContext } from 'src/Context/MessageContext'
+import { handleErrorResponse } from 'src/utils/handleErrorResponse'
+import { useAuth } from 'src/Context/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 const useDashboardData = (property, fetchDataAction) => {
+  const { disconnect } = useAuth()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const { displayError } = useMessageContext()
   const dashboardDataStore = useSelector((state) => state.dashboard)
@@ -26,13 +31,15 @@ const useDashboardData = (property, fetchDataAction) => {
           setLoading(false)
         })
         .catch((error) => {
-          displayError('erreur lors de chargements des données')
-          // setLoading(false)
+          handleErrorResponse(error, disconnect, displayError, navigate)
+
+          setLoading(false)
         })
     } else {
       setCount(dashboardDataStore[property])
     }
-  }, [dashboardDataStore, dispatch, fetchDataAction])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dashboardDataStore[property]])
 
   return { count, loading }
 }

@@ -1,13 +1,15 @@
-const handleErrorResponse = (error) => {
-  console.log('error ---> ', error)
+const handleErrorResponse = (error, disconnect, displayError, navigate) => {
+  // console.log('error ---> ', error)
   var message = ''
   if (error.response) {
     // La requête a été faite, mais le serveur a répondu avec un code d'erreur
-    console.error('Error response status:', error.response.status)
+    console.log('Error response status:', error.response.status)
     // Gérer l'erreur en fonction du statut de réponse
     if (error.response.status === 401) {
       // Gérer l'erreur 401
-      console.log('Unauthorized - Redirect to login')
+      displayError('Votre session a expiré. Veuillez vous reconnecter')
+      disconnect()
+      navigate('/login')
       message = 'Unauthorized - Redirect to login'
     } else {
       // Gérer d'autres erreurs
@@ -16,10 +18,11 @@ const handleErrorResponse = (error) => {
   } else if (error.request) {
     // La requête a été faite, mais aucune réponse n'a été reçue
     console.error('No response received')
-    message = 'No response received'
+    displayError('No response received')
   } else {
     // Une erreur s'est produite lors de la configuration de la requête
-    console.error('Error setting up the request:', error.message)
+    //  console.error('Error setting up the request:', error.message)
+    displayError(`Une erreur s'est produite lors de la configuration de la requête`)
   }
 
   return message

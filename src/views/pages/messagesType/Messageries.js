@@ -33,6 +33,7 @@ import SidebarBox from './components/SidebarBox'
 import './components/style.scss'
 import { useAuth } from 'src/Context/AuthContext'
 import { formatFrenchDate } from 'src/utils/utils'
+import { handleErrorResponse } from '../../../utils/handleErrorResponse'
 
 const Messageries = () => {
   const tableRefMsgsTypes = useRef(typeof useRowSelect)
@@ -54,9 +55,7 @@ const Messageries = () => {
       setDataDossiers(data)
     },
     onError: (error) => {
-      displayError('Erreur lors de la requête dans le composant !')
-      disconnect()
-      navigate('/login')
+      handleErrorResponse(error, disconnect, displayError, navigate)
     },
   })
 

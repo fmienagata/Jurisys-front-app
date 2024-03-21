@@ -20,9 +20,12 @@ import { useMessageContext } from 'src/Context/MessageContext'
 import Styles from './../../../table/TableStyles'
 import { handleErrorResponse } from '../../../utils/handleErrorResponse'
 import { filtredValues } from 'src/utils/utils'
+import { useAuth } from 'src/Context/AuthContext'
 
 const Dossiers = () => {
   const navigate = useNavigate()
+  const { disconnect } = useAuth()
+
   const location = useLocation()
   const [isActif, setIsActif] = useState()
 
@@ -108,8 +111,9 @@ const Dossiers = () => {
         )
       }
     } catch (error) {
-      let msg = handleErrorResponse(error)
-      displayError(msg)
+      //let msg = handleErrorResponse(error)
+      handleErrorResponse(error, disconnect, displayError, navigate)
+      //displayError(msg)
     } finally {
     }
     setLoading(false)

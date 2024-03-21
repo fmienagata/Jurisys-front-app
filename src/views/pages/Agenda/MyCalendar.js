@@ -9,16 +9,22 @@ import { useGetAllAgenda } from 'src/services/dashboardService'
 import { useMessageContext } from 'src/Context/MessageContext'
 import { CSpinner, CCard, CCardBody } from '@coreui/react'
 import { useQueryClient } from 'react-query'
+import { handleErrorResponse } from 'src/utils/handleErrorResponse'
+import { useAuth } from 'src/Context/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 const MyCalendar = ({ isDashboard }) => {
   const { displayError } = useMessageContext()
+  const { disconnect } = useAuth()
+  const navigate = useNavigate()
+
   const queryClient = useQueryClient()
 
   const [dataEvents, setDataEvents] = useState([])
 
-  const { data, isLoading, refetch } = useGetAllAgenda({
-    onSuccess: (dataAgenda) => {
-      const transformedData = dataAgenda.data.map((item) => ({
+  const { dataAgenda, isLoading, refetch } = useGetAllAgenda({
+    onSuccess: (data) => {
+      const transformedData = data.data.map((item) => ({
         type: item.type,
         title: item.text,
         date: item.dateAudience,
@@ -26,17 +32,25 @@ const MyCalendar = ({ isDashboard }) => {
       setDataEvents(transformedData)
     },
     onError: (error) => {
-      //displayError('Erreur lors de la requête dans le composant !')
+      console.log('Error fetching agenda:', error)
+      handleErrorResponse(error, disconnect, displayError, navigate)
     },
   })
 
   useEffect(() => {
-    if (!isLoading && data) {
-      setDataEvents(data.data)
+    if (dataAgenda) {
+      const transformedData = dataAgenda
+        ? dataAgenda.data.map((item) => ({
+            type: item.type,
+            title: item.text,
+            date: item.dateAudience,
+          }))
+        : []
+      setDataEvents(transformedData)
     } else {
-      queryClient.invalidateQueries(['getAgenda'])
+      queryClient.invalidateQueries(['getDataAgenda'])
     }
-  }, [isLoading, data])
+  }, [dataAgenda, queryClient])
 
   const handleDateClick2 = (info) => {
     console.log('Événements de la journée info:', info.dateStr)

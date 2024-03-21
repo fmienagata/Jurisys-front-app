@@ -115,7 +115,7 @@ const Login = () => {
               </CCard>
               <CCard
                 className="text-white bg-gray py-5"
-                style={{ width: '44%', 'background-color': 'gray' }}
+                style={{ width: '44%', backgroundColor: 'gray' }}
               >
                 <CCardBody className="text-center fw-semibold">
                   <div>

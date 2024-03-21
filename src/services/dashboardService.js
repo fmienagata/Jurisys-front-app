@@ -1,5 +1,8 @@
 import Axios from 'src/services/axiosConfig'
 import { useQuery } from 'react-query'
+import { handleErrorResponse } from 'src/utils/handleErrorResponse'
+import { useAuth } from 'src/Context/AuthContext'
+import { useMessageContext } from 'src/Context/MessageContext'
 
 const getCountUsersActifs = async () => {
   const response = await Axios.get('/api/users?count=true')
@@ -32,13 +35,16 @@ const getDashboardGraphes = async () => {
 }
 
 const useGetAllAgenda = (config = {}) => {
+  const { disconnect } = useAuth()
+  const { displayError } = useMessageContext()
+
   const {
-    data: dataMessagesTypes,
+    data: dataAgenda,
     isLoading,
     refetch,
     ...rest
   } = useQuery(
-    ['getAgenda'],
+    ['getDataAgenda'],
     () =>
       Axios.get('/api/messages?criteria=dateAudienceStart:2024-03-01,dateAudienceEnd:2024-03-31'),
     {
@@ -48,7 +54,7 @@ const useGetAllAgenda = (config = {}) => {
   )
 
   return {
-    dataMessagesTypes: dataMessagesTypes,
+    dataAgenda: dataAgenda,
     isLoading,
     refetch: refetch,
     ...rest,
