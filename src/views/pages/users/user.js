@@ -58,7 +58,7 @@ const User = () => {
                 {getKeyName(key)}
               </CCol>
               <CCol className="text-start" xs={6}>
-                <b>{value === null ? '---' : getKeyValue(key, value)}</b>
+                <b className="fw-semibold">{value === null ? '---' : getKeyValue(key, value)}</b>
               </CCol>
             </CRow>
           </CListGroupItem>
