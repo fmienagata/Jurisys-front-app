@@ -8,6 +8,7 @@ import {
   CRow,
   CButton,
   CCardTitle,
+  CBadge,
 } from '@coreui/react'
 import PropTypes from 'prop-types'
 import { capitalizeFirstLetter, formatFrenchDate } from 'src/utils/utils'
@@ -29,6 +30,12 @@ const InformationCard = ({ dataDossier, setListPJ, setOpenModalPJ, setTitleModal
         break
       case 'updatedAt':
         result = 'Mis à jour'
+        break
+      case 'typeProcedure':
+        result = 'Type de procédure'
+        break
+      case 'montantPrejudice':
+        result = 'Montant de prejudice'
         break
       default:
         result = key
@@ -54,7 +61,14 @@ const InformationCard = ({ dataDossier, setListPJ, setOpenModalPJ, setTitleModal
                 {getKeyName(key)}
               </CCol>
               <CCol className="text-start" xs={6}>
-                <b>{value === null ? '---' : getKeyValue(key, value)}</b>
+                {key === 'statut' ? (
+                  <CBadge color={value === true ? 'dark' : 'danger'}>
+                    {value === true ? 'Actif' : 'Archivé'}
+                  </CBadge>
+                ) : (
+                  <b className="fw-semibold">{value === null ? '---' : getKeyValue(key, value)}</b>
+                )}
+                {key === 'montantPrejudice' && <b> € </b>}
               </CCol>
             </CRow>
           </CListGroupItem>
@@ -79,8 +93,6 @@ const InformationCard = ({ dataDossier, setListPJ, setOpenModalPJ, setTitleModal
               variant="ghost"
               size="sm"
               onClick={() => {
-                console.log('dossierFiles --> ', dossierFiles)
-
                 setTitleModal('Listes des piéces jointes du dossier' + slicedData['reference'])
                 setListPJ(dossierFiles)
                 setOpenModalPJ(true)

@@ -44,8 +44,8 @@ const ModalPiecesJointes = (props) => {
                       <CCol className="text-start" xs={1}>
                         {key + 1}
                       </CCol>
-                      <CCol className="text-start" xs={8}>
-                        <b>{value === null ? '---' : value.fileName}</b>
+                      <CCol className="text-start " xs={8}>
+                        <b className="fw-semibold">{value === null ? '---' : value.fileName}</b>
                       </CCol>
                       <CCol className="text-start" xs={3}>
                         <CButton color="dark" variant="ghost" size="sm">

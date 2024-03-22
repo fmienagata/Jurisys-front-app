@@ -71,15 +71,21 @@ const _nav = [
       },
       {
         component: CNavItem,
-        name: 'Messages transmises',
+        name: 'Messages envoyés',
         to: '/messages/send',
       },
       {
         component: CNavItem,
-        name: 'Messages pré-rédigés',
-        to: '/messages/prewritten',
+        name: 'Nouveau message',
+        to: '/messages/new',
       },
     ],
+  },
+  {
+    component: CNavItem,
+    name: 'Messages pré-rédigés',
+    to: '/messages/prewritten',
+    icon: <CIcon icon={cilSpeech} customClassName="nav-icon" />,
   },
 
   {

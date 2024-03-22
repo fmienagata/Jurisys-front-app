@@ -22,6 +22,25 @@
 .MuiTablePagination-spacer {
 }
 
+.badge {
+  --cui-badge-padding-x: 0.8em;
+  --cui-badge-padding-y: 0.5em;
+  --cui-badge-font-size: 0.75em;
+  --cui-badge-font-weight: 700;
+  --cui-badge-color: #fff;
+  --cui-badge-border-radius: var(--cui-border-radius);
+  display: inline-block;
+  padding: var(--cui-badge-padding-y) var(--cui-badge-padding-x);
+  font-size: var(--cui-badge-font-size);
+  font-weight: var(--cui-badge-font-weight);
+  line-height: 1;
+  color: var(--cui-badge-color);
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: var(--cui-badge-border-radius, 0);
+}
+
 .table-primary {
   --cui-table-color: #080a0c;
   --cui-table-bg: #fef9ef;
