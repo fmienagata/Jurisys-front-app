@@ -4,7 +4,15 @@ import { generateQueryString } from './../utils/utils'
 
 const addDossier = async (dossier) => {
   try {
-    const response = await Axios.post('api/dossiers', dossier)
+    const response = await Axios.post('api/dossiers', {
+      typeProcedure: 'add postman',
+      reference: 'add postman 0',
+      nom: 'add postman',
+      prenom: 'Test add postman',
+      adresse: 'Test add postman',
+      email: 'addpostman@test.com',
+      telephone: '01 23 45 67 89',
+    })
     return response.data
   } catch (error) {
     console.error('Erreur lors de la récupération des données:', error)
@@ -55,6 +63,12 @@ function getRechercheDossiers(data) {
   })
 }
 
+function getFileDossier(fileName) {
+  return Axios.get(`/api/file/${fileName}`, { responseType: 'blob' }).then(
+    (response) => new Blob([response.data]),
+  )
+}
+
 const useGetAllDossiers = (config = {}) => {
   const {
     data: dossiers,
@@ -84,4 +98,5 @@ export {
   getMessagesDossier,
   getRechercheDossiers,
   useGetAllDossiers,
+  getFileDossier,
 }

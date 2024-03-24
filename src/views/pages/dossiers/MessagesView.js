@@ -51,6 +51,7 @@ const MessagesView = ({ messages, isDashboard, setListPJ, setOpenModalPJ, setTit
                             color="success"
                             variant="ghost"
                             size="sm"
+                            title="Consulter les piéces jointes du message"
                             onClick={() => {
                               setKeyForModal(key)
                               //setOpenMessage(true)

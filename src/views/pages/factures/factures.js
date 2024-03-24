@@ -36,14 +36,14 @@ const Factures = () => {
     },
   })
 
-  useEffect(() => {
-    if (!isLoading && dataFacturesAPI) {
-      setDataFactures(dataFacturesAPI.data)
-      setInitialFactures(dataFacturesAPI.data)
-    } else {
-      queryClient.invalidateQueries(['getAllFactures'])
-    }
-  }, [isLoading, dataFacturesAPI])
+  // useEffect(() => {
+  //   if (!isLoading && dataFacturesAPI) {
+  //     setDataFactures(dataFacturesAPI.data)
+  //     setInitialFactures(dataFacturesAPI.data)
+  //   } else {
+  //     queryClient.invalidateQueries(['getAllFactures'])
+  //   }
+  // }, [isLoading, dataFacturesAPI])
 
   const columnsFacture = [
     {

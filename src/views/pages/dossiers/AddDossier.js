@@ -13,12 +13,14 @@ import {
 } from '@coreui/react'
 
 import { addDossier } from '../../../services/dossiersService'
+import { removeEmptyAttributes } from '../../../utils/utils'
 
 const AddDossier = () => {
   const { control, handleSubmit, reset } = useForm()
 
   const handleEdit = async (data) => {
-    await addDossier(data)
+    let newDossier = removeEmptyAttributes(data)
+    await addDossier(newDossier)
   }
 
   return (
@@ -48,15 +50,15 @@ const AddDossier = () => {
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <Controller
-                      name="procedure"
+                      name="typeProcedure"
                       control={control}
                       defaultValue=""
                       render={({ field }) => (
                         <CFormInput
                           {...field}
-                          id="procedure"
-                          placeholder="procedure"
-                          autoComplete="procedure"
+                          id="typeProcedure"
+                          placeholder="typeProcedure"
+                          autoComplete="typeProcedure"
                         />
                       )}
                     />

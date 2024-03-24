@@ -92,6 +92,7 @@ const InformationCard = ({ dataDossier, setListPJ, setOpenModalPJ, setTitleModal
               color="success"
               variant="ghost"
               size="sm"
+              title="Consulter les piéces jointes du dossier"
               onClick={() => {
                 setTitleModal('Listes des piéces jointes du dossier' + slicedData['reference'])
                 setListPJ(dossierFiles)

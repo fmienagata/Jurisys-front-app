@@ -13,7 +13,7 @@ import {
   CRow,
 } from '@coreui/react'
 import PropTypes from 'prop-types'
-import { capitalizeFirstLetter } from 'src/utils/utils'
+import { capitalizeFirstLetter, formatFrenchDate } from 'src/utils/utils'
 
 const ModalSociete = (props) => {
   // eslint-disable-next-line react/prop-types
@@ -29,11 +29,35 @@ const ModalSociete = (props) => {
       case 'updatedAt':
         result = 'Mis à jour'
         break
+      case 'dateEnvoi':
+        result = `Date d'envoie`
+        break
       case 'user':
         result = 'Utilisateur'
         break
       default:
         result = key
+    }
+    return capitalizeFirstLetter(result)
+  }
+
+  function getValue(key, value) {
+    let result = ''
+    switch (key) {
+      case 'createdAt':
+        result = formatFrenchDate(value)
+        break
+      case 'updatedAt':
+        result = formatFrenchDate(value)
+        break
+      case 'dateAudience':
+        result = formatFrenchDate(value)
+        break
+      case 'dateEnvoi':
+        result = formatFrenchDate(value)
+        break
+      default:
+        result = value
     }
     return capitalizeFirstLetter(result)
   }
@@ -62,7 +86,7 @@ const ModalSociete = (props) => {
                       {getKeyName(key) === 'Statut' ? (
                         <CBadge color={value === 'Payer' ? 'dark' : 'danger'}>{value}</CBadge>
                       ) : (
-                        <b>{value === null ? '---' : value}</b>
+                        <b>{value === null ? '---' : getValue(key, value)}</b>
                       )}
                     </CCol>
                   </CRow>

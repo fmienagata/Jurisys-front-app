@@ -16,10 +16,25 @@ import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
 import PropTypes from 'prop-types'
 import { capitalizeFirstLetter, formatFrenchDate } from 'src/utils/utils'
+import { getFileDossier } from 'src/services/dossiersService'
 
 const ModalPiecesJointes = (props) => {
   // eslint-disable-next-line react/prop-types
   const { openModal, action, titleModal, setOpenModalPJ, listPJ } = props
+
+  const downloadFile = async (file) => {
+    try {
+      const blobData = await getFileDossier(file)
+      const url = window.URL.createObjectURL(blobData)
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', `${file}`)
+      document.body.appendChild(link)
+      link.click()
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <>
@@ -48,7 +63,12 @@ const ModalPiecesJointes = (props) => {
                         <b className="fw-semibold">{value === null ? '---' : value.fileName}</b>
                       </CCol>
                       <CCol className="text-start" xs={3}>
-                        <CButton color="dark" variant="ghost" size="sm">
+                        <CButton
+                          color="dark"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => downloadFile(value.fileName)}
+                        >
                           <CIcon icon={icon.cilCloudDownload} size="sm" /> Télécharger
                         </CButton>
                       </CCol>

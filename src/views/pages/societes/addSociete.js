@@ -17,16 +17,19 @@ import { useNavigate } from 'react-router-dom'
 
 import { addSociete } from 'src/services/societeService'
 import { useMessageContext } from 'src/Context/MessageContext'
+import { useQueryClient } from 'react-query'
 
 const AddSociete = () => {
   const navigate = useNavigate()
   const { control, handleSubmit } = useForm()
   const { displaySuccess, displayError } = useMessageContext()
+  const queryClient = useQueryClient()
 
   const handleAddSociete = async (data) => {
     try {
       await addSociete(data)
       displaySuccess("L'utilisateur a bien été créé avec sucess")
+      queryClient.invalidateQueries(['getAllSocietes'])
       navigate('/societes')
     } catch (error) {
       displayError(error.messages)
@@ -49,11 +52,15 @@ const AddSociete = () => {
                     <CCol>
                       <CHeaderText>{`Nom de l'entreprise`}</CHeaderText>
                       <Controller
-                        name="nom"
+                        name="nomSociete"
                         control={control}
                         defaultValue=""
                         render={({ field }) => (
-                          <CFormInput {...field} id="nom" placeholder={`Nom de l'entreprise`} />
+                          <CFormInput
+                            {...field}
+                            id="nomSociete"
+                            placeholder={`Nom de l'entreprise`}
+                          />
                         )}
                       />
                     </CCol>
@@ -78,6 +85,18 @@ const AddSociete = () => {
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
+                      <CHeaderText> Pays </CHeaderText>
+                      <Controller
+                        name="pays"
+                        control={control}
+                        render={({ field }) => (
+                          <CFormInput {...field} id="pays" placeholder="Pays" />
+                        )}
+                      />
+                    </CCol>
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CCol>
                       <CHeaderText> Adresse </CHeaderText>
                       <Controller
                         name="adresse"
@@ -94,54 +113,18 @@ const AddSociete = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <CCol>
-                      <CHeaderText> Code Postal </CHeaderText>
-                      <Controller
-                        name="password"
-                        control={control}
-                        render={({ field }) => (
-                          <CFormInput {...field} id="code" placeholder="Code Postal" />
-                        )}
-                      />
-                    </CCol>
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <CCol>
-                      <CRow>
-                        <CHeaderText> Email </CHeaderText>
-                      </CRow>
-                      <CRow>
-                        <CInputGroup className="mb-0">
-                          <CInputGroupText>@</CInputGroupText>
-                          <Controller
-                            name="email"
-                            control={control}
-                            defaultValue=""
-                            render={({ field }) => (
-                              <CFormInput
-                                {...field}
-                                id="email"
-                                placeholder="Email"
-                                autoComplete="email"
-                              />
-                            )}
-                          />
-                        </CInputGroup>
-                      </CRow>
-                    </CCol>
-                  </CInputGroup>
+
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText> Téléphone </CHeaderText>
                       <Controller
-                        name="téléphone"
+                        name="telephone"
                         control={control}
                         defaultValue=""
                         render={({ field }) => (
                           <CFormInput
                             {...field}
-                            id="téléphone"
+                            id="telephone"
                             placeholder="Téléphone"
                             autoComplete="Téléphone"
                           />
