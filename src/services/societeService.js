@@ -1,5 +1,6 @@
 import Axios from 'src/services/axiosConfig'
 import { useQuery } from 'react-query'
+import { removeEmptyAttributes } from 'src/utils/utils'
 
 const getAllSocietes = async () => {
   const response = await Axios.get('/api/societes')
@@ -7,12 +8,12 @@ const getAllSocietes = async () => {
 }
 
 const addSociete = async (data) => {
-  const response = await Axios.post('/api/societes', data)
+  const response = await Axios.post('/api/societes', removeEmptyAttributes(data))
   return response.data
 }
 
 const updateSociete = async (id, data) => {
-  const response = await Axios.put(`/api/societes/${id}`, data)
+  const response = await Axios.put(`/api/societes/${id}`, removeEmptyAttributes(data))
   return response.data
 }
 

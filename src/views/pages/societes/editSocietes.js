@@ -11,16 +11,19 @@ import {
   CInputGroup,
   CHeaderText,
   CRow,
+  CInputGroupText,
 } from '@coreui/react'
 import { useNavigate, useLocation } from 'react-router-dom'
 
 import { updateSociete } from 'src/services/societeService'
 import { useMessageContext } from 'src/Context/MessageContext'
+import { useQueryClient } from 'react-query'
 
 const EditSociete = () => {
   const location = useLocation()
   const { state } = location
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const { displaySuccess, displayError } = useMessageContext()
   const { control, handleSubmit } = useForm()
 
@@ -28,6 +31,7 @@ const EditSociete = () => {
     try {
       await updateSociete(state.data.id, data)
       displaySuccess('Societe a bien été créé avec sucess')
+      queryClient.invalidateQueries(['getAllSocietes'])
       navigate('/societes')
     } catch (error) {
       displayError(error.messages)
@@ -50,26 +54,43 @@ const EditSociete = () => {
                     <CCol>
                       <CHeaderText> Nom de l entreprise </CHeaderText>
                       <Controller
-                        name="label"
+                        name="nomSociete"
                         control={control}
-                        defaultValue={state.data.label}
+                        defaultValue={state.data.nomSociete}
                         render={({ field }) => (
-                          <CFormInput {...field} id="label" placeholder={`Nom de l'entreprise`} />
+                          <CFormInput
+                            {...field}
+                            id="nomSociete"
+                            placeholder={`Nom de l'entreprise`}
+                          />
                         )}
                       />
                     </CCol>
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Code </CHeaderText>
+                      <CHeaderText> Pays </CHeaderText>
                       <Controller
-                        name="code"
+                        name="pays"
                         control={control}
-                        defaultValue={state.data.code}
+                        defaultValue={state.data.pays}
+                        render={({ field }) => (
+                          <CFormInput {...field} id="pays" placeholder="pays" autoComplete="pays" />
+                        )}
+                      />
+                    </CCol>
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText> ville </CHeaderText>
+                      <Controller
+                        name="ville"
+                        control={control}
+                        defaultValue={state.data.ville}
                         render={({ field }) => (
                           <CFormInput
                             {...field}
-                            id="code"
+                            id="ville"
                             placeholder="Ville"
                             autoComplete="Ville"
                           />
@@ -77,13 +98,13 @@ const EditSociete = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  {/* <CInputGroup className="mb-3">
+                  <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText> Adresse </CHeaderText>
                       <Controller
                         name="adresse"
                         control={control}
-                        defaultValue=""
+                        defaultValue={state.data.adresse}
                         render={({ field }) => (
                           <CFormInput
                             {...field}
@@ -95,7 +116,7 @@ const EditSociete = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  <CInputGroup className="mb-3">
+                  {/* <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText> Code Postal </CHeaderText>
                       <Controller
@@ -106,45 +127,21 @@ const EditSociete = () => {
                         )}
                       />
                     </CCol>
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <CCol>
-                      <CRow>
-                        <CHeaderText> Email </CHeaderText>
-                      </CRow>
-                      <CRow>
-                        <CInputGroup className="mb-0">
-                          <CInputGroupText>@</CInputGroupText>
-                          <Controller
-                            name="email"
-                            control={control}
-                            defaultValue=""
-                            render={({ field }) => (
-                              <CFormInput
-                                {...field}
-                                id="email"
-                                placeholder="Email"
-                                autoComplete="email"
-                              />
-                            )}
-                          />
-                        </CInputGroup>
-                      </CRow>
-                    </CCol>
-                  </CInputGroup>
+                  </CInputGroup> */}
+
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText> Téléphone </CHeaderText>
                       <Controller
-                        name="téléphone"
+                        name="telephone"
                         control={control}
-                        defaultValue=""
+                        defaultValue={state.data.telephone}
                         render={({ field }) => (
                           <CFormInput
                             {...field}
-                            id="téléphone"
-                            placeholder="Téléphone"
-                            autoComplete="Téléphone"
+                            id="telephone"
+                            placeholder="telephone"
+                            autoComplete="telephone"
                           />
                         )}
                       />
@@ -156,13 +153,13 @@ const EditSociete = () => {
                       <Controller
                         name="fax"
                         control={control}
-                        defaultValue=""
+                        defaultValue={state.data.fax}
                         render={({ field }) => (
                           <CFormInput {...field} id="fax" placeholder="Fax" autoComplete="Fax" />
                         )}
                       />
                     </CCol>
-                  </CInputGroup> */}
+                  </CInputGroup>
 
                   <div className="d-grid">
                     <CButton type="submit" color="success">

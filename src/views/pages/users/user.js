@@ -7,6 +7,7 @@ import {
   CListGroup,
   CListGroupItem,
   CRow,
+  CBadge,
 } from '@coreui/react'
 import { useLocation } from 'react-router-dom'
 import { capitalizeFirstLetter, formatFrenchDate } from 'src/utils/utils'
@@ -30,6 +31,9 @@ const User = () => {
         break
       case 'username':
         result = `Nom d'utilisateur`
+        break
+      case 'isDeleted':
+        result = `Etat`
         break
       case 'userType':
         result = `Role`
@@ -57,8 +61,18 @@ const User = () => {
               <CCol className="text-start" xs={6}>
                 {getKeyName(key)}
               </CCol>
-              <CCol className="text-start" xs={6}>
+              {/* <CCol className="text-start" xs={6}>
                 <b className="fw-semibold">{value === null ? '---' : getKeyValue(key, value)}</b>
+              </CCol> */}
+              {console.log('key --> ', key, value)}
+              <CCol className="text-start" xs={6}>
+                {key === 'isDeleted' ? (
+                  <CBadge color={value === false ? 'dark' : 'danger'}>
+                    {value === false ? 'Actif' : 'inactif'}
+                  </CBadge>
+                ) : (
+                  <b>{value === null ? '---' : getKeyValue(key, value)}</b>
+                )}
               </CCol>
             </CRow>
           </CListGroupItem>
