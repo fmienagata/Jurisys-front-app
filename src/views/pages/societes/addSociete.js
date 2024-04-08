@@ -28,8 +28,9 @@ const AddSociete = () => {
   const handleAddSociete = async (data) => {
     try {
       await addSociete(data)
-      displaySuccess("L'utilisateur a bien été créé avec sucess")
+      displaySuccess("Ajout d'une entreprise", "L'entreprise a bien été créé avec sucess")
       queryClient.invalidateQueries(['getAllSocietes'])
+      queryClient.invalidateQueries(['getCountNBRBusiness'])
       navigate('/societes')
     } catch (error) {
       displayError(error.messages)
@@ -61,6 +62,19 @@ const AddSociete = () => {
                             id="nomSociete"
                             placeholder={`Nom de l'entreprise`}
                           />
+                        )}
+                      />
+                    </CCol>
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText> Type entreprise </CHeaderText>
+                      <Controller
+                        name="type"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <CFormInput {...field} id="type" placeholder="type" autoComplete="type" />
                         )}
                       />
                     </CCol>

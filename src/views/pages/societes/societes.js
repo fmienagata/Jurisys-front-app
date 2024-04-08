@@ -10,7 +10,7 @@ import ModalAction from 'src/components/ModalAction'
 import { filtredValues } from 'src/utils/utils'
 import { useMessageContext } from 'src/Context/MessageContext'
 import Styles from './../../../table/TableStyles'
-import { useGetAllSocietes } from 'src/services/societeService'
+import { useGetAllSocietes, daleteSociete } from 'src/services/societeService'
 import { useQueryClient } from 'react-query'
 import { useAuth } from 'src/Context/AuthContext'
 import { handleErrorResponse } from 'src/utils/handleErrorResponse'
@@ -21,14 +21,14 @@ const Societes = () => {
 
   const tableRefUsers = useRef(typeof useRowSelect)
   const navigate = useNavigate()
-  const { displayError } = useMessageContext()
+  const { displayError, displaySuccess } = useMessageContext()
   const [dataSocietes, setDataSocietes] = useState([])
   const [initialSocietes, setInitialSocietes] = useState([])
 
   const [currentPage, setCurrentPage] = useState(0)
   const [selection, setSelection] = useState([])
   const [openModal, setOpenModal] = useState(false)
-  //  const [IDDelete, setIDDelete] = useState('')
+  const [IDDelete, setIDDelete] = useState('')
 
   const { dataSocietesAPI, isLoading, refetch } = useGetAllSocietes({
     onSuccess: (data) => {
@@ -80,26 +80,26 @@ const Societes = () => {
     },
   ]
 
-  const handleDeleteUser = (userId) => {
-    // setOpenModal(true)
-    // setUserIDDelete(userId)
+  const handleDeleteSociete = (societeId) => {
+    setOpenModal(true)
+    setIDDelete(societeId)
   }
 
   async function deleteAction() {
-    // try {
-    //   if (IDDelete !== '') {
-    //     await deleteUser(IDDelete)
-    //   } else {
-    //     console.log('selection pour delete =>', selection)
-    //   }
-    //   displaySuccess('Supprimer avec sucess')
-    // } catch (error) {
-    //   displayError(error.messages)
-    // } finally {
-    //   setOpenModal(false)
-    // }
-    // setIDDelete('')
-    // setOpenModal(false)
+    try {
+      if (IDDelete !== '') {
+        await daleteSociete(IDDelete)
+      }
+      displaySuccess('Supprimer', 'Suppression de la societe avec sucess')
+      queryClient.invalidateQueries(['getAllSocietes'])
+      queryClient.invalidateQueries(['getCountNBRBusiness'])
+    } catch (error) {
+      displayError(error.messages)
+    } finally {
+      setOpenModal(false)
+    }
+    setIDDelete('')
+    setOpenModal(false)
   }
 
   function DeleteMultiSocietes() {}
@@ -167,7 +167,7 @@ const Societes = () => {
                     setOpenModal={setOpenModal}
                     onSelectedRowChange={setSelection}
                     fromPage={'societes'}
-                    onDelete={handleDeleteUser}
+                    onDelete={handleDeleteSociete}
                   />
                 </CCardBody>
               ) : (

@@ -4,15 +4,21 @@ import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  fetchDataCountUsers,
   fetchDataCountDossiers,
   fetchDataCountAudiences,
   fetchDataCountBusiness,
 } from 'src/dashboardActions'
+
 import { useMessageContext } from 'src/Context/MessageContext'
 import { handleErrorResponse } from 'src/utils/handleErrorResponse'
 import { useAuth } from 'src/Context/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import {
+  useCountUsers,
+  useCountDossiersActifs,
+  useCountAudiences,
+  useCountBusiness,
+} from 'src/services/dashboardService'
 
 const useDashboardData = (property, fetchDataAction) => {
   const { disconnect } = useAuth()
@@ -45,26 +51,31 @@ const useDashboardData = (property, fetchDataAction) => {
 }
 
 const InfosDashboard = () => {
-  const {
-    count: countUsers,
-    loading: loadingUsers,
-    error: errorUsers,
-  } = useDashboardData('countUsers', fetchDataCountUsers)
-  const {
-    count: countDossiers,
-    loading: loadingDossiers,
-    error: errorDossiers,
-  } = useDashboardData('countDossiers', fetchDataCountDossiers)
-  const {
-    count: countAudiences,
-    loading: loadingAudiences,
-    error: errorAudiences,
-  } = useDashboardData('countAudiences', fetchDataCountAudiences)
-  const {
-    count: countBusiness,
-    loading: loadingBusiness,
-    error: errorBusiness,
-  } = useDashboardData('countBusiness', fetchDataCountBusiness)
+  const { displayError } = useMessageContext()
+
+  const { data: dataUsers, isLoading: loadingUsers } = useCountUsers({
+    onError: (error) => {
+      displayError('Erreur lors de la requête dans le composant !')
+    },
+  })
+
+  const { data: dataDossiersActifs, isLoading: loadingDossiersActifs } = useCountDossiersActifs({
+    onError: (error) => {
+      displayError('Erreur lors de la requête dans le composant !')
+    },
+  })
+
+  const { data: dataCountAudiences, isLoading: loadingAudiences } = useCountAudiences({
+    onError: (error) => {
+      displayError('Erreur lors de la requête dans le composant !')
+    },
+  })
+
+  const { data: dataCountBusiness, isLoading: loadingBusiness } = useCountBusiness({
+    onError: (error) => {
+      displayError('Erreur lors de la requête dans le composant !')
+    },
+  })
 
   return (
     <>
@@ -74,7 +85,7 @@ const InfosDashboard = () => {
             className="mb-3"
             color="teal"
             icon={
-              !loadingDossiers ? (
+              !loadingDossiersActifs ? (
                 <CIcon icon={icon.cilFolderOpen} height={24} />
               ) : (
                 <CSpinner color="info" />
@@ -82,7 +93,7 @@ const InfosDashboard = () => {
             }
             padding={false}
             title="Dossiers actifs"
-            value={countDossiers}
+            value={dataDossiersActifs && dataDossiersActifs.count}
           />
         }
       </CCol>
@@ -95,7 +106,7 @@ const InfosDashboard = () => {
           }
           padding={false}
           title="Utilisateurs actifs"
-          value={countUsers}
+          value={dataUsers && dataUsers.count}
         />
       </CCol>
       <CCol xs={3}>
@@ -112,7 +123,7 @@ const InfosDashboard = () => {
           style={{ '--cui-card-cap-bg': '#3b5998' }}
           padding={false}
           title="Nombre d'audience"
-          value={countAudiences}
+          value={dataCountAudiences && dataCountAudiences.count}
         />
       </CCol>
       <CCol xs={3}>
@@ -128,7 +139,7 @@ const InfosDashboard = () => {
           }
           padding={false}
           title="Nombre d'entreprises"
-          value={countBusiness}
+          value={dataCountBusiness && dataCountBusiness.count}
         />
       </CCol>
     </>

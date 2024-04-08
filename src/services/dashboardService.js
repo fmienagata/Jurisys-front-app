@@ -15,7 +15,7 @@ const getCountDossiersActifs = async () => {
 }
 
 const getCountAudiences = async () => {
-  const response = await Axios.get(`/api/messages?criteria=dateAudienceStart:2024-03-06&count=true`)
+  const response = await Axios.get(`/api/messages?criteria=dateAudienceStart:2024-04-01&count=true`)
   return response.data
 }
 
@@ -46,7 +46,7 @@ const useGetAllAgenda = (config = {}) => {
   } = useQuery(
     ['getDataAgenda'],
     () =>
-      Axios.get('/api/messages?criteria=dateAudienceStart:2024-03-01,dateAudienceEnd:2024-03-31'),
+      Axios.get('/api/messages?criteria=dateAudienceStart:2024-04-01,dateAudienceEnd:2024-04-30'),
     {
       ...config,
       staleTime: Infinity,
@@ -61,6 +61,78 @@ const useGetAllAgenda = (config = {}) => {
   }
 }
 
+const useCountUsers = (config = {}) => {
+  const { data, isLoading, refetch, ...rest } = useQuery(
+    ['getCountUsers'],
+    () => getCountUsersActifs(),
+    {
+      ...config,
+      staleTime: Infinity,
+    },
+  )
+
+  return {
+    data,
+    isLoading,
+    refetch: refetch,
+    ...rest,
+  }
+}
+
+const useCountDossiersActifs = (config = {}) => {
+  const { data, isLoading, refetch, ...rest } = useQuery(
+    ['getCountDossiersActifs'],
+    () => getCountDossiersActifs(),
+    {
+      ...config,
+      staleTime: Infinity,
+    },
+  )
+
+  return {
+    data,
+    isLoading,
+    refetch: refetch,
+    ...rest,
+  }
+}
+
+const useCountAudiences = (config = {}) => {
+  const { data, isLoading, refetch, ...rest } = useQuery(
+    ['getCountAudiences'],
+    () => getCountAudiences(),
+    {
+      ...config,
+      staleTime: Infinity,
+    },
+  )
+
+  return {
+    data,
+    isLoading,
+    refetch: refetch,
+    ...rest,
+  }
+}
+
+const useCountBusiness = (config = {}) => {
+  const { data, isLoading, refetch, ...rest } = useQuery(
+    ['getCountNBRBusiness'],
+    () => getCountBusiness(),
+    {
+      ...config,
+      staleTime: Infinity,
+    },
+  )
+
+  return {
+    data,
+    isLoading,
+    refetch: refetch,
+    ...rest,
+  }
+}
+
 export {
   getCountUsersActifs,
   getCountDossiersActifs,
@@ -69,4 +141,8 @@ export {
   getDashboardMessages,
   getDashboardGraphes,
   useGetAllAgenda,
+  useCountUsers,
+  useCountDossiersActifs,
+  useCountAudiences,
+  useCountBusiness,
 }

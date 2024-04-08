@@ -1,32 +1,21 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
-  CBadge,
-  CSidebarNav,
-  CSidebarBrand,
   CCardHeader,
   CRow,
-  CSidebar,
-  CNavLink,
-  CNavTitle,
-  CNavItem,
+  CSpinner,
   CCardTitle,
   CCol,
   CListGroupItem,
-  CCardText,
   CListGroup,
   CButton,
   CCard,
   CContainer,
 } from '@coreui/react'
-import Table from 'src/table/table'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
 import { useMessageContext } from 'src/Context/MessageContext'
-import Styles from './../../../table/TableStyles'
-import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { filtredValues } from 'src/utils/utils'
-import { useGetAllDossiers } from 'src/services/dossiersService'
+import { useGetAllDossiers, useGetDossierMessages } from 'src/services/dossiersService'
 import { useQueryClient } from 'react-query'
 import Inbox from './components/Inbox'
 import SidebarBox from './components/SidebarBox'
@@ -36,7 +25,6 @@ import { formatFrenchDate } from 'src/utils/utils'
 import { handleErrorResponse } from '../../../utils/handleErrorResponse'
 
 const Messageries = () => {
-  const tableRefMsgsTypes = useRef(typeof useRowSelect)
   const queryClient = useQueryClient()
   const { displayError } = useMessageContext()
   const { disconnect } = useAuth()
@@ -50,28 +38,54 @@ const Messageries = () => {
   const [activeInboxIndex, setActiveInboxIndex] = useState(0)
   const [activeNavLink, setActiveNavLink] = useState(0)
 
+  const [clickedDossier, setClickedDossier] = useState(null)
+
   const { dossiers, isLoading } = useGetAllDossiers({
     onSuccess: (data) => {
+      console.log('exemple')
       setDataDossiers(data)
+      setClickedDossier(data[0].id)
+      setMessagesSelected(data[0].messages.length > 0 ? data[0].messages : [])
+      setMessagesDetails(data[0].messages.length > 0 ? data[0].messages[0] : [])
     },
     onError: (error) => {
       handleErrorResponse(error, disconnect, displayError, navigate)
     },
   })
 
+  const {
+    mutate: fetchDossier,
+    dossiers: messagesDossier,
+    isLoading: loadingMessags,
+  } = useGetDossierMessages(clickedDossier, {
+    onSuccess: (dataDossier) => {
+      // setMessagesSelected(messagesDossier.messages)
+      // setMessagesDetails(messagesDossier.messages[0])
+      setMessagesSelected(messagesDossier.messages.length > 0 ? messagesDossier[0].messages : [])
+      setMessagesDetails(
+        messagesDossier[0].messages.length > 0 ? messagesDossier[0].messages[0] : {},
+      )
+
+      setActiveInboxIndex(0)
+    },
+    onError: (error) => {
+      displayError(
+        'Erreur : Impossible de récupérer les données ou données malformé . Veuillez réessayer plus tard.',
+      )
+    },
+  })
+
   const handleSetActiveInboxIndex = (index) => {
-    setActiveInboxIndex(index)
+    setActiveInboxIndex(0)
   }
 
   useEffect(() => {
-    // Mettre à jour les messages sélectionnés lorsque activeNavLink change
-    setMessagesSelected(dataDossiers[activeNavLink]?.messages || [])
-    setMessagesDetails(dataDossiers[activeNavLink]?.messages[0])
-    setActiveInboxIndex(0)
+    if (clickedDossier !== null) {
+      fetchDossier(clickedDossier)
+    }
+  }, [clickedDossier])
 
-    // Définir le premier élément de la boîte de réception comme actif
-  }, [activeNavLink, dataDossiers, messagesSelected])
-
+  // tous les dossiers charger sideBar
   useEffect(() => {
     if (!isLoading && dossiers) {
       setDataDossiers(dossiers)
@@ -102,13 +116,14 @@ const Messageries = () => {
                 paddingBottom: 0,
               }}
             >
-              {!isLoading && (
+              {!isLoading && dataDossiers && (
                 <SidebarBox
                   dataDossiers={dataDossiers}
                   setMessagesSelected={setMessagesSelected}
                   setActiveNavLink={setActiveNavLink}
                   setActiveInboxIndex={handleSetActiveInboxIndex}
                   activeNavLink={activeNavLink}
+                  setClickedDossier={setClickedDossier}
                 />
               )}
             </CCol>
@@ -121,15 +136,22 @@ const Messageries = () => {
                 border: '1px solid #a5a5a6',
               }}
             >
-              <Inbox
-                messagesSelected={messagesSelected}
-                setMessagesDetails={setMessagesDetails}
-                setActiveInboxIndex={setActiveInboxIndex}
-                activeInboxIndex={activeInboxIndex} // Passer l'index actif
-              />
+              {!loadingMessags ? (
+                messagesSelected.length > 1 && (
+                  <Inbox
+                    messagesSelected={messagesSelected}
+                    setMessagesDetails={setMessagesDetails}
+                    setActiveInboxIndex={setActiveInboxIndex}
+                    activeInboxIndex={activeInboxIndex} // Passer l'index actif
+                  />
+                )
+              ) : (
+                <CSpinner color="primary" />
+              )}
             </CCol>
             <CCol xs={6}>
-              {messagesDetails && (
+              {console.log('messagesDetails ->', messagesDetails)}
+              {messagesSelected.length !== 0 && messagesDetails && (
                 <CListGroup>
                   <>
                     <CCardHeader className="text-center">
@@ -151,7 +173,12 @@ const Messageries = () => {
                             <CButton color="success" variant="ghost" size="sm">
                               <CIcon icon={icon.cilFolderOpen} size="sm" />
                             </CButton>
-                            <CButton color="success" variant="ghost" size="sm">
+                            <CButton
+                              color="success"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => console.log('delete -> ', messagesDetails.id)}
+                            >
                               <CIcon icon={icon.cilTrash} size="sm" />
                             </CButton>
                           </CCol>

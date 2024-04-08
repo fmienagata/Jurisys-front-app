@@ -29,8 +29,8 @@ const CreateMessageType = () => {
   const handleCreateMessagesTypes = async (data) => {
     try {
       await addMessageType(data)
-      displaySuccess('Le message a bien été créé avec sucess')
-      queryClient.invalidateQueries(['getAllMsgs'])
+      queryClient.invalidateQueries(['getAllMsgsType'])
+      displaySuccess(`L'Ajout d'un message type `, 'Le message a bien été créé avec sucess')
       navigate('/messages/prewritten')
     } catch (error) {
       displayError(error.messages)

@@ -10,15 +10,16 @@ import ModalAction from 'src/components/ModalAction'
 import { filtredValues } from 'src/utils/utils'
 import { useMessageContext } from 'src/Context/MessageContext'
 import Styles from './../../../table/TableStyles'
-import { useGetAllFactures } from 'src/services/factureService'
+import { useGetAllFactures, deleteFacture } from 'src/services/factureService'
 import { useQueryClient } from 'react-query'
 
 const Factures = () => {
   const tableRefFacture = useRef(typeof useRowSelect)
   const navigate = useNavigate()
-  const { displayError } = useMessageContext()
+  const { displayError, displaySuccess } = useMessageContext()
   const [dataFactures, setDataFactures] = useState([])
   const [initialFactures, setInitialFactures] = useState([])
+  const [factureIDDelete, setFactureIDDelete] = useState('')
 
   const [currentPage, setCurrentPage] = useState(0)
   const [selection, setSelection] = useState([])
@@ -36,14 +37,15 @@ const Factures = () => {
     },
   })
 
-  // useEffect(() => {
-  //   if (!isLoading && dataFacturesAPI) {
-  //     setDataFactures(dataFacturesAPI.data)
-  //     setInitialFactures(dataFacturesAPI.data)
-  //   } else {
-  //     queryClient.invalidateQueries(['getAllFactures'])
-  //   }
-  // }, [isLoading, dataFacturesAPI])
+  useEffect(() => {
+    if (!isLoading && dataFacturesAPI) {
+      setDataFactures(dataFacturesAPI.data)
+      setInitialFactures(dataFacturesAPI.data)
+    }
+    // else {
+    //   queryClient.invalidateQueries(['getAllFactures'])
+    // }
+  }, [isLoading, dataFacturesAPI])
 
   const columnsFacture = [
     {
@@ -68,26 +70,29 @@ const Factures = () => {
     },
   ]
 
-  const handleDeleteUser = (userId) => {
-    // setOpenModal(true)
-    // setUserIDDelete(userId)
+  const handleDeleteFacture = (factureId) => {
+    setOpenModal(true)
+    setFactureIDDelete(factureId)
   }
 
   async function deleteAction() {
-    // try {
-    //   if (IDDelete !== '') {
-    //     await deleteUser(IDDelete)
-    //   } else {
-    //     console.log('selection pour delete =>', selection)
-    //   }
-    //   displaySuccess('Supprimer avec sucess')
-    // } catch (error) {
-    //   displayError(error.messages)
-    // } finally {
-    //   setOpenModal(false)
-    // }
-    // setIDDelete('')
-    // setOpenModal(false)
+    try {
+      if (factureIDDelete !== '') {
+        await deleteFacture(factureIDDelete)
+        console.log('factureIDDelete await =>', factureIDDelete)
+      } else {
+        console.log('factureIDDelete =>', factureIDDelete)
+      }
+      displaySuccess('Supprimer facture', 'Supprimer avec sucess')
+      queryClient.invalidateQueries(['getAllFactures'])
+    } catch (error) {
+      displayError(error.messages)
+      console.log('factureIDDelete catch =>', factureIDDelete)
+    } finally {
+      setOpenModal(false)
+    }
+    setFactureIDDelete('')
+    setOpenModal(false)
   }
 
   function DeleteMultiFactures() {}
@@ -155,7 +160,7 @@ const Factures = () => {
                     setOpenModal={setOpenModal}
                     onSelectedRowChange={setSelection}
                     fromPage={'facture'}
-                    onDelete={handleDeleteUser}
+                    onDelete={handleDeleteFacture}
                   />
                 </CCardBody>
               ) : (

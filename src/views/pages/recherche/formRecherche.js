@@ -154,7 +154,7 @@ const FormRecherche = ({ setDossiers }) => {
                           </CInputGroup>
                         </CCol>
                         <CCol className="text-end" xs={4}>
-                          <CButton type="submit" color="success" onClick={() => reset()}>
+                          <CButton type="button" color="success" onClick={() => reset()}>
                             Reset
                           </CButton>
                           <span style={{ marginRight: '10px' }}></span>

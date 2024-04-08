@@ -5,4 +5,9 @@ const getAllMessages = async () => {
   return response.data
 }
 
-export { getAllMessages }
+const deleteMessage = async (id) => {
+  const response = await Axios.delete('/api/messages/' + id)
+  return response.data
+}
+
+export { getAllMessages, deleteMessage }
