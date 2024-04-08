@@ -30,7 +30,7 @@ const EditSociete = () => {
   const handleEditSociete = async (data) => {
     try {
       await updateSociete(state.data.id, data)
-      displaySuccess('Societe a bien été créé avec sucess')
+      displaySuccess('Societe', 'Societe a été bien mis à jour avec sucess')
       queryClient.invalidateQueries(['getAllSocietes'])
       navigate('/societes')
     } catch (error) {
@@ -67,6 +67,20 @@ const EditSociete = () => {
                       />
                     </CCol>
                   </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText> Type </CHeaderText>
+                      <Controller
+                        name="type"
+                        control={control}
+                        defaultValue={state.data.type ? state.data.type : 'type'}
+                        render={({ field }) => (
+                          <CFormInput {...field} id="type" placeholder={`type`} />
+                        )}
+                      />
+                    </CCol>
+                  </CInputGroup>
+
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText> Pays </CHeaderText>
@@ -153,7 +167,7 @@ const EditSociete = () => {
                       <Controller
                         name="fax"
                         control={control}
-                        defaultValue={state.data.fax}
+                        defaultValue={state.data.fax ? state.data.fax : '0000'}
                         render={({ field }) => (
                           <CFormInput {...field} id="fax" placeholder="Fax" autoComplete="Fax" />
                         )}

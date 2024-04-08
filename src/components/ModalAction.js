@@ -3,7 +3,10 @@ import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } 
 
 const ModalAction = (props) => {
   // eslint-disable-next-line react/prop-types
-  const { openModal, setOpenModal, action } = props
+  const { openModal, setOpenModal, action, titleModal, messageModal } = props
+  const title = titleModal ? titleModal : 'Désactiver'
+  const message = messageModal ? messageModal : 'Voulez vous vraiment le(s) désactiver ?'
+
   return (
     <>
       <CModal
@@ -13,9 +16,9 @@ const ModalAction = (props) => {
         alignment="center"
       >
         <CModalHeader>
-          <CModalTitle>Désactiver </CModalTitle>
+          <CModalTitle>{title} </CModalTitle>
         </CModalHeader>
-        <CModalBody>Voulez vous vraiment le(s) désactiver ?</CModalBody>
+        <CModalBody>{message}</CModalBody>
         <CModalFooter>
           <CButton color="secondary" onClick={() => setOpenModal(false)}>
             Fermer

@@ -52,11 +52,11 @@ export const useMessageContext = () => useContext(MessageContext)
 export const MessageProvider = ({ children }) => {
   const [modal, dispatch] = useReducer(modalReducer, { visible: false })
 
-  const displaySuccess = (message) => {
-    dispatch({ type: messageTypes.SUCCESS, message, title: 'title' })
+  const displaySuccess = (title, message) => {
+    dispatch({ type: messageTypes.SUCCESS, message, title: title })
   }
 
-  const displayError = useCallback((message) => {
+  const displayError = useCallback((title, message) => {
     dispatch({
       type: messageTypes.ERROR,
       message: message || 'Une erreur est survenue',

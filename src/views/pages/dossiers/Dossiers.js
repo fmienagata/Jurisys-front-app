@@ -111,16 +111,14 @@ const Dossiers = () => {
         )
       }
     } catch (error) {
-      //let msg = handleErrorResponse(error)
       handleErrorResponse(error, disconnect, displayError, navigate)
-      //displayError(msg)
     } finally {
     }
     setLoading(false)
   }
   useEffect(() => {
     // Code à exécuter à chaque changement de route
-    setIsActif(location.pathname.includes('actifs')) // Votre logique de gestion des routes ici
+    setIsActif(location.pathname.includes('actifs'))
   }, [location])
 
   useEffect(() => {

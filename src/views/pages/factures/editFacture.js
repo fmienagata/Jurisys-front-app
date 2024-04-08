@@ -15,11 +15,14 @@ import {
 import { useMessageContext } from 'src/Context/MessageContext'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { updateFacture } from 'src/services/factureService'
+import { useQueryClient } from 'react-query'
 
 const EditFacture = () => {
   const location = useLocation()
   const { state } = location
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
+
   const { displaySuccess, displayError } = useMessageContext()
 
   const { control, handleSubmit } = useForm()
@@ -27,7 +30,8 @@ const EditFacture = () => {
   const handleEditFacture = async (data) => {
     try {
       await updateFacture(state.data.id, data)
-      displaySuccess("L'utilisateur a bien été mis à jour avec sucess")
+      displaySuccess('La facture a bien été mis à jour avec sucess')
+      queryClient.invalidateQueries(['getAllFactures'])
       navigate('/factures')
     } catch (error) {
       displayError(error.messages)
@@ -49,20 +53,32 @@ const EditFacture = () => {
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText> Nom de l utilisateur </CHeaderText>
-                      <Controller
+                      <CFormInput id="user" placeholder="Nom de l'utilisateur" disabled />
+                      {/* <Controller
                         name="user"
                         control={control}
                         defaultValue={state.data.user}
                         render={({ field }) => (
-                          <CFormInput {...field} id="user" placeholder="Nom de l'utilisateur" />
+                          <CFormInput
+                            {...field}
+                            id="user"
+                            placeholder="Nom de l'utilisateur"
+                            disabled
+                          />
                         )}
-                      />
+                      /> */}
                     </CCol>
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText> Dossier </CHeaderText>
-                      <Controller
+                      <CFormInput
+                        id="dossier"
+                        placeholder="dossier"
+                        autoComplete="dossier"
+                        disabled
+                      />
+                      {/* <Controller
                         name="dossier"
                         control={control}
                         defaultValue={state.data.dossier}
@@ -72,9 +88,10 @@ const EditFacture = () => {
                             id="dossier"
                             placeholder="dossier"
                             autoComplete="dossier"
+                            disabled
                           />
                         )}
-                      />
+                      /> */}
                     </CCol>
                   </CInputGroup>
                   <CInputGroup className="mb-3">

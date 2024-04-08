@@ -1,4 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
+import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import {
   CButton,
@@ -10,237 +11,498 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
+  CFormSelect,
+  CHeaderText,
+  CSpinner,
 } from '@coreui/react'
+import { useDropzone } from 'react-dropzone'
 
-import { addDossier } from '../../../services/dossiersService'
+import { addDossier, addDossierFiles } from '../../../services/dossiersService'
 import { removeEmptyAttributes } from '../../../utils/utils'
+import { useGetAllSocietes } from 'src/services/societeService'
+import { useMessageContext } from 'src/Context/MessageContext'
+import { useQueryClient } from 'react-query'
+import { DropzoneWithoutDrag } from 'src/components/dropZone'
+import { useNavigate } from 'react-router-dom'
 
 const AddDossier = () => {
-  const { control, handleSubmit, reset } = useForm()
+  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({ noDrag: true })
+  const files = acceptedFiles.map((file) => <li key={file.path}>{file.path}</li>)
+  const navigate = useNavigate()
 
-  const handleEdit = async (data) => {
-    let newDossier = removeEmptyAttributes(data)
-    await addDossier(newDossier)
+  const { control, handleSubmit, reset } = useForm()
+  const queryClient = useQueryClient()
+  const { displaySuccess, displayError } = useMessageContext()
+
+  const [societes, setSocietes] = useState([])
+
+  const { data: dataSocietes, isLoading: isLoadingSocietes } = useGetAllSocietes({
+    onSuccess: (dataSocietes) => {
+      setSocietes(dataSocietes.data)
+    },
+    onError: (error) => {
+      displayError(
+        'Erreur : Impossible de récupérer les données ou données malformé . Veuillez réessayer plus tard.',
+      )
+    },
+  })
+
+  useEffect(() => {
+    if (!isLoadingSocietes && dataSocietes) {
+      setSocietes(dataSocietes.data)
+    } else {
+      queryClient.invalidateQueries(['getAllSocietes'])
+    }
+  }, [queryClient, isLoadingSocietes, dataSocietes])
+
+  const handleAdd = async (data) => {
+    // files.map((f) => form.append('file', new Blob([f], { type: 'application/pdf' })))
+    //await addDossierFiles(data.file)
+    // let newDossier = removeEmptyAttributes(data)
+    await addDossier(data)
+    queryClient.invalidateQueries(['getCountDossiersActifs'])
+
+    try {
+      await addDossier(data)
+
+      displaySuccess("Ajout d'un dossier ", 'Le dossier a bien été créé avec sucess')
+      queryClient.invalidateQueries(['getCountDossiersActifs'])
+      navigate('/dossiers/actifs')
+    } catch (error) {
+      displayError(error.messages)
+      navigate('/dossiers/actifs')
+    }
   }
 
   return (
     <div>
       <CContainer>
-        <CRow className="justify-content-center">
-          <CCol md={9} lg={7} xl={6}>
-            <CCard className="mx-4">
-              <CCardBody className="p-4">
-                <form onSubmit={handleSubmit(handleEdit)}>
-                  {/* <h1>{labels.registre.titleHeader}</h1> */}
-                  <p className="text-body-secondary">Ajouter un dossier</p>
+        <CCard className="mx-4">
+          <CCardBody className="p-4">
+            <form onSubmit={handleSubmit(handleAdd)}>
+              <CRow className="justify-content-center">
+                <CCol sm="4">
                   <CInputGroup className="mb-3">
-                    <Controller
-                      name="reference"
-                      control={control}
-                      defaultValue=""
-                      render={({ field }) => (
-                        <CFormInput
-                          {...field}
-                          id="reference"
-                          placeholder="reference"
-                          autoComplete="reference"
-                        />
-                      )}
-                    />
+                    <CCol>
+                      <CHeaderText> Nom </CHeaderText>
+                      <Controller
+                        name="nom"
+                        defaultValue=""
+                        control={control}
+                        render={({ field }) => (
+                          <CFormInput {...field} id="nom" placeholder="nom" autoComplete="nom" />
+                        )}
+                      />
+                    </CCol>
                   </CInputGroup>
                   <CInputGroup className="mb-3">
-                    <Controller
-                      name="typeProcedure"
-                      control={control}
-                      defaultValue=""
-                      render={({ field }) => (
-                        <CFormInput
-                          {...field}
-                          id="typeProcedure"
-                          placeholder="typeProcedure"
-                          autoComplete="typeProcedure"
-                        />
-                      )}
-                    />
+                    <CCol>
+                      <CHeaderText> Prenom </CHeaderText>
+                      <Controller
+                        defaultValue=""
+                        name="prenom"
+                        control={control}
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="prenom"
+                            placeholder="prenom"
+                            autoComplete="prenom"
+                          />
+                        )}
+                      />{' '}
+                    </CCol>
+                  </CInputGroup>
+                  <CCol>
+                    <CHeaderText> E-mail </CHeaderText>
+                    <CInputGroup className="mb-3">
+                      <CInputGroupText>@</CInputGroupText>
+                      <Controller
+                        name="email"
+                        defaultValue=""
+                        control={control}
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="email"
+                            type="email"
+                            placeholder="email"
+                            autoComplete="email"
+                          />
+                        )}
+                      />
+                    </CInputGroup>
+                  </CCol>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText> Telephone </CHeaderText>
+                      <Controller
+                        name="telephone"
+                        defaultValue=""
+                        control={control}
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="telephone"
+                            type="number"
+                            placeholder="telephone"
+                            autoComplete="telephone"
+                          />
+                        )}
+                      />
+                    </CCol>
                   </CInputGroup>
                   <CInputGroup className="mb-3">
-                    <Controller
-                      name="nom"
-                      control={control}
-                      defaultValue=""
-                      render={({ field }) => (
-                        <CFormInput {...field} id="nom" placeholder="nom" autoComplete="nom" />
-                      )}
-                    />
+                    <CCol>
+                      <CHeaderText> Adresse </CHeaderText>
+                      <Controller
+                        name="adresse"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="adresse"
+                            placeholder="adresse"
+                            autoComplete="adresse"
+                          />
+                        )}
+                      />{' '}
+                    </CCol>
                   </CInputGroup>
                   <CInputGroup className="mb-3">
-                    <Controller
-                      name="prenom"
-                      control={control}
-                      defaultValue=""
-                      render={({ field }) => (
-                        <CFormInput
-                          {...field}
-                          id="prenom"
-                          placeholder="prenom"
-                          autoComplete="prenom"
-                        />
-                      )}
-                    />
+                    <CCol>
+                      <CHeaderText> Ville </CHeaderText>
+                      <Controller
+                        name="ville"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="ville"
+                            placeholder="ville"
+                            autoComplete="ville"
+                          />
+                        )}
+                      />
+                    </CCol>
                   </CInputGroup>
                   <CInputGroup className="mb-3">
-                    <CInputGroupText>@</CInputGroupText>
-                    <Controller
-                      name="email"
-                      defaultValue=""
-                      control={control}
-                      render={({ field }) => (
-                        <CFormInput
-                          {...field}
-                          id="email"
-                          type="email"
-                          placeholder="email"
-                          autoComplete="email"
-                        />
-                      )}
-                    />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <Controller
-                      name="telephone"
-                      control={control}
-                      defaultValue=""
-                      render={({ field }) => (
-                        <CFormInput
-                          {...field}
-                          id="telephone"
-                          type="number"
-                          placeholder="telephone"
-                          autoComplete="telephone"
-                        />
-                      )}
-                    />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <Controller
-                      name="adresse"
-                      control={control}
-                      defaultValue=""
-                      render={({ field }) => (
-                        <CFormInput
-                          {...field}
-                          id="adresse"
-                          placeholder="adresse"
-                          autoComplete="adresse"
-                        />
-                      )}
-                    />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <Controller
-                      name="ville"
-                      control={control}
-                      defaultValue=""
-                      render={({ field }) => (
-                        <CFormInput
-                          {...field}
-                          id="ville"
-                          placeholder="ville"
-                          autoComplete="ville"
-                        />
-                      )}
-                    />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <Controller
-                      name="pays"
-                      control={control}
-                      defaultValue=""
-                      render={({ field }) => (
-                        <CFormInput {...field} id="pays" placeholder="pays" autoComplete="pays" />
-                      )}
-                    />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <Controller
-                      name="juridiction"
-                      control={control}
-                      defaultValue=""
-                      render={({ field }) => (
-                        <CFormInput
-                          {...field}
-                          id="juridiction"
-                          placeholder="juridiction"
-                          autoComplete="juridiction"
-                        />
-                      )}
-                    />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <Controller
-                      name="statut"
-                      control={control}
-                      defaultValue=""
-                      render={({ field }) => (
-                        <CFormInput
-                          {...field}
-                          id="statut"
-                          placeholder="statut"
-                          autoComplete="statut"
-                        />
-                      )}
-                    />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <Controller
-                      name="montantPrejudice"
-                      control={control}
-                      defaultValue=""
-                      render={({ field }) => (
-                        <CFormInput
-                          {...field}
-                          id="montantPrejudice"
-                          placeholder="montant Prejudice"
-                          autoComplete="montant Prejudice"
-                        />
-                      )}
-                    />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <Controller
-                      name="societe"
-                      control={control}
-                      defaultValue=""
-                      render={({ field }) => (
-                        <CFormInput
-                          {...field}
-                          id="societe"
-                          placeholder="societe"
-                          autoComplete="societe"
-                        />
-                      )}
-                    />
-                  </CInputGroup>
-                  <div>
-                    <CButton
-                      color="info"
-                      variant="ghost"
-                      onClick={() => {
-                        reset()
-                      }}
-                    >
-                      Reset
-                    </CButton>
+                    <CCol>
+                      <CHeaderText> Pays </CHeaderText>
 
-                    <CButton type="submit" color="success">
-                      Ajouter
-                    </CButton>
-                  </div>
-                </form>
-              </CCardBody>
-            </CCard>
-          </CCol>
-        </CRow>
+                      <Controller
+                        name="pays"
+                        defaultValue=""
+                        control={control}
+                        render={({ field }) => (
+                          <CFormInput {...field} id="pays" placeholder="pays" autoComplete="pays" />
+                        )}
+                      />
+                    </CCol>
+                  </CInputGroup>
+                </CCol>
+                <CCol sm="4">
+                  {' '}
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText> Reference </CHeaderText>
+                      <Controller
+                        name="reference"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="reference"
+                            placeholder="reference"
+                            autoComplete="reference"
+                          />
+                        )}
+                      />
+                    </CCol>
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText> Type procedure </CHeaderText>
+                      <Controller
+                        name="typeProcedure"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <CFormSelect id="typeProcedure" {...field}>
+                            <option value="">-- Selectionner un type de dossier --</option>
+                            <option value="Expertice">Expertice</option>
+                            <option value="Hypothése">Hypothése</option>
+                            <option value="Mise en conformité">Mise en conformité</option>
+                            <option value="Loyer impayé/expulsion">Loyer impayé/expulsion</option>
+                            <option value="Annulation d'assemblée générale">
+                              Annulation d assemblée générale
+                            </option>
+                            <option value="Saisie immobilière">Saisie immobilière</option>
+                            <option value="Recouvrement de Créance">Recouvrement de Créance</option>
+                            <option value="Recouvrement de charges">Recouvrement de charges</option>
+                          </CFormSelect>
+                        )}
+                      />{' '}
+                    </CCol>
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText> Dossier </CHeaderText>
+                      <Controller
+                        name="statut"
+                        control={control}
+                        defaultValue="true"
+                        render={({ field }) => (
+                          <CFormSelect id="statut" {...field}>
+                            <option value="true">Dossier actif</option>
+                            <option value="false">Dossier archivé</option>
+                          </CFormSelect>
+                        )}
+                      />{' '}
+                    </CCol>
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText> Montant prejudice </CHeaderText>
+                      <Controller
+                        name="montantPrejudice"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="montantPrejudice"
+                            placeholder="montant Prejudice"
+                            autoComplete="montant Prejudice"
+                          />
+                        )}
+                      />
+                    </CCol>
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText> Entreprise </CHeaderText>
+                      {!isLoadingSocietes && societes.length > 0 ? (
+                        <Controller
+                          name="societe"
+                          control={control}
+                          defaultValue={societes.length > 0 ? societes[0].id : ''}
+                          render={({ field }) => (
+                            <CFormSelect id="societe" {...field}>
+                              {societes.map((item, key) => (
+                                <option value={item.id} key={key}>
+                                  {item.nomSociete}
+                                </option>
+                              ))}
+                            </CFormSelect>
+                          )}
+                        />
+                      ) : (
+                        isLoadingSocietes && <CSpinner color="primary" variant="grow" />
+                      )}
+                    </CCol>
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText> Juridiction </CHeaderText>
+                      <Controller
+                        name="juridiction"
+                        defaultValue=""
+                        control={control}
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="juridiction"
+                            placeholder="juridiction"
+                            autoComplete="juridiction"
+                          />
+                        )}
+                      />
+                    </CCol>
+                  </CInputGroup>
+                </CCol>
+                <CCol sm="4">
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText> Partie adverse objet </CHeaderText>
+                      <Controller
+                        name="objet"
+                        defaultValue=""
+                        control={control}
+                        render={({ field }) => (
+                          <CFormInput {...field} id="objet" placeholder="Partie adverse objet" />
+                        )}
+                      />
+                    </CCol>
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText> Partie adverse nom </CHeaderText>
+                      <Controller
+                        name="partieAdverseNom"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="partieAdverseNom"
+                            placeholder="Partie adverse nom"
+                          />
+                        )}
+                      />{' '}
+                    </CCol>
+                  </CInputGroup>
+                  <CCol className="mb-3">
+                    <CCol>
+                      <CHeaderText> Partie adverse prenom </CHeaderText>
+                      <Controller
+                        name="partieAdversePrenom"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="partieAdversePrenom"
+                            placeholder="Partie adverse prenom"
+                          />
+                        )}
+                      />{' '}
+                    </CCol>
+                  </CCol>
+                  <CCol>
+                    <CHeaderText> Partie adverse e-mail </CHeaderText>
+                    <CInputGroup className="mb-3">
+                      <CInputGroupText>@</CInputGroupText>
+                      <Controller
+                        name="partieAdverseEmail"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="partieAdverseEmail"
+                            type="email"
+                            placeholder="Partie adverse e-mail"
+                          />
+                        )}
+                      />
+                    </CInputGroup>
+                  </CCol>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText> Partie adverse adresse </CHeaderText>
+
+                      <Controller
+                        name="partieAdverseAdresse"
+                        defaultValue=""
+                        control={control}
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="partieAdverseAdresse"
+                            placeholder="Partie adverse adresse"
+                          />
+                        )}
+                      />
+                    </CCol>
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText> Partie adverse ville </CHeaderText>
+                      <Controller
+                        name="partieAdverseVille"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="partieAdverseVille"
+                            placeholder="Partie adverse ville"
+                          />
+                        )}
+                      />
+                    </CCol>
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText> Partie adverse pays </CHeaderText>
+                      <Controller
+                        name="partieAdversePays"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="partieAdversePays"
+                            placeholder="Partie adverse pays"
+                          />
+                        )}
+                      />{' '}
+                    </CCol>
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText> Partie adverse telephone </CHeaderText>
+
+                      <Controller
+                        name="partieAdverseTelephone"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="partieAdverseTelephone"
+                            placeholder="Partie adverse telephone"
+                          />
+                        )}
+                      />
+                    </CCol>
+                  </CInputGroup>
+                </CCol>
+              </CRow>
+              {/* <CRow>
+                <Controller
+                  name="file"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <CCard className="container" style={{ backgroundColor: 'dark' }}>
+                      <CCardBody {...field}>
+                        <div {...getRootProps({ className: 'dropzone' })}>
+                          <input {...getInputProps()} />
+                          <p>Dropzone with no drag events</p>
+                          <em>(Drag drop is disabled)</em>
+                        </div>
+                      </CCardBody>
+                      <CCardBody>
+                        <h4>Files</h4>
+                        <ul>{files}</ul>
+                      </CCardBody>
+                    </CCard>
+                  )}
+                />
+              </CRow> */}
+              <CRow>
+                <CCol sm="8"></CCol>
+
+                <CCol sm="2">
+                  <CButton type="button" color="success" variant="outline" onClick={() => reset()}>
+                    Reset
+                  </CButton>
+                </CCol>
+                <CCol sm="2">
+                  {' '}
+                  <CButton type="submit" variant="outline" color="dark">
+                    Ajouter
+                  </CButton>
+                </CCol>
+              </CRow>
+            </form>
+          </CCardBody>
+        </CCard>
       </CContainer>
     </div>
   )

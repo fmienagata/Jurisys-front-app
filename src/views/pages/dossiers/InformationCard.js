@@ -37,6 +37,27 @@ const InformationCard = ({ dataDossier, setListPJ, setOpenModalPJ, setTitleModal
       case 'montantPrejudice':
         result = 'Montant de prejudice'
         break
+      case 'partieAdverseNom':
+        result = 'Adverse nom'
+        break
+      case 'partieAdversePrenom':
+        result = 'Adverse prenom'
+        break
+      case 'partieAdverseEmail':
+        result = 'Adverse Email'
+        break
+      case 'partieAdverseAdresse':
+        result = 'Adverse adresse'
+        break
+      case 'partieAdverseVille':
+        result = 'Adverse ville'
+        break
+      case 'partieAdversePays':
+        result = 'Adverse pays'
+        break
+      case 'partieAdverseTelephone':
+        result = 'Adverse telephone'
+        break
       default:
         result = key
     }

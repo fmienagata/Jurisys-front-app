@@ -17,8 +17,9 @@ import Styles from './../../../table/TableStyles'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { filtredValues } from 'src/utils/utils'
-import { useGetAllMessagesTypes } from 'src/services/messagesTypesService'
+import { useGetAllMessagesTypes, daleteMessageType } from 'src/services/messagesTypesService'
 import { useQueryClient } from 'react-query'
+import ModalAction from 'src/components/ModalAction'
 
 const MessagesType = () => {
   const tableRefMsgsTypes = useRef(typeof useRowSelect)
@@ -28,8 +29,10 @@ const MessagesType = () => {
 
   const [currentPage, setCurrentPage] = useState(0)
   const [selection, setSelection] = useState([])
+  const [openModal, setOpenModal] = useState(false)
+  const [msgTypeIDDelete, setMsgTypeIDDelete] = useState('')
 
-  const { displayError } = useMessageContext()
+  const { displayError, displaySuccess } = useMessageContext()
   const messagesDataStore = useSelector((state) => state.dataMessagesTypes.data)
   const [initialMessages, setInitialMessages] = useState([])
   const [dataSave, setDataSave] = useState([])
@@ -69,6 +72,27 @@ const MessagesType = () => {
     const filter = event.target.value.trim().toLowerCase()
     const result = initialMessages && filtredValues(dataSave, filter)
     setInitialMessages(filter === '' ? dataSave : result)
+  }
+
+  const handleDeleteMsgType = (msgId) => {
+    setOpenModal(true)
+    setMsgTypeIDDelete(msgId)
+  }
+
+  async function deleteAction() {
+    try {
+      if (msgTypeIDDelete !== '') {
+        await daleteMessageType(msgTypeIDDelete)
+        queryClient.invalidateQueries(['getAllMsgsType'])
+        displaySuccess('Supprimer un message', 'Supprimer un message  type avec sucess')
+      }
+    } catch (error) {
+      displayError(error.messages)
+    } finally {
+      setOpenModal(false)
+    }
+    setMsgTypeIDDelete('')
+    setOpenModal(false)
   }
 
   useEffect(() => {
@@ -135,6 +159,8 @@ const MessagesType = () => {
                       onSelectedRowChange={setSelection}
                       ischeckbox={true}
                       fromPage={'msgtype'}
+                      onDelete={handleDeleteMsgType}
+                      setOpenModal={setOpenModal}
                     />
                   )}
                   {isLoading && <CSpinner color="primary" variant="grow" />}
@@ -144,6 +170,15 @@ const MessagesType = () => {
               loading && <CSpinner color="primary" variant="grow" />
             )}
           </CCol>
+          <ModalAction
+            openModal={openModal}
+            setOpenModal={setOpenModal}
+            action={
+              <CButton color="danger" onClick={deleteAction}>
+                Désactiver
+              </CButton>
+            }
+          />
         </CRow>
       </Styles>
     </div>

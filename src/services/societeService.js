@@ -8,12 +8,21 @@ const getAllSocietes = async () => {
 }
 
 const addSociete = async (data) => {
-  const response = await Axios.post('/api/societes', removeEmptyAttributes(data))
+  const formData = new FormData()
+  for (const key in removeEmptyAttributes(data)) {
+    formData.append(key, data[key])
+  }
+  const response = await Axios.post('/api/societes', formData)
   return response.data
 }
 
 const updateSociete = async (id, data) => {
   const response = await Axios.put(`/api/societes/${id}`, removeEmptyAttributes(data))
+  return response.data
+}
+
+const daleteSociete = async (id) => {
+  const response = await Axios.delete(`/api/societes/${id}`)
   return response.data
 }
 
@@ -35,4 +44,4 @@ const useGetAllSocietes = (config = {}) => {
   }
 }
 
-export { getAllSocietes, addSociete, updateSociete, useGetAllSocietes }
+export { getAllSocietes, addSociete, daleteSociete, updateSociete, useGetAllSocietes }

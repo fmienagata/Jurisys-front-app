@@ -1,23 +1,14 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import {
-  CCol,
   CCardText,
   CCardTitle,
   CRow,
-  CCardBody,
-  CCardHeader,
   CCard,
-  CNavTitle,
-  CSidebarNav,
   CListGroupItem,
   CListGroup,
-  CBadge,
-  CCardFooter,
   CCardSubtitle,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import * as icon from '@coreui/icons'
 
 const InboxItem = ({ message, active, setActive, setMessagesDetails }) => {
   return (
@@ -56,6 +47,10 @@ function formattedDate(date) {
 
 const Inbox = ({ messagesSelected, setMessagesDetails, setActiveInboxIndex, activeInboxIndex }) => {
   // const [activeIndex, setActiveIndex] = useState(activeInboxIndex)
+  useEffect(() => {
+    setActiveInboxIndex(0)
+    setMessagesDetails(messagesSelected.length > 0 ? messagesSelected[0] : [])
+  }, [messagesSelected])
 
   return (
     <CCard>

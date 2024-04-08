@@ -7,12 +7,21 @@ const getAllFactures = async () => {
 }
 
 const addFacture = async (data) => {
-  const response = await Axios.post('/api/factures', data)
+  const formData = new FormData()
+  for (const key in data) {
+    formData.append(key, data[key])
+  }
+  const response = await Axios.post('/api/factures', formData)
   return response.data
 }
 
 const updateFacture = async (id, data) => {
   const response = await Axios.put(`/api/factures/${id}`, data)
+  return response.data
+}
+
+const deleteFacture = async (id) => {
+  const response = await Axios.delete(`/api/factures/${id}`)
   return response.data
 }
 
@@ -34,4 +43,4 @@ const useGetAllFactures = (config = {}) => {
   }
 }
 
-export { getAllFactures, addFacture, updateFacture, useGetAllFactures }
+export { getAllFactures, addFacture, updateFacture, deleteFacture, useGetAllFactures }

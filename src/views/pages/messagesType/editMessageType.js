@@ -15,6 +15,7 @@ import {
   CRow,
 } from '@coreui/react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useQueryClient } from 'react-query'
 
 import { useMessageContext } from 'src/Context/MessageContext'
 import { updateMessageType } from 'src/services/messagesTypesService'
@@ -25,11 +26,13 @@ const EditMessageType = () => {
   const navigate = useNavigate()
   const { control, handleSubmit } = useForm()
   const { displaySuccess, displayError } = useMessageContext()
+  const queryClient = useQueryClient()
 
   const handleCreateMessagesTypes = async (data) => {
     try {
       await updateMessageType(state.data.id, data)
-      displaySuccess('Le message a bien été créé avec sucess')
+      displaySuccess('Mise à jours ', 'Le message a bien été créé avec sucess')
+      queryClient.invalidateQueries(['getAllMsgsType'])
       navigate('/messages/prewritten')
     } catch (error) {
       displayError(error.messages)

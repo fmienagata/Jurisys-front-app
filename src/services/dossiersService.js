@@ -1,8 +1,8 @@
 import Axios from 'src/services/axiosConfig'
-import { useQuery } from 'react-query'
+import { useQuery, useMutation } from 'react-query'
 import { generateQueryString } from './../utils/utils'
 
-const addDossier = async (dossier) => {
+const createDossier = async (dossier) => {
   try {
     const response = await Axios.post('api/dossiers', {
       typeProcedure: 'add postman',
@@ -19,10 +19,37 @@ const addDossier = async (dossier) => {
   }
 }
 
-function createDossier(dossier) {
-  return Axios.post('api/dossiers', dossier).then(async (response) => {
+function addDossier(dossier) {
+  const formData = new FormData()
+  for (const key in dossier) {
+    formData.append(key, dossier[key])
+  }
+  return Axios.post('api/dossiers', formData).then(async (response) => {
     return response.data
   })
+}
+
+const addDossierFiles = async (file) => {
+  const formData = new FormData()
+
+  formData.append('file', file)
+  console.log('formData file --> ', file)
+  const response = await Axios.post(
+    '/api/dossiers/660f14802c879012b50d7233/dossier_files',
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    },
+  )
+
+  console.log('File uploaded successfully:', response.data)
+  // return Axios.post('/api/dossiers/660f14802c879012b50d7233/dossier_files', file).then(
+  //   async (response) => {
+  //     return response.data
+  //   },
+  // )
 }
 
 function updateDossier(id, dossier) {
@@ -88,8 +115,44 @@ const useGetAllDossiers = (config = {}) => {
   }
 }
 
+const useGetOneDossier = (id, config = {}) => {
+  const {
+    data: dossiers,
+    isLoading,
+    refetch,
+    ...rest
+  } = useQuery(['getOneDossier', id], () => getDossierID(id), {
+    ...config,
+    staleTime: Infinity,
+  })
+
+  return {
+    dossiers: dossiers,
+    isLoading,
+    refetch: refetch,
+    ...rest,
+  }
+}
+
+const useGetDossierMessages = (config = {}) => {
+  const mutateDossier = useMutation((id) => getDossierID(id), {
+    ...config,
+    staleTime: Infinity,
+  })
+
+  const { data: dossiers, isLoading, refetch, ...rest } = mutateDossier
+
+  return {
+    dossiers,
+    isLoading,
+    refetch,
+    ...rest,
+  }
+}
+
 export {
   addDossier,
+  addDossierFiles,
   createDossier,
   deleteDossier,
   getDossiers,
@@ -98,5 +161,7 @@ export {
   getMessagesDossier,
   getRechercheDossiers,
   useGetAllDossiers,
+  useGetOneDossier,
   getFileDossier,
+  useGetDossierMessages,
 }

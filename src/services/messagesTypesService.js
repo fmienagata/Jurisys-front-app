@@ -7,12 +7,21 @@ const getAllMessagesTypes = async () => {
 }
 
 const addMessageType = async (data) => {
-  const response = await Axios.post('/api/messages_type', data)
+  const formData = new FormData()
+  for (const key in data) {
+    formData.append(key, data[key])
+  }
+  const response = await Axios.post('/api/messages_type', formData)
   return response.data
 }
 
 const updateMessageType = async (id, data) => {
   const response = await Axios.put(`/api/messages_type/${id}`, data)
+  return response.data
+}
+
+const daleteMessageType = async (id) => {
+  const response = await Axios.delete(`/api/messages_type/${id}`)
   return response.data
 }
 
@@ -34,4 +43,10 @@ const useGetAllMessagesTypes = (config = {}) => {
   }
 }
 
-export { getAllMessagesTypes, addMessageType, updateMessageType, useGetAllMessagesTypes }
+export {
+  getAllMessagesTypes,
+  daleteMessageType,
+  addMessageType,
+  updateMessageType,
+  useGetAllMessagesTypes,
+}
