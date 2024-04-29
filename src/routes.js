@@ -1,5 +1,15 @@
 import React from 'react'
+
+//
 //users
+
+const Accesses = {
+  ADMIN: 'ROLE_ADMIN',
+  AVOCAT: 'ROLE_AVOCAT',
+  PATRON: 'ROLE_PATRON',
+  USER: 'ROLE_USER',
+}
+
 const users = React.lazy(() => import('./views/pages/users/users'))
 const userEdit = React.lazy(() => import('./views/pages/users/userEdit'))
 const addUser = React.lazy(() => import('./views/pages/users/addUser'))
@@ -16,6 +26,8 @@ const messagesType = React.lazy(() => import('./views/pages/messagesType/Message
 const messageries = React.lazy(() => import('./views/pages/messagesType/Messageries'))
 const newMessagesType = React.lazy(() => import('./views/pages/messagesType/addMessagesTypes'))
 const editMessagesType = React.lazy(() => import('./views/pages/messagesType/editMessageType'))
+const addMessageDossier = React.lazy(() => import('./views/pages/messagesType/addMessagesDossier'))
+
 // Agenda
 const diary = React.lazy(() => import('./views/pages/Agenda/MyCalendar'))
 // dashboard
@@ -31,6 +43,9 @@ const factures = React.lazy(() => import('./views/pages/factures/factures'))
 const addfacture = React.lazy(() => import('./views/pages/factures/addFacture'))
 const editfacture = React.lazy(() => import('./views/pages/factures/editFacture'))
 
+//
+const unauthorized = React.lazy(() => import('./views/pages/page404/Page404'))
+
 const routes = [
   { path: '/dossier-edit/:dossierId', name: 'Dossier modifier', element: dossierEdit },
   { path: '/dossier/:dossierId', name: 'Dossier', element: dossier, exact: true },
@@ -43,18 +58,44 @@ const routes = [
     element: dossiers,
     exact: true,
   },
-  { path: '/users', name: 'Utilisateurs', element: users, exact: true },
-  { path: '/user-edit/:userId', name: 'Modifier un utilisateur', element: userEdit, exact: true },
-  { path: '/user-add', name: 'Ajouter un utilisateur', element: addUser },
-  { path: '/user-display/:userId', name: 'Utilisateur', element: user, exact: true },
+  {
+    path: '/users',
+    name: 'Utilisateurs',
+    allowedRoles: [Accesses.ADMIN, Accesses.AVOCAT],
+    element: users,
+    exact: true,
+  },
+
+  {
+    path: '/user-edit/:userId',
+    allowedRoles: [Accesses.ADMIN, Accesses.AVOCAT],
+    name: 'Modifier un utilisateur',
+    element: userEdit,
+    exact: true,
+  },
+  {
+    path: '/user-add',
+    allowedRoles: [Accesses.ADMIN, Accesses.AVOCAT],
+    name: 'Ajouter un utilisateur',
+    element: addUser,
+  },
+  {
+    path: '/user-display/:userId',
+    allowedRoles: [Accesses.ADMIN, Accesses.AVOCAT],
+    name: 'Utilisateur',
+    element: user,
+    exact: true,
+  },
   {
     path: '/messages/prewritten',
+    allowedRoles: [Accesses.AVOCAT],
     name: 'Messages pré-rédigés',
     element: messagesType,
     exact: true,
   },
   {
     path: '/messages/prewritten/new',
+    allowedRoles: [Accesses.AVOCAT],
     name: 'Ajouter un messages pré-rédigés',
     element: newMessagesType,
     exact: true,
@@ -62,16 +103,23 @@ const routes = [
   {
     path: '/messages/messaging',
     name: 'Messageries',
+    allowedRoles: [Accesses.AVOCAT],
     element: messageries,
     exact: true,
   },
   {
     path: '/messages/prewritten-edit/:msgid',
     name: 'Modifier un message pré-rédigés',
+    allowedRoles: [Accesses.AVOCAT],
     element: editMessagesType,
     exact: true,
   },
-
+  {
+    path: '/messages/new',
+    name: 'Ajouter un message pour un dossier',
+    element: addMessageDossier,
+    exact: true,
+  },
   {
     path: '/dashboard',
     name: 'Dashboard',
@@ -92,6 +140,7 @@ const routes = [
   },
   {
     path: '/new-societe',
+    allowedRoles: [Accesses.AVOCAT],
     name: 'Ajouter une entreprise',
     element: addSociete,
     exact: true,
@@ -99,31 +148,42 @@ const routes = [
   {
     path: '/societes',
     name: 'Liste des entreprises',
+    allowedRoles: [Accesses.AVOCAT],
     element: societes,
     exact: true,
   },
   {
     path: '/societe-edit/:id',
     name: 'Modifier une societe',
+    allowedRoles: [Accesses.AVOCAT],
     element: editSocietes,
     exact: true,
   },
   {
     path: '/factures',
     name: 'Liste des factures',
+    allowedRoles: [Accesses.AVOCAT],
     element: factures,
     exact: true,
   },
   {
     path: '/add-facture',
     name: 'Ajouter une facture',
+    allowedRoles: [Accesses.AVOCAT],
     element: addfacture,
     exact: true,
   },
   {
     path: '/facture-edit/:id',
     name: 'Modifier une facture',
+    allowedRoles: [Accesses.AVOCAT],
     element: editfacture,
+    exact: true,
+  },
+  {
+    path: '/unauthorized',
+    name: 'Pas autorisé',
+    element: unauthorized,
     exact: true,
   },
   { path: '/', exact: true, name: 'Home' },

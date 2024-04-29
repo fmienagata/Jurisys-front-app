@@ -64,7 +64,6 @@ const User = () => {
               {/* <CCol className="text-start" xs={6}>
                 <b className="fw-semibold">{value === null ? '---' : getKeyValue(key, value)}</b>
               </CCol> */}
-              {console.log('key --> ', key, value)}
               <CCol className="text-start" xs={6}>
                 {key === 'isDeleted' ? (
                   <CBadge color={value === false ? 'dark' : 'danger'}>

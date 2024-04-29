@@ -24,9 +24,6 @@ api.interceptors.response.use(
   },
   (error) => {
     if (error.response && error.response.status === 401) {
-      // Handle unauthorized (e.g., redirect to login page)
-      // You can also automatically logout the user here
-      console.log('error 401')
     }
     console.log('error 401')
     return Promise.reject(error)

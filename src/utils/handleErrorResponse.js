@@ -7,7 +7,7 @@ const handleErrorResponse = (error, disconnect, displayError, navigate) => {
     // Gérer l'erreur en fonction du statut de réponse
     if (error.response.status === 401) {
       // Gérer l'erreur 401
-      displayError('Votre session a expiré. Veuillez vous reconnecter')
+      displayError('Votre session a expiré', 'Votre session a expiré. Veuillez vous reconnecter')
       disconnect()
       navigate('/login')
       message = 'Unauthorized - Redirect to login'

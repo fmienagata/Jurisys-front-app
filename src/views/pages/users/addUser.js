@@ -14,6 +14,7 @@ import {
   CFormSelect,
   CSpinner,
   CHeaderText,
+  CForm,
 } from '@coreui/react'
 import { useNavigate } from 'react-router-dom'
 
@@ -24,11 +25,16 @@ import { useQueryClient } from 'react-query'
 
 const AddUser = () => {
   const navigate = useNavigate()
-  const { control, handleSubmit } = useForm()
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm()
   const { displaySuccess, displayError } = useMessageContext()
   const queryClient = useQueryClient()
   const [usersTypes, setUsersTypes] = useState([])
   const [societes, setSocietes] = useState([])
+  const [validated, setValidated] = useState(false)
 
   const { data, isLoading } = useGetUsersTypes({
     onSuccess: (dataUsers) => {
@@ -80,6 +86,15 @@ const AddUser = () => {
     }
   }
 
+  const handleSubmitForm = (event) => {
+    const form = event.currentTarget
+    if (form.checkValidity() === false) {
+      event.preventDefault()
+      event.stopPropagation()
+    }
+    setValidated(true)
+  }
+
   return (
     <div>
       <CContainer>
@@ -87,7 +102,13 @@ const AddUser = () => {
           <CCol md={9} lg={7} xl={6}>
             <CCard className="mx-4">
               <CCardBody className="p-4">
-                <form onSubmit={handleSubmit(handleAddUser)}>
+                <CForm
+                  onSubmit={handleSubmit(handleAddUser)}
+                  //onSubmit={handleSubmitForm}
+                  // validated={errors || errors == undefined}
+                  noValidate
+                  className="row g-3 needs-validation"
+                >
                   {/* <h1>{labels.registre.titleHeader}</h1> */}
                   <p className="text-body-secondary">Ajouter un utilisateur</p>
 
@@ -98,14 +119,20 @@ const AddUser = () => {
                       <Controller
                         name="nom"
                         control={control}
+                        rules={{ required: 'Ce champs est requis' }}
                         defaultValue=""
-                        render={({ field }) => (
-                          <CFormInput
-                            {...field}
-                            id="nom"
-                            placeholder="Nom d'utilisateur"
-                            autoComplete="nom"
-                          />
+                        render={({ field, fieldState: { error } }) => (
+                          <div>
+                            <CFormInput
+                              {...field}
+                              id="nom"
+                              placeholder="Nom d'utilisateur"
+                              autoComplete="nom"
+                              invalid={Boolean(error)}
+                              feedbackInvalid={error?.message}
+                            />
+                            {/* {errors.nom && <p className="text-danger">{errors.nom.message}</p>} */}
+                          </div>
                         )}
                       />
                     </CCol>
@@ -116,13 +143,16 @@ const AddUser = () => {
                       <Controller
                         name="prenom"
                         control={control}
+                        rules={{ required: 'Ce champs est requis' }}
                         defaultValue=""
-                        render={({ field }) => (
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="prenom"
                             placeholder="Prenom d'utilisateur"
                             autoComplete="prenom"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />
@@ -134,6 +164,7 @@ const AddUser = () => {
                       <Controller
                         name="username"
                         control={control}
+                        // rules={{ required: 'Ce champs est requis' }} // Add rules for required field
                         defaultValue=""
                         render={({ field }) => (
                           <CFormInput
@@ -176,6 +207,7 @@ const AddUser = () => {
                       <Controller
                         name="password"
                         control={control}
+                        rules={{ required: 'Ce champs est requis' }} // Add rules for required field
                         render={({ field }) => (
                           <CFormInput
                             {...field}
@@ -183,6 +215,8 @@ const AddUser = () => {
                             type="password"
                             placeholder="Mot de passe"
                             autoComplete="current-password"
+                            required
+                            feedbackInvalid="Please select a valid state."
                           />
                         )}
                       />
@@ -195,9 +229,15 @@ const AddUser = () => {
                         <Controller
                           name="societe"
                           control={control}
+                          rules={{ required: 'Ce champs est requis' }}
                           defaultValue={societes.length > 0 ? societes[0].id : ''}
-                          render={({ field }) => (
-                            <CFormSelect id="societe" {...field}>
+                          render={({ field, fieldState: { error } }) => (
+                            <CFormSelect
+                              id="societe"
+                              {...field}
+                              invalid={Boolean(error)}
+                              feedbackInvalid={error?.message}
+                            >
                               {societes.map((item, key) => (
                                 <option value={item.id} key={key}>
                                   {item.nomSociete}
@@ -216,6 +256,7 @@ const AddUser = () => {
                     <Controller
                       name="email"
                       control={control}
+                      rules={{ required: 'Ce champs est requis' }} // Add rules for required field
                       defaultValue=""
                       render={({ field }) => (
                         <CFormInput
@@ -233,7 +274,7 @@ const AddUser = () => {
                       Ajouter
                     </CButton>
                   </div>
-                </form>
+                </CForm>
               </CCardBody>
             </CCard>
           </CCol>

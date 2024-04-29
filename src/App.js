@@ -46,7 +46,7 @@ const App = () => {
           <Route exact path="/register" name="Register Page" element={<Register />} />
           <Route exact path="/forgot-pwd" name="Recuperer-mot-de-passe" element={<ForgotPwd />} />
           <Route exact path="/404" name="Page 404" element={<Page404 />} />
-          <Route
+          {/* <Route
             exact
             path="/500"
             name="Page 500"
@@ -55,7 +55,11 @@ const App = () => {
                 <Page500 />
               </PrivateRoute>
             }
-          />
+          /> */}
+          <Route element={<PrivateRoute />}>
+            <Route path="/500" element={<Page500 />} />
+          </Route>
+
           <Route path="*" name="Accueil" element={<DefaultLayout />} />
         </Routes>
       </Suspense>

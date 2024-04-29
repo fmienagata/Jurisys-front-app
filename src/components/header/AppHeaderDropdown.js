@@ -14,16 +14,18 @@ import {
 import { cilCreditCard, cilEnvelopeOpen, cilLockLocked, cilSettings, cilUser } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { useAuth } from 'src/Context/AuthContext'
-
+import { useQueryClient } from 'react-query'
 import avatar from './../../assets/images/avatars/avatar2.jpg'
 import labels from 'src/translations/labels.json'
 
 const AppHeaderDropdown = () => {
   const { disconnect } = useAuth()
+  const queryClient = useQueryClient()
 
   const navigate = useNavigate()
 
   function logout() {
+    queryClient.clear()
     disconnect()
     navigate('/login')
   }

@@ -42,7 +42,6 @@ const Messageries = () => {
 
   const { dossiers, isLoading } = useGetAllDossiers({
     onSuccess: (data) => {
-      console.log('exemple')
       setDataDossiers(data)
       setClickedDossier(data[0].id)
       setMessagesSelected(data[0].messages.length > 0 ? data[0].messages : [])
@@ -150,7 +149,6 @@ const Messageries = () => {
               )}
             </CCol>
             <CCol xs={6}>
-              {console.log('messagesDetails ->', messagesDetails)}
               {messagesSelected.length !== 0 && messagesDetails && (
                 <CListGroup>
                   <>

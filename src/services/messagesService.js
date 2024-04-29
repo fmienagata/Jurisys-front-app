@@ -10,4 +10,21 @@ const deleteMessage = async (id) => {
   return response.data
 }
 
-export { getAllMessages, deleteMessage }
+const addMessage = async (message) => {
+  const formData = new FormData()
+  for (const key in message) {
+    formData.append(key, message[key])
+  }
+  const response = await Axios.post('/api/messages', formData)
+  return response.data
+}
+
+const addMessageFiles = async (file, id) => {
+  const response = await Axios.post(`/api/messages/${id}/message_files`, file, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+}
+
+export { getAllMessages, deleteMessage, addMessage, addMessageFiles }

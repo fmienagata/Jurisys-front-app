@@ -1,15 +1,7 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import {
-  CCloseButton,
-  CSidebar,
-  CSidebarBrand,
-  CSidebarFooter,
-  CSidebarHeader,
-  CSidebarNav,
-  CSidebarToggler,
-} from '@coreui/react'
+import { CCloseButton, CSidebar, CSidebarBrand, CSidebarHeader, CSidebarNav } from '@coreui/react'
 
 import { AppSidebarNav } from './AppSidebarNav'
 
@@ -18,11 +10,29 @@ import 'simplebar-react/dist/simplebar.min.css'
 
 // sidebar nav config
 import navigation from '../_nav'
+import { useAuth } from 'src/Context/AuthContext'
 
 const AppSidebar = () => {
+  const [navigationfiltred, setNavigationFiltred] = useState([])
+
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.changeState.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.changeState.sidebarShow)
+
+  const { user } = useAuth()
+
+  const allowedRoles = {
+    ROLE_USER: ['Dashboard', 'Dossiers', 'Recherche', 'Agenda'],
+    ROLE_ADMIN: ['Dashboard', 'Dossiers', 'Recherche', 'Agenda', 'Utilisateurs'],
+  }
+
+  useEffect(() => {
+    const filteredData = allowedRoles[user.roles]
+      ? navigation.filter((obj) => allowedRoles[user.roles].includes(obj.name))
+      : navigation
+
+    setNavigationFiltred(filteredData)
+  }, [user])
 
   return (
     <CSidebar
@@ -53,7 +63,7 @@ const AppSidebar = () => {
 
       <CSidebarNav>
         <SimpleBar>
-          <AppSidebarNav items={navigation} />
+          <AppSidebarNav items={navigationfiltred} />
         </SimpleBar>
       </CSidebarNav>
       {/* <CSidebarFooter className="border-top d-none d-lg-flex">
