@@ -88,8 +88,14 @@ const CreateMessagesDossier = () => {
 
     try {
       const result = await addMessage(data)
-      handleSubmitFile(result.id)
-      displaySuccess('Ajout un message', 'Le message a bien été créé avec sucess')
+      if (files.length > 0) {
+        handleSubmitFile(result.id)
+      } else {
+        displaySuccess('Ajout un message', 'Le message a bien été créé avec sucess')
+        // invalidate navigate'
+        queryClient.invalidateQueries(['getAllDossiers'])
+        navigate('/messages/messaging')
+      }
     } catch (error) {
       displayError(error.messages)
     }
@@ -104,7 +110,11 @@ const CreateMessagesDossier = () => {
     try {
       const response = await addMessageFiles(form, id)
       displaySuccess('Ajout un message', 'Le message a bien été créé avec sucess')
-      // setFiles([])
+      // invalidate navigate'
+      queryClient.invalidateQueries(['getAllDossiers'])
+      navigate('/messages/messaging')
+
+      setFiles([])
     } catch (error) {
       console.error("Une erreur s'est produite lors de l'envoi des fichiers:", error)
     }

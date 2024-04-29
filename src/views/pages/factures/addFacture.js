@@ -30,7 +30,7 @@ const AddFacture = () => {
   const [dossiersData, setDossiersData] = useState([])
   const queryClient = useQueryClient()
 
-  const { data, isLoading } = useGetAllUsers({
+  const { data: dataUsers, isLoading } = useGetAllUsers({
     onSuccess: (dataUsers) => {
       setUsers(dataUsers.data)
     },
@@ -51,22 +51,6 @@ const AddFacture = () => {
       )
     },
   })
-
-  useEffect(() => {
-    if (!isLoadingDossiers && dossiers) {
-      setDossiersData(dossiers)
-    } else {
-      queryClient.invalidateQueries(['getAllDossiers'])
-    }
-  }, [isLoadingDossiers, dossiers, queryClient])
-
-  useEffect(() => {
-    if (!isLoading && data) {
-      setUsers(data.data)
-    } else {
-      queryClient.invalidateQueries(['getAllUsers'])
-    }
-  }, [isLoading, data, queryClient])
 
   const handleAddFacture = async (data) => {
     try {
@@ -90,7 +74,7 @@ const AddFacture = () => {
                   {/* <h1>{labels.registre.titleHeader}</h1> */}
                   <p className="text-body-secondary">Ajouter une facture</p>
 
-                  {!isLoading && users.length > 0 ? (
+                  {!isLoading && dataUsers.data.length > 0 ? (
                     <CInputGroup className="mb-3">
                       <CCol>
                         <CHeaderText> Nom de l utilisateur </CHeaderText>
@@ -100,7 +84,7 @@ const AddFacture = () => {
                           defaultValue={users.length > 0 ? users[0].id : ''}
                           render={({ field }) => (
                             <CFormSelect id="user" {...field}>
-                              {users.map((item, key) => (
+                              {dataUsers.data.map((item, key) => (
                                 <option value={item.id} key={key}>
                                   {item.nom}
                                 </option>
@@ -135,10 +119,10 @@ const AddFacture = () => {
                         <Controller
                           name="dossier"
                           control={control}
-                          defaultValue={dossiersData.length > 0 ? dossiersData[0].id : ''}
+                          defaultValue={dossiers.length > 0 ? dossiers[0].id : ''}
                           render={({ field }) => (
                             <CFormSelect id="dossier" {...field}>
-                              {dossiersData.map((item, key) => (
+                              {dossiers.map((item, key) => (
                                 <option value={item.id} key={key}>
                                   {item.nom}
                                 </option>
@@ -149,7 +133,7 @@ const AddFacture = () => {
                       </CCol>
                     </CInputGroup>
                   ) : (
-                    isLoading && <CSpinner color="primary" variant="grow" />
+                    isLoadingDossiers && <CSpinner color="primary" variant="grow" />
                   )}
                   <CInputGroup className="mb-3">
                     <CCol>

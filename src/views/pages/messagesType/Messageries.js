@@ -41,12 +41,12 @@ const Messageries = () => {
   const [clickedDossier, setClickedDossier] = useState(null)
 
   const { dossiers, isLoading } = useGetAllDossiers({
-    onSuccess: (data) => {
-      setDataDossiers(data)
-      setClickedDossier(data[0].id)
-      setMessagesSelected(data[0].messages.length > 0 ? data[0].messages : [])
-      setMessagesDetails(data[0].messages.length > 0 ? data[0].messages[0] : [])
-    },
+    // onSuccess: (data) => {
+    //   setDataDossiers(data)
+    //   setClickedDossier(data[0].id)
+    //   setMessagesSelected(data[0].messages.length > 0 ? data[0].messages : [])
+    //   setMessagesDetails(data[0].messages.length > 0 ? data[0].messages[0] : [])
+    // },
     onError: (error) => {
       handleErrorResponse(error, disconnect, displayError, navigate)
     },
@@ -79,19 +79,28 @@ const Messageries = () => {
   }
 
   useEffect(() => {
+    if (dossiers) {
+      setDataDossiers(dossiers)
+      setClickedDossier(dossiers[0].id)
+      setMessagesSelected(dossiers[0].messages.length > 0 ? dossiers[0].messages : [])
+      setMessagesDetails(dossiers[0].messages.length > 0 ? dossiers[0].messages[0] : [])
+    }
+  }, [dossiers])
+
+  useEffect(() => {
     if (clickedDossier !== null) {
       fetchDossier(clickedDossier)
     }
   }, [clickedDossier])
 
   // tous les dossiers charger sideBar
-  useEffect(() => {
-    if (!isLoading && dossiers) {
-      setDataDossiers(dossiers)
-    } else {
-      queryClient.invalidateQueries(['getAllDossiers'])
-    }
-  }, [isLoading, dossiers, queryClient])
+  // useEffect(() => {
+  //   if (!isLoading && dossiers) {
+  //     setDataDossiers(dossiers)
+  //   } else {
+  //     queryClient.invalidateQueries(['getAllDossiers'])
+  //   }
+  // }, [isLoading, dossiers, queryClient])
 
   return (
     <>
@@ -115,9 +124,9 @@ const Messageries = () => {
                 paddingBottom: 0,
               }}
             >
-              {!isLoading && dataDossiers && (
+              {!isLoading && dossiers && (
                 <SidebarBox
-                  dataDossiers={dataDossiers}
+                  dataDossiers={dossiers}
                   setMessagesSelected={setMessagesSelected}
                   setActiveNavLink={setActiveNavLink}
                   setActiveInboxIndex={handleSetActiveInboxIndex}

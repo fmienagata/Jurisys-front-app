@@ -302,10 +302,10 @@ const AddDossier = () => {
                       <Controller
                         name="montantPrejudice"
                         control={control}
-                        defaultValue=""
                         render={({ field }) => (
                           <CFormInput
                             {...field}
+                            type="number"
                             id="montantPrejudice"
                             placeholder="montant Prejudice"
                             autoComplete="montant Prejudice"

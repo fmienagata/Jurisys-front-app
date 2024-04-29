@@ -25,16 +25,12 @@ import { useQueryClient } from 'react-query'
 
 const AddUser = () => {
   const navigate = useNavigate()
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm()
+  const { control, handleSubmit } = useForm()
   const { displaySuccess, displayError } = useMessageContext()
   const queryClient = useQueryClient()
   const [usersTypes, setUsersTypes] = useState([])
   const [societes, setSocietes] = useState([])
-  const [validated, setValidated] = useState(false)
+  //const [validated, setValidated] = useState(false)
 
   const { data, isLoading } = useGetUsersTypes({
     onSuccess: (dataUsers) => {
@@ -86,14 +82,14 @@ const AddUser = () => {
     }
   }
 
-  const handleSubmitForm = (event) => {
-    const form = event.currentTarget
-    if (form.checkValidity() === false) {
-      event.preventDefault()
-      event.stopPropagation()
-    }
-    setValidated(true)
-  }
+  // const handleSubmitForm = (event) => {
+  //   const form = event.currentTarget
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault()
+  //     event.stopPropagation()
+  //   }
+  //   setValidated(true)
+  // }
 
   return (
     <div>
@@ -165,13 +161,15 @@ const AddUser = () => {
                         name="username"
                         control={control}
                         // rules={{ required: 'Ce champs est requis' }} // Add rules for required field
-                        defaultValue=""
-                        render={({ field }) => (
+                        rules={{ required: 'Ce champs est requis' }} // Add rules for required field
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="username"
                             placeholder="username"
                             autoComplete="username"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />
@@ -208,15 +206,15 @@ const AddUser = () => {
                         name="password"
                         control={control}
                         rules={{ required: 'Ce champs est requis' }} // Add rules for required field
-                        render={({ field }) => (
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="password"
                             type="password"
                             placeholder="Mot de passe"
                             autoComplete="current-password"
-                            required
-                            feedbackInvalid="Please select a valid state."
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />
@@ -258,12 +256,14 @@ const AddUser = () => {
                       control={control}
                       rules={{ required: 'Ce champs est requis' }} // Add rules for required field
                       defaultValue=""
-                      render={({ field }) => (
+                      render={({ field, fieldState: { error } }) => (
                         <CFormInput
                           {...field}
                           id="email"
                           placeholder="Email"
                           autoComplete="email"
+                          invalid={Boolean(error)}
+                          feedbackInvalid={error?.message}
                         />
                       )}
                     />
