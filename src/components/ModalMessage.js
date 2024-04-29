@@ -19,8 +19,6 @@ const ModalMessage = (props) => {
   const { openModal, setOpenModal, action, dataMessage } = props
   const { id, messageFiles, ...newData } = dataMessage
 
-  console.log('newData --> ', newData)
-
   function getKeyName(key) {
     let result = ''
     switch (key) {

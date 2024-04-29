@@ -60,7 +60,7 @@ export const MessageProvider = ({ children }) => {
     dispatch({
       type: messageTypes.ERROR,
       message: message || 'Une erreur est survenue',
-      title: 'Une erreur est survenue',
+      title: title || 'Une erreur est survenue',
     })
   }, [])
 

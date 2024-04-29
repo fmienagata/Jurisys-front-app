@@ -51,6 +51,7 @@ const useDashboardData = (property, fetchDataAction) => {
 }
 
 const InfosDashboard = () => {
+  const { user } = useAuth()
   const { displayError } = useMessageContext()
 
   const { data: dataUsers, isLoading: loadingUsers } = useCountUsers({
@@ -79,7 +80,7 @@ const InfosDashboard = () => {
 
   return (
     <>
-      <CCol xs={3} style={{ padding: 0 }}>
+      <CCol style={{ padding: 0 }}>
         {
           <CWidgetStatsF
             className="mb-3"
@@ -97,19 +98,21 @@ const InfosDashboard = () => {
           />
         }
       </CCol>
-      <CCol xs={3}>
-        <CWidgetStatsF
-          className="mb-3"
-          color="blue"
-          icon={
-            !loadingUsers ? <CIcon icon={icon.cilGroup} height={24} /> : <CSpinner color="info" />
-          }
-          padding={false}
-          title="Utilisateurs actifs"
-          value={dataUsers && dataUsers.count}
-        />
-      </CCol>
-      <CCol xs={3}>
+      {user.roles !== 'ROLE_USER' && (
+        <CCol>
+          <CWidgetStatsF
+            className="mb-3"
+            color="blue"
+            icon={
+              !loadingUsers ? <CIcon icon={icon.cilGroup} height={24} /> : <CSpinner color="info" />
+            }
+            padding={false}
+            title="Utilisateurs actifs"
+            value={dataUsers && dataUsers.count}
+          />
+        </CCol>
+      )}
+      <CCol>
         <CWidgetStatsF
           className="mb-3"
           color="cyan"
@@ -126,22 +129,24 @@ const InfosDashboard = () => {
           value={dataCountAudiences && dataCountAudiences.count}
         />
       </CCol>
-      <CCol xs={3}>
-        <CWidgetStatsF
-          className="mb-3"
-          color="purple"
-          icon={
-            !loadingBusiness ? (
-              <CIcon icon={icon.cilIndustry} height={24} />
-            ) : (
-              <CSpinner color="info" />
-            )
-          }
-          padding={false}
-          title="Nombre d'entreprises"
-          value={dataCountBusiness && dataCountBusiness.count}
-        />
-      </CCol>
+      {user.roles !== 'ROLE_USER' && (
+        <CCol>
+          <CWidgetStatsF
+            className="mb-3"
+            color="purple"
+            icon={
+              !loadingBusiness ? (
+                <CIcon icon={icon.cilIndustry} height={24} />
+              ) : (
+                <CSpinner color="info" />
+              )
+            }
+            padding={false}
+            title="Nombre d'entreprises"
+            value={dataCountBusiness && dataCountBusiness.count}
+          />
+        </CCol>
+      )}
     </>
   )
 }

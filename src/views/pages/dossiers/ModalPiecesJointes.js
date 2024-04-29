@@ -25,10 +25,8 @@ const ModalPiecesJointes = (props) => {
   const { displaySuccess, displayError } = useMessageContext()
 
   const downloadFile = async (file) => {
-    console.log('file => ', file)
     try {
       const blobData = await getFileDossier(file)
-      console.log('blobData => ', blobData)
       const url = window.URL.createObjectURL(blobData)
       const link = document.createElement('a')
       link.href = url

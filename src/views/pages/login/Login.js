@@ -21,8 +21,10 @@ import { useNavigate } from 'react-router-dom'
 import labels from 'src/translations/labels.json'
 import authService from 'src/services/authServices'
 import { useMessageContext } from 'src/Context/MessageContext'
+import { useAuth } from 'src/Context/AuthContext'
 
 const Login = () => {
+  const { connect } = useAuth()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const { displayError } = useMessageContext()
@@ -34,6 +36,7 @@ const Login = () => {
     try {
       const response = await authService.login(data)
       localStorage.setItem('token', response.token)
+      connect()
       setIsLoading(false)
       navigate('/dashboard')
     } catch (error) {

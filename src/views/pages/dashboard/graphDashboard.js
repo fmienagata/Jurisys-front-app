@@ -1,42 +1,33 @@
 import React, { useState, useEffect } from 'react'
 import { CChartBar } from '@coreui/react-chartjs'
-import { useDispatch, useSelector } from 'react-redux'
 import { CCard, CCardBody, CCardHeader, CSpinner } from '@coreui/react'
 import { useMessageContext } from 'src/Context/MessageContext'
-import { fetchDataGraphs } from 'src/dashboardActions'
+import { useDashboardGraphes } from 'src/services/dashboardService'
 
 const GraphDashBoard = () => {
-  const dispatch = useDispatch()
+  const { data, isLoading } = useDashboardGraphes({
+    onError: (error) => {
+      displayError('Erreur lors de la requête dans le composant !')
+    },
+  })
+
   const { displayError } = useMessageContext()
-  const graphDataStore = useSelector((state) => state.dashboard.dataGraph)
-  const [loading, setLoading] = useState(false)
   const [labels, setLabels] = useState([])
   const [values, setValues] = useState([])
 
   useEffect(() => {
-    if (graphDataStore === null) {
-      setLoading(true)
-      dispatch(fetchDataGraphs())
-        .then(() => {
-          setLoading(false)
-        })
-        .catch((error) => {
-          displayError('yes error' + error)
-
-          setLoading(false)
-        })
-    } else {
-      setLabels(graphDataStore.map((item) => item._id))
-      setValues(graphDataStore.map((item) => item.total))
+    if (data) {
+      setLabels(data.map((item) => item._id))
+      setValues(data.map((item) => item.total))
     }
-  }, [dispatch, displayError, graphDataStore])
+  }, [data])
 
   return (
     <>
       <CCard className="mb-2" style={{ margin: 0, padding: 0 }}>
         <CCardHeader>Répartition de dossiers</CCardHeader>
         <CCardBody>
-          {!loading ? (
+          {!isLoading ? (
             <CChartBar
               data={{
                 labels: labels,

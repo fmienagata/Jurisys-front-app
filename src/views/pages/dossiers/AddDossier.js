@@ -1,5 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import {
   CButton,
@@ -16,6 +16,8 @@ import {
   CSpinner,
 } from '@coreui/react'
 import { useDropzone } from 'react-dropzone'
+import CIcon from '@coreui/icons-react'
+import * as icon from '@coreui/icons'
 
 import { addDossier, addDossierFiles } from '../../../services/dossiersService'
 import { removeEmptyAttributes } from '../../../utils/utils'
@@ -27,7 +29,7 @@ import { useNavigate } from 'react-router-dom'
 
 const AddDossier = () => {
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({ noDrag: true })
-  const files = acceptedFiles.map((file) => <li key={file.path}>{file.path}</li>)
+  //const files = acceptedFiles.map((file) => <li key={file.path}>{file.path}</li>)
   const navigate = useNavigate()
 
   const { control, handleSubmit, reset } = useForm()
@@ -35,6 +37,9 @@ const AddDossier = () => {
   const { displaySuccess, displayError } = useMessageContext()
 
   const [societes, setSocietes] = useState([])
+  const [files, setFiles] = useState([])
+  const [filesLen, setFilesLen] = useState(0)
+  const fileInputRef = useRef(null)
 
   const { data: dataSocietes, isLoading: isLoadingSocietes } = useGetAllSocietes({
     onSuccess: (dataSocietes) => {
@@ -59,19 +64,52 @@ const AddDossier = () => {
     // files.map((f) => form.append('file', new Blob([f], { type: 'application/pdf' })))
     //await addDossierFiles(data.file)
     // let newDossier = removeEmptyAttributes(data)
-    await addDossier(data)
-    queryClient.invalidateQueries(['getCountDossiersActifs'])
-
+    // await addDossier(data)
+    //queryClient.invalidateQueries(['getCountDossiersActifs'])
     try {
-      await addDossier(data)
-
-      displaySuccess("Ajout d'un dossier ", 'Le dossier a bien été créé avec sucess')
+      const result = await addDossier(data)
+      handleSubmitFile(result.id)
       queryClient.invalidateQueries(['getCountDossiersActifs'])
       navigate('/dossiers/actifs')
     } catch (error) {
       displayError(error.messages)
       navigate('/dossiers/actifs')
     }
+  }
+  const handleFileChange = (e) => {
+    const newFiles = Array.from(e.target.files)
+    setFiles([...files, ...newFiles])
+    setFilesLen(files.length)
+  }
+
+  const handleSubmitFile = async (id) => {
+    const formData = new FormData()
+    files.forEach((file, index) => {
+      formData.append(`file${index}`, file)
+    })
+    try {
+      const response = await addDossierFiles(formData, id)
+      displaySuccess("Ajout d'un dossier ", 'Le dossier a bien été créé avec sucess')
+      setFiles([]) // Réinitialiser les fichiers après l'envoi réussi
+    } catch (error) {
+      console.error("Une erreur s'est produite lors de l'envoi des fichiers:", error)
+    }
+    setFiles([])
+  }
+
+  const handleRemoveFile = (index, e) => {
+    e.preventDefault()
+    const updatedFiles = [...files]
+    updatedFiles.splice(index, 1)
+    setFiles(updatedFiles)
+    setFilesLen(files.length)
+  }
+
+  const handleButtonClick = (e) => {
+    e.preventDefault()
+
+    // Cliquez sur l'élément input de type "file" lorsque le bouton est cliqué
+    fileInputRef.current.click()
   }
 
   return (
@@ -233,16 +271,10 @@ const AddDossier = () => {
                         render={({ field }) => (
                           <CFormSelect id="typeProcedure" {...field}>
                             <option value="">-- Selectionner un type de dossier --</option>
-                            <option value="Expertice">Expertice</option>
-                            <option value="Hypothése">Hypothése</option>
-                            <option value="Mise en conformité">Mise en conformité</option>
-                            <option value="Loyer impayé/expulsion">Loyer impayé/expulsion</option>
-                            <option value="Annulation d'assemblée générale">
-                              Annulation d assemblée générale
-                            </option>
-                            <option value="Saisie immobilière">Saisie immobilière</option>
-                            <option value="Recouvrement de Créance">Recouvrement de Créance</option>
-                            <option value="Recouvrement de charges">Recouvrement de charges</option>
+                            <option value="Conciliation">Conciliation</option>
+                            <option value="Référé">Référé</option>
+                            <option value="Au pied de requête">Au pied de requête</option>
+                            <option value="Du fond">Du fond</option>
                           </CFormSelect>
                         )}
                       />{' '}
@@ -485,6 +517,55 @@ const AddDossier = () => {
                   )}
                 />
               </CRow> */}
+
+              <CRow>
+                <div>
+                  <CInputGroup className="mb-2"></CInputGroup>
+                  <h6>Importer des fichiers</h6>
+
+                  {/* <input
+                          type="file"
+                          ref={fileInputRef2}
+                          onChange={handleFileChange}
+                          multiple
+                          style={{ display: 'none' }} // Cacher l'input file
+                        /> */}
+                  <CFormInput
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    multiple
+                    // style={{ display: 'none' }}
+                  />
+
+                  {/* <button onClick={(e) => handleButtonClick(e)}>Ajouter des fichiers</button> */}
+
+                  <span>
+                    {files.length} fichier{files.length !== 1 ? 's' : ''} sélectionné
+                    {files.length !== 1 ? 's' : ''}
+                  </span>
+
+                  {/* <button onClick={() => handleSubmitFile()}>Envoyer</button> */}
+
+                  <div>
+                    <ul>
+                      {files.map((file, index) => (
+                        <li key={index}>
+                          {file.name} -{' '}
+                          <CButton
+                            onClick={(e) => handleRemoveFile(index, e)}
+                            variant="outline"
+                            color="danger"
+                            size="sm"
+                          >
+                            <CIcon icon={icon.cilTrash} size="sm" /> Supprimer
+                          </CButton>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </CRow>
               <CRow>
                 <CCol sm="8"></CCol>
 

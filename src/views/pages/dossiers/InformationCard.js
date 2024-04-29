@@ -109,19 +109,21 @@ const InformationCard = ({ dataDossier, setListPJ, setOpenModalPJ, setTitleModal
           </CCol>
           {/* <CCol className="text-center" xs={3}></CCol> */}
           <CCol className="text-end" xs={6}>
-            <CButton
-              color="success"
-              variant="ghost"
-              size="sm"
-              title="Consulter les piéces jointes du dossier"
-              onClick={() => {
-                setTitleModal('Listes des piéces jointes du dossier' + slicedData['reference'])
-                setListPJ(dossierFiles)
-                setOpenModalPJ(true)
-              }}
-            >
-              <CIcon icon={icon.cilFolderOpen} size="sm" />
-            </CButton>
+            {dossierFiles.length > 0 && (
+              <CButton
+                color="success"
+                variant="ghost"
+                size="sm"
+                title="Consulter les piéces jointes du dossier"
+                onClick={() => {
+                  setTitleModal('Listes des piéces jointes du dossier' + slicedData['reference'])
+                  setListPJ(dossierFiles)
+                  setOpenModalPJ(true)
+                }}
+              >
+                <CIcon icon={icon.cilFolderOpen} size="sm" />
+              </CButton>
+            )}
           </CCol>
         </CRow>
       </CCardHeader>

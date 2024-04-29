@@ -29,27 +29,12 @@ function addDossier(dossier) {
   })
 }
 
-const addDossierFiles = async (file) => {
-  const formData = new FormData()
-
-  formData.append('file', file)
-  console.log('formData file --> ', file)
-  const response = await Axios.post(
-    '/api/dossiers/660f14802c879012b50d7233/dossier_files',
-    formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+const addDossierFiles = async (file, id) => {
+  const response = await Axios.post(`/api/dossiers/${id}/dossier_files`, file, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
     },
-  )
-
-  console.log('File uploaded successfully:', response.data)
-  // return Axios.post('/api/dossiers/660f14802c879012b50d7233/dossier_files', file).then(
-  //   async (response) => {
-  //     return response.data
-  //   },
-  // )
+  })
 }
 
 function updateDossier(id, dossier) {

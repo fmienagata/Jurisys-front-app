@@ -79,15 +79,12 @@ const Factures = () => {
     try {
       if (factureIDDelete !== '') {
         await deleteFacture(factureIDDelete)
-        console.log('factureIDDelete await =>', factureIDDelete)
       } else {
-        console.log('factureIDDelete =>', factureIDDelete)
       }
       displaySuccess('Supprimer facture', 'Supprimer avec sucess')
       queryClient.invalidateQueries(['getAllFactures'])
     } catch (error) {
       displayError(error.messages)
-      console.log('factureIDDelete catch =>', factureIDDelete)
     } finally {
       setOpenModal(false)
     }

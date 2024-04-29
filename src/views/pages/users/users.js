@@ -9,15 +9,19 @@ import { useNavigate } from 'react-router-dom'
 import ModalAction from 'src/components/ModalAction'
 
 import { filtredValues } from 'src/utils/utils'
+import { useAuth } from 'src/Context/AuthContext'
 
 import { deleteUser, useGetAllUsers } from '../../../services/usersService'
 import { useMessageContext } from 'src/Context/MessageContext'
 import Styles from './../../../table/TableStyles'
 import { useQueryClient } from 'react-query'
+import { handleErrorResponse } from 'src/utils/handleErrorResponse'
 
 const Users = () => {
   const tableRefUsers = useRef(typeof useRowSelect)
   const navigate = useNavigate()
+  const { disconnect } = useAuth()
+
   const { displayError, displaySuccess } = useMessageContext()
   const queryClient = useQueryClient()
 
@@ -61,26 +65,20 @@ const Users = () => {
 
   const [userIDDelete, setUserIDDelete] = useState('')
 
-  const { data, isLoading } = useGetAllUsers({
-    onSuccess: (dataUsers) => {
-      setUsers(dataUsers.data)
-      setInitialUsers(dataUsers.data)
-    },
+  const { data: dataUsers, isLoading } = useGetAllUsers({
     onError: (error) => {
-      displayError(
-        'Erreur : Impossible de récupérer les données ou données malformé . Veuillez réessayer plus tard.',
-      )
+      handleErrorResponse(error, disconnect, displayError, navigate)
     },
   })
 
-  useEffect(() => {
-    if (!isLoading && data) {
-      setUsers(data.data)
-      setInitialUsers(data.data)
-    } else {
-      queryClient.invalidateQueries(['getAllUsers'])
-    }
-  }, [isLoading, data, queryClient])
+  // useEffect(() => {
+  //   if (!isLoading && data) {
+  //     setUsers(data.data)
+  //     setInitialUsers(data.data)
+  //   } else {
+  //     queryClient.invalidateQueries(['getAllUsers'])
+  //   }
+  // }, [isLoading, data, queryClient])
 
   const handleDeleteUser = (userId) => {
     setOpenModal(true)
@@ -163,12 +161,12 @@ const Users = () => {
                 </CRow>
               </CCardHeader>
 
-              {users.length >= 1 && Array.isArray(users) ? (
+              {dataUsers && Array.isArray(dataUsers.data) ? (
                 <CCardBody className="custom-card-body">
                   <Table
                     ref={tableRefUsers}
                     columns={columnsUsers}
-                    data={users}
+                    data={dataUsers.data}
                     ischeckbox={true}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}

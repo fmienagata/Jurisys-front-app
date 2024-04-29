@@ -34,6 +34,24 @@ const getDashboardGraphes = async () => {
   return response.data
 }
 
+const useDashboardGraphes = (config = {}) => {
+  const { data, isLoading, refetch, ...rest } = useQuery(
+    ['getDashboardGraphes'],
+    () => getDashboardGraphes(),
+    {
+      ...config,
+      staleTime: Infinity,
+    },
+  )
+
+  return {
+    data,
+    isLoading,
+    refetch: refetch,
+    ...rest,
+  }
+}
+
 const useGetAllAgenda = (config = {}) => {
   const { disconnect } = useAuth()
   const { displayError } = useMessageContext()
@@ -145,4 +163,5 @@ export {
   useCountDossiersActifs,
   useCountAudiences,
   useCountBusiness,
+  useDashboardGraphes,
 }
