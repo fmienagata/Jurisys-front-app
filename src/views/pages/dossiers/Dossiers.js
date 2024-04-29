@@ -24,7 +24,7 @@ import { useAuth } from 'src/Context/AuthContext'
 
 const Dossiers = () => {
   const navigate = useNavigate()
-  const { disconnect, user } = useAuth()
+  const { disconnect } = useAuth()
 
   const location = useLocation()
   const [isActif, setIsActif] = useState()
