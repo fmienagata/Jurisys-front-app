@@ -55,12 +55,15 @@ const AddSociete = () => {
                       <Controller
                         name="nomSociete"
                         control={control}
+                        rules={{ required: 'Ce champs est requis' }}
                         defaultValue=""
-                        render={({ field }) => (
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="nomSociete"
                             placeholder={`Nom de l'entreprise`}
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />
@@ -72,9 +75,17 @@ const AddSociete = () => {
                       <Controller
                         name="type"
                         control={control}
+                        rules={{ required: 'Ce champs est requis' }}
                         defaultValue=""
-                        render={({ field }) => (
-                          <CFormInput {...field} id="type" placeholder="type" autoComplete="type" />
+                        render={({ field, fieldState: { error } }) => (
+                          <CFormInput
+                            {...field}
+                            id="type"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
+                            placeholder="type"
+                            autoComplete="type"
+                          />
                         )}
                       />
                     </CCol>
@@ -85,13 +96,16 @@ const AddSociete = () => {
                       <Controller
                         name="ville"
                         control={control}
+                        rules={{ required: 'Ce champs est requis' }}
                         defaultValue=""
-                        render={({ field }) => (
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="ville"
                             placeholder="Ville"
                             autoComplete="Ville"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />
@@ -103,8 +117,15 @@ const AddSociete = () => {
                       <Controller
                         name="pays"
                         control={control}
-                        render={({ field }) => (
-                          <CFormInput {...field} id="pays" placeholder="Pays" />
+                        rules={{ required: 'Ce champs est requis' }}
+                        render={({ field, fieldState: { error } }) => (
+                          <CFormInput
+                            {...field}
+                            id="pays"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
+                            placeholder="Pays"
+                          />
                         )}
                       />
                     </CCol>
@@ -116,12 +137,15 @@ const AddSociete = () => {
                         name="adresse"
                         control={control}
                         defaultValue=""
-                        render={({ field }) => (
+                        rules={{ required: 'Ce champs est requis' }}
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="adresse"
                             placeholder="Adresse"
                             autoComplete="Adresse"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />
@@ -135,12 +159,15 @@ const AddSociete = () => {
                         name="telephone"
                         control={control}
                         defaultValue=""
-                        render={({ field }) => (
+                        rules={{ required: 'Ce champs est requis' }}
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="telephone"
                             placeholder="Téléphone"
                             autoComplete="Téléphone"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />
@@ -152,9 +179,17 @@ const AddSociete = () => {
                       <Controller
                         name="fax"
                         control={control}
+                        rules={{ required: 'Ce champs est requis' }}
                         defaultValue=""
-                        render={({ field }) => (
-                          <CFormInput {...field} id="fax" placeholder="Fax" autoComplete="Fax" />
+                        render={({ field, fieldState: { error } }) => (
+                          <CFormInput
+                            {...field}
+                            id="fax"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
+                            placeholder="Fax"
+                            autoComplete="Fax"
+                          />
                         )}
                       />
                     </CCol>

@@ -20,7 +20,7 @@ const ModalAction = (props) => {
         </CModalHeader>
         <CModalBody>{message}</CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setOpenModal(false)}>
+          <CButton color="secondary" className="fw-medium" onClick={() => setOpenModal(false)}>
             Fermer
           </CButton>
           {action}

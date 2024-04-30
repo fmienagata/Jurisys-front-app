@@ -35,6 +35,7 @@ const addDossierFiles = async (file, id) => {
       'Content-Type': 'multipart/form-data',
     },
   })
+  //return response.data
 }
 
 function updateDossier(id, dossier) {
@@ -135,6 +136,31 @@ const useGetDossierMessages = (config = {}) => {
   }
 }
 
+async function changeStatutDossier(id, dossier) {
+  try {
+    const response = await Axios.put(`/api/dossiers/${id}`, dossier)
+    return response.data
+  } catch (error) {
+    throw new Error('Erreur lors de la mise à jour du dossier')
+  }
+}
+
+const useChangeStatusDossier = (config = {}) => {
+  const mutateDossier = useMutation((id, dossier) => changeStatutDossier(id, dossier), {
+    ...config,
+    staleTime: Infinity,
+  })
+
+  const { data: dossiers, isLoading, refetch, ...rest } = mutateDossier
+
+  return {
+    dossiers,
+    isLoading,
+    refetch,
+    ...rest,
+  }
+}
+
 export {
   addDossier,
   addDossierFiles,
@@ -149,4 +175,6 @@ export {
   useGetOneDossier,
   getFileDossier,
   useGetDossierMessages,
+  useChangeStatusDossier,
+  changeStatutDossier,
 }

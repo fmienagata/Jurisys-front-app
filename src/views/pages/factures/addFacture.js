@@ -42,9 +42,6 @@ const AddFacture = () => {
   })
 
   const { dossiers, isLoading: isLoadingDossiers } = useGetAllDossiers({
-    onSuccess: (data) => {
-      setDossiersData(data)
-    },
     onError: (error) => {
       displayError(
         'Erreur : Impossible de récupérer les données ou données malformé . Veuillez réessayer plus tard.',
@@ -56,10 +53,11 @@ const AddFacture = () => {
     try {
       await addFacture(data)
       displaySuccess('Ajout une facture', 'La facture a bien été créé avec sucess')
-      // navigate('/factures')
+      queryClient.invalidateQueries(['getAllFactures'])
+      navigate('/factures')
     } catch (error) {
       displayError(error.messages)
-      //navigate('/factures')
+      navigate('/factures')
     }
   }
 
@@ -81,8 +79,9 @@ const AddFacture = () => {
                         <Controller
                           name="user"
                           control={control}
+                          rules={{ required: 'Ce champs est requis' }}
                           defaultValue={users.length > 0 ? users[0].id : ''}
-                          render={({ field }) => (
+                          render={({ field, fieldState: { error } }) => (
                             <CFormSelect id="user" {...field}>
                               {dataUsers.data.map((item, key) => (
                                 <option value={item.id} key={key}>
@@ -98,21 +97,7 @@ const AddFacture = () => {
                     isLoading && <CSpinner color="primary" variant="grow" />
                   )}
 
-                  {/* <CInputGroup className="mb-3">
-                    <CCol>
-                      <CHeaderText> Nom de l utilisateur </CHeaderText>
-                      <Controller
-                        name="user"
-                        control={control}
-                        defaultValue=""
-                        render={({ field }) => (
-                          <CFormInput {...field} id="user" placeholder="Nom de l'utilisateur" />
-                        )}
-                      />
-                    </CCol>
-                  </CInputGroup> */}
-
-                  {!isLoadingDossiers && dossiersData.length > 0 ? (
+                  {!isLoadingDossiers && dossiers.length > 0 ? (
                     <CInputGroup className="mb-3">
                       <CCol>
                         <CHeaderText> Dossier </CHeaderText>
@@ -124,7 +109,7 @@ const AddFacture = () => {
                             <CFormSelect id="dossier" {...field}>
                               {dossiers.map((item, key) => (
                                 <option value={item.id} key={key}>
-                                  {item.nom}
+                                  {item.reference}
                                 </option>
                               ))}
                             </CFormSelect>
@@ -141,12 +126,15 @@ const AddFacture = () => {
                       <Controller
                         name="montant"
                         control={control}
-                        render={({ field }) => (
+                        rules={{ required: 'Ce champs est requis' }}
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="montant"
                             placeholder="montant"
                             autoComplete="montant"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />

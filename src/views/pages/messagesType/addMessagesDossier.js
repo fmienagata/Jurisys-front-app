@@ -48,7 +48,7 @@ const DateTimePickerWrapper = forwardRef(function DateTimePickerWrapper(props, r
 DateTimePickerWrapper.displayName = 'DateTimePickerWrapper'
 const CreateMessagesDossier = () => {
   const navigate = useNavigate()
-  const { control, handleSubmit } = useForm()
+  const { control, handleSubmit, setValue } = useForm()
   const { disconnect } = useAuth()
 
   const { displaySuccess, displayError } = useMessageContext()
@@ -58,11 +58,11 @@ const CreateMessagesDossier = () => {
   const defaultDate = new Date()
 
   //  const [value, onChange] = useState(defaultDate)
-  const [value, setValue] = React.useState(dayjs('2022-04-07'))
+  const [valueDate, setValueDate] = React.useState(dayjs('2022-04-07'))
   const [files, setFiles] = useState([])
   const [filesLen, setFilesLen] = useState(0)
 
-  const formattedValue = value.toISOString()
+  const formattedValue = valueDate.toISOString()
 
   const [selectedMessageType, setSelectedMessageType] = useState('')
 
@@ -110,7 +110,6 @@ const CreateMessagesDossier = () => {
     try {
       const response = await addMessageFiles(form, id)
       displaySuccess('Ajout un message', 'Le message a bien été créé avec sucess')
-      // invalidate navigate'
       queryClient.invalidateQueries(['getAllDossiers'])
       navigate('/messages/messaging')
 
@@ -118,7 +117,6 @@ const CreateMessagesDossier = () => {
     } catch (error) {
       console.error("Une erreur s'est produite lors de l'envoi des fichiers:", error)
     }
-    //  setFiles([])
   }
 
   const handleRemoveFile = (index, e) => {
@@ -221,48 +219,22 @@ const CreateMessagesDossier = () => {
                       )}
                     />
 
-                    {/* <DateTimePicker onChange={onChange} value={value} /> */}
-                    {/* <Controller
-                      name="dateAudience"
-                      control={control}
-                      defaultValue={defaultDate}
-                      render={({ field }) => (
-                        <DateTimePickerWrapper
-                          {...field}
-                          id="dateAudience"
-                          value={value}
-                          onChange={onChange}
-                        />
-                      )}
-                    /> */}
                     <CRow>
                       <div>
                         <CInputGroup className="mb-2"></CInputGroup>
                         <h6>Importer des fichiers</h6>
 
-                        {/* <input
-                          type="file"
-                          ref={fileInputRef2}
-                          onChange={handleFileChange}
-                          multiple
-                          style={{ display: 'none' }} // Cacher l'input file
-                        /> */}
                         <CFormInput
                           type="file"
                           ref={fileInputRef2}
                           onChange={handleFileChange}
                           multiple
-                          // style={{ display: 'none' }}
                         />
-
-                        {/* <button onClick={(e) => handleButtonClick(e)}>Ajouter des fichiers</button> */}
 
                         <span>
                           {files.length} fichier{files.length !== 1 ? 's' : ''} sélectionné
                           {files.length !== 1 ? 's' : ''}
                         </span>
-
-                        {/* <button onClick={() => handleSubmitFile()}>Envoyer</button> */}
 
                         <div>
                           <ul>
@@ -300,6 +272,7 @@ const CreateMessagesDossier = () => {
                             onChange={(e) => {
                               field.onChange(e)
                               setSelectedMessageType(e.target.value)
+                              setValue('text', e.target.value)
                             }}
                           >
                             <option value="" key="key">

@@ -68,9 +68,13 @@ const AddDossier = () => {
     //queryClient.invalidateQueries(['getCountDossiersActifs'])
     try {
       const result = await addDossier(data)
-      handleSubmitFile(result.id)
-      queryClient.invalidateQueries(['getCountDossiersActifs'])
-      navigate('/dossiers/actifs')
+      if (files.length > 0) {
+        handleSubmitFile(result.id)
+      } else {
+        queryClient.invalidateQueries(['getCountDossiersActifs'])
+        queryClient.invalidateQueries(['getAllDossiers'])
+        navigate('/dossiers/actifs')
+      }
     } catch (error) {
       displayError(error.messages)
       navigate('/dossiers/actifs')
@@ -89,6 +93,9 @@ const AddDossier = () => {
     })
     try {
       const response = await addDossierFiles(formData, id)
+      queryClient.invalidateQueries(['getCountDossiersActifs'])
+      queryClient.invalidateQueries(['getAllDossiers'])
+      navigate('/dossiers/actifs')
       displaySuccess("Ajout d'un dossier ", 'Le dossier a bien été créé avec sucess')
       setFiles([]) // Réinitialiser les fichiers après l'envoi réussi
     } catch (error) {
@@ -126,9 +133,17 @@ const AddDossier = () => {
                       <Controller
                         name="nom"
                         defaultValue=""
+                        rules={{ required: 'Ce champs est requis' }}
                         control={control}
-                        render={({ field }) => (
-                          <CFormInput {...field} id="nom" placeholder="nom" autoComplete="nom" />
+                        render={({ field, fieldState: { error } }) => (
+                          <CFormInput
+                            {...field}
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
+                            id="nom"
+                            placeholder="nom"
+                            autoComplete="nom"
+                          />
                         )}
                       />
                     </CCol>
@@ -139,13 +154,16 @@ const AddDossier = () => {
                       <Controller
                         defaultValue=""
                         name="prenom"
+                        rules={{ required: 'Ce champs est requis' }}
                         control={control}
-                        render={({ field }) => (
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="prenom"
                             placeholder="prenom"
                             autoComplete="prenom"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />{' '}
@@ -158,14 +176,17 @@ const AddDossier = () => {
                       <Controller
                         name="email"
                         defaultValue=""
+                        rules={{ required: 'Ce champs est requis' }}
                         control={control}
-                        render={({ field }) => (
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="email"
                             type="email"
                             placeholder="email"
                             autoComplete="email"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />
@@ -177,14 +198,17 @@ const AddDossier = () => {
                       <Controller
                         name="telephone"
                         defaultValue=""
+                        rules={{ required: 'Ce champs est requis' }}
                         control={control}
-                        render={({ field }) => (
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="telephone"
                             type="number"
                             placeholder="telephone"
                             autoComplete="telephone"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />
@@ -196,13 +220,16 @@ const AddDossier = () => {
                       <Controller
                         name="adresse"
                         control={control}
+                        rules={{ required: 'Ce champs est requis' }}
                         defaultValue=""
-                        render={({ field }) => (
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="adresse"
                             placeholder="adresse"
                             autoComplete="adresse"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />{' '}
@@ -215,12 +242,15 @@ const AddDossier = () => {
                         name="ville"
                         control={control}
                         defaultValue=""
-                        render={({ field }) => (
+                        rules={{ required: 'Ce champs est requis' }}
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="ville"
                             placeholder="ville"
                             autoComplete="ville"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />
@@ -234,12 +264,56 @@ const AddDossier = () => {
                         name="pays"
                         defaultValue=""
                         control={control}
-                        render={({ field }) => (
-                          <CFormInput {...field} id="pays" placeholder="pays" autoComplete="pays" />
+                        rules={{ required: 'Ce champs est requis' }}
+                        render={({ field, fieldState: { error } }) => (
+                          <CFormInput
+                            {...field}
+                            id="pays"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
+                            placeholder="pays"
+                            autoComplete="pays"
+                          />
                         )}
                       />
                     </CCol>
                   </CInputGroup>
+                  <CCol>
+                    <div>
+                      <CInputGroup className="mb-2"></CInputGroup>
+                      <h6>Importer des fichiers</h6>
+
+                      <CFormInput
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        multiple
+                      />
+
+                      <CHeaderText>
+                        {files.length} fichier{files.length !== 1 ? 's' : ''} sélectionné
+                        {files.length !== 1 ? 's' : ''}
+                      </CHeaderText>
+
+                      <div>
+                        <ul>
+                          {files.map((file, index) => (
+                            <li key={index}>
+                              {file.name} -{' '}
+                              <CButton
+                                onClick={(e) => handleRemoveFile(index, e)}
+                                variant="outline"
+                                color="danger"
+                                size="sm"
+                              >
+                                <CIcon icon={icon.cilTrash} size="sm" /> Supprimer
+                              </CButton>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </CCol>
                 </CCol>
                 <CCol sm="4">
                   {' '}
@@ -250,12 +324,15 @@ const AddDossier = () => {
                         name="reference"
                         control={control}
                         defaultValue=""
-                        render={({ field }) => (
+                        rules={{ required: 'Ce champs est requis' }}
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="reference"
                             placeholder="reference"
                             autoComplete="reference"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />
@@ -268,7 +345,7 @@ const AddDossier = () => {
                         name="typeProcedure"
                         control={control}
                         defaultValue=""
-                        render={({ field }) => (
+                        render={({ field, fieldState: { error } }) => (
                           <CFormSelect id="typeProcedure" {...field}>
                             <option value="">-- Selectionner un type de dossier --</option>
                             <option value="Conciliation">Conciliation</option>
@@ -286,11 +363,11 @@ const AddDossier = () => {
                       <Controller
                         name="statut"
                         control={control}
-                        defaultValue="true"
+                        defaultValue={Boolean(true)}
                         render={({ field }) => (
                           <CFormSelect id="statut" {...field}>
-                            <option value="true">Dossier actif</option>
-                            <option value="false">Dossier archivé</option>
+                            <option value={Boolean(true)}>Dossier actif</option>
+                            <option value={Boolean(false)}>Dossier archivé</option>
                           </CFormSelect>
                         )}
                       />{' '}
@@ -302,13 +379,16 @@ const AddDossier = () => {
                       <Controller
                         name="montantPrejudice"
                         control={control}
-                        render={({ field }) => (
+                        rules={{ required: 'Ce champs est requis' }}
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             type="number"
                             id="montantPrejudice"
                             placeholder="montant Prejudice"
                             autoComplete="montant Prejudice"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />
@@ -343,13 +423,16 @@ const AddDossier = () => {
                       <Controller
                         name="juridiction"
                         defaultValue=""
+                        rules={{ required: 'Ce champs est requis' }}
                         control={control}
-                        render={({ field }) => (
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="juridiction"
                             placeholder="juridiction"
                             autoComplete="juridiction"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />
@@ -364,8 +447,15 @@ const AddDossier = () => {
                         name="objet"
                         defaultValue=""
                         control={control}
-                        render={({ field }) => (
-                          <CFormInput {...field} id="objet" placeholder="Partie adverse objet" />
+                        rules={{ required: 'Ce champs est requis' }}
+                        render={({ field, fieldState: { error } }) => (
+                          <CFormInput
+                            {...field}
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
+                            id="objet"
+                            placeholder="Partie adverse objet"
+                          />
                         )}
                       />
                     </CCol>
@@ -377,11 +467,14 @@ const AddDossier = () => {
                         name="partieAdverseNom"
                         control={control}
                         defaultValue=""
-                        render={({ field }) => (
+                        rules={{ required: 'Ce champs est requis' }}
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="partieAdverseNom"
                             placeholder="Partie adverse nom"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />{' '}
@@ -393,12 +486,15 @@ const AddDossier = () => {
                       <Controller
                         name="partieAdversePrenom"
                         control={control}
+                        rules={{ required: 'Ce champs est requis' }}
                         defaultValue=""
-                        render={({ field }) => (
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="partieAdversePrenom"
                             placeholder="Partie adverse prenom"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />{' '}
@@ -412,12 +508,15 @@ const AddDossier = () => {
                         name="partieAdverseEmail"
                         control={control}
                         defaultValue=""
-                        render={({ field }) => (
+                        rules={{ required: 'Ce champs est requis' }}
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="partieAdverseEmail"
                             type="email"
                             placeholder="Partie adverse e-mail"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />
@@ -431,11 +530,14 @@ const AddDossier = () => {
                         name="partieAdverseAdresse"
                         defaultValue=""
                         control={control}
-                        render={({ field }) => (
+                        rules={{ required: 'Ce champs est requis' }}
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="partieAdverseAdresse"
                             placeholder="Partie adverse adresse"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />
@@ -448,11 +550,14 @@ const AddDossier = () => {
                         name="partieAdverseVille"
                         control={control}
                         defaultValue=""
-                        render={({ field }) => (
+                        rules={{ required: 'Ce champs est requis' }}
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="partieAdverseVille"
                             placeholder="Partie adverse ville"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />
@@ -465,11 +570,14 @@ const AddDossier = () => {
                         name="partieAdversePays"
                         control={control}
                         defaultValue=""
-                        render={({ field }) => (
+                        rules={{ required: 'Ce champs est requis' }}
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="partieAdversePays"
                             placeholder="Partie adverse pays"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />{' '}
@@ -483,11 +591,14 @@ const AddDossier = () => {
                         name="partieAdverseTelephone"
                         control={control}
                         defaultValue=""
-                        render={({ field }) => (
+                        rules={{ required: 'Ce champs est requis' }}
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="partieAdverseTelephone"
                             placeholder="Partie adverse telephone"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />
@@ -495,90 +606,28 @@ const AddDossier = () => {
                   </CInputGroup>
                 </CCol>
               </CRow>
-              {/* <CRow>
-                <Controller
-                  name="file"
-                  control={control}
-                  defaultValue=""
-                  render={({ field }) => (
-                    <CCard className="container" style={{ backgroundColor: 'dark' }}>
-                      <CCardBody {...field}>
-                        <div {...getRootProps({ className: 'dropzone' })}>
-                          <input {...getInputProps()} />
-                          <p>Dropzone with no drag events</p>
-                          <em>(Drag drop is disabled)</em>
-                        </div>
-                      </CCardBody>
-                      <CCardBody>
-                        <h4>Files</h4>
-                        <ul>{files}</ul>
-                      </CCardBody>
-                    </CCard>
-                  )}
-                />
-              </CRow> */}
 
               <CRow>
-                <div>
-                  <CInputGroup className="mb-2"></CInputGroup>
-                  <h6>Importer des fichiers</h6>
-
-                  {/* <input
-                          type="file"
-                          ref={fileInputRef2}
-                          onChange={handleFileChange}
-                          multiple
-                          style={{ display: 'none' }} // Cacher l'input file
-                        /> */}
-                  <CFormInput
-                    type="file"
-                    ref={fileInputRef}
-                    onChange={handleFileChange}
-                    multiple
-                    // style={{ display: 'none' }}
-                  />
-
-                  {/* <button onClick={(e) => handleButtonClick(e)}>Ajouter des fichiers</button> */}
-
-                  <span>
-                    {files.length} fichier{files.length !== 1 ? 's' : ''} sélectionné
-                    {files.length !== 1 ? 's' : ''}
-                  </span>
-
-                  {/* <button onClick={() => handleSubmitFile()}>Envoyer</button> */}
-
-                  <div>
-                    <ul>
-                      {files.map((file, index) => (
-                        <li key={index}>
-                          {file.name} -{' '}
-                          <CButton
-                            onClick={(e) => handleRemoveFile(index, e)}
-                            variant="outline"
-                            color="danger"
-                            size="sm"
-                          >
-                            <CIcon icon={icon.cilTrash} size="sm" /> Supprimer
-                          </CButton>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </CRow>
-              <CRow>
-                <CCol sm="8"></CCol>
-
+                <CCol sm="10"></CCol>
                 <CCol sm="2">
-                  <CButton type="button" color="success" variant="outline" onClick={() => reset()}>
-                    Reset
-                  </CButton>
-                </CCol>
-                <CCol sm="2">
-                  {' '}
-                  <CButton type="submit" variant="outline" color="dark">
-                    Ajouter
-                  </CButton>
+                  <CRow>
+                    <CCol>
+                      <CButton
+                        type="button"
+                        color="success"
+                        variant="outline"
+                        onClick={() => reset()}
+                      >
+                        Reset
+                      </CButton>
+                    </CCol>
+                    <CCol>
+                      {' '}
+                      <CButton type="submit" variant="outline" color="dark">
+                        Ajouter
+                      </CButton>
+                    </CCol>
+                  </CRow>
                 </CCol>
               </CRow>
             </form>

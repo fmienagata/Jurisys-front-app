@@ -40,10 +40,62 @@ function formatFrenchDate(dateString) {
   return formattedDate.replace(',', ' à')
 }
 
+const selectedKeys = [
+  'typeProcedure',
+  'reference',
+  'nom',
+  'prenom',
+  'adresse',
+  'email',
+  'telephone',
+  'ville',
+  'pays',
+  'juridiction',
+  'objet',
+  'partieAdverseNom',
+  'partieAdversePrenom',
+  'partieAdverseEmail',
+  'partieAdverseAdresse',
+  'partieAdverseVille',
+  'partieAdversePays',
+  'partieAdverseTelephone',
+  'statut',
+  'montantPrejudice',
+]
+
+function dossierStatusChange(frm) {
+  let selectedObject = {}
+
+  selectedKeys.forEach((key) => {
+    if (frm.hasOwnProperty(key)) {
+      const value = key === 'statut' ? !frm[key] : frm[key]
+      const finalValue = value === null ? '' : value
+      selectedObject[key] = finalValue
+    }
+  })
+
+  return selectedObject
+}
+
+function prepareDataUpdate(frm) {
+  let selectedObject = {}
+
+  selectedKeys.forEach((key) => {
+    if (frm.hasOwnProperty(key)) {
+      const finalvalue = frm[key] === null ? '' : frm[key]
+      selectedObject[key] = finalvalue
+    }
+  })
+
+  return selectedObject
+}
+
 export {
   formatFrenchDate,
   removeEmptyAttributes,
   generateQueryString,
   capitalizeFirstLetter,
   filtredValues,
+  dossierStatusChange,
+  prepareDataUpdate,
 }
