@@ -60,6 +60,7 @@ const Messageries = () => {
     onSuccess: (dataDossier) => {
       // setMessagesSelected(messagesDossier.messages)
       // setMessagesDetails(messagesDossier.messages[0])
+      console.log('dataDossier - fetch')
       setMessagesSelected(messagesDossier.messages.length > 0 ? messagesDossier[0].messages : [])
       setMessagesDetails(
         messagesDossier[0].messages.length > 0 ? messagesDossier[0].messages[0] : {},
@@ -68,9 +69,8 @@ const Messageries = () => {
       setActiveInboxIndex(0)
     },
     onError: (error) => {
-      displayError(
-        'Erreur : Impossible de récupérer les données ou données malformé . Veuillez réessayer plus tard.',
-      )
+      console.log('dataDossier - fetch')
+      handleErrorResponse(error, disconnect, displayError, navigate)
     },
   })
 
@@ -80,17 +80,18 @@ const Messageries = () => {
 
   useEffect(() => {
     if (dossiers) {
-      setDataDossiers(dossiers)
-      setClickedDossier(dossiers[0].id)
-      setMessagesSelected(dossiers[0].messages.length > 0 ? dossiers[0].messages : [])
-      setMessagesDetails(dossiers[0].messages.length > 0 ? dossiers[0].messages[0] : [])
+      //setDataDossiers(dossiers)
+      // setClickedDossier(dossiers[0].id)
+      // setMessagesSelected(dossiers[0].messages.length > 0 ? dossiers[0].messages : [])
+      // setMessagesDetails(dossiers[0].messages.length > 0 ? dossiers[0].messages[0] : [])
     }
   }, [dossiers])
 
   useEffect(() => {
-    if (clickedDossier !== null) {
-      fetchDossier(clickedDossier)
-    }
+    //if (clickedDossier !== null) {
+    console.log('useEffect')
+    fetchDossier(clickedDossier)
+    // }
   }, [clickedDossier])
 
   // tous les dossiers charger sideBar
@@ -145,7 +146,7 @@ const Messageries = () => {
               }}
             >
               {!loadingMessags ? (
-                messagesSelected.length > 1 && (
+                messagesSelected.length > 0 && (
                   <Inbox
                     messagesSelected={messagesSelected}
                     setMessagesDetails={setMessagesDetails}

@@ -30,11 +30,7 @@ const Societes = () => {
   const [openModal, setOpenModal] = useState(false)
   const [IDDelete, setIDDelete] = useState('')
 
-  const { dataSocietesAPI, isLoading, refetch } = useGetAllSocietes({
-    onSuccess: (data) => {
-      setDataSocietes(data.data)
-      setInitialSocietes(data.data)
-    },
+  const { dataSocietesAPI, isLoading } = useGetAllSocietes({
     onError: (error) => {
       handleErrorResponse(error, disconnect, displayError, navigate)
     },
@@ -47,7 +43,7 @@ const Societes = () => {
     } else {
       queryClient.invalidateQueries(['getAllSocietes'])
     }
-  }, [isLoading, dataSocietesAPI])
+  }, [queryClient, isLoading, dataSocietesAPI])
 
   const columnsSocietes = [
     {

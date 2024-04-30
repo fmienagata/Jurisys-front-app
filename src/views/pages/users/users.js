@@ -9,18 +9,15 @@ import { useNavigate } from 'react-router-dom'
 import ModalAction from 'src/components/ModalAction'
 
 import { filtredValues } from 'src/utils/utils'
-import { useAuth } from 'src/Context/AuthContext'
 
 import { deleteUser, useGetAllUsers } from '../../../services/usersService'
 import { useMessageContext } from 'src/Context/MessageContext'
 import Styles from './../../../table/TableStyles'
 import { useQueryClient } from 'react-query'
-import { handleErrorResponse } from 'src/utils/handleErrorResponse'
 
 const Users = () => {
   const tableRefUsers = useRef(typeof useRowSelect)
   const navigate = useNavigate()
-  const { disconnect } = useAuth()
 
   const { displayError, displaySuccess } = useMessageContext()
   const queryClient = useQueryClient()
@@ -61,29 +58,30 @@ const Users = () => {
 
   const [users, setUsers] = useState([])
   const [initialUsers, setInitialUsers] = useState([])
-  const [columns, setColumns] = useState([])
 
   const [userIDDelete, setUserIDDelete] = useState('')
 
   const { data: dataUsers, isLoading } = useGetAllUsers({
-    onError: (error) => {
-      handleErrorResponse(error, disconnect, displayError, navigate)
-    },
+    // onSuccess: (values) => {
+    //   setInitialUsers(values.data)
+    //   setUsers(values.data)
+    // },
+    // onError: (error) => {
+    //   handleErrorResponse(error, disconnect, displayError, navigate)
+    // },
   })
-
-  // useEffect(() => {
-  //   if (!isLoading && data) {
-  //     setUsers(data.data)
-  //     setInitialUsers(data.data)
-  //   } else {
-  //     queryClient.invalidateQueries(['getAllUsers'])
-  //   }
-  // }, [isLoading, data, queryClient])
 
   const handleDeleteUser = (userId) => {
     setOpenModal(true)
     setUserIDDelete(userId)
   }
+
+  useEffect(() => {
+    if (!isLoading && dataUsers) {
+      setInitialUsers(dataUsers.data)
+      setUsers(dataUsers.data)
+    }
+  }, [isLoading, dataUsers])
 
   async function deleteAction() {
     try {
@@ -107,8 +105,10 @@ const Users = () => {
   }
 
   function handleChange(event) {
+    console.log('initialUsers => ', initialUsers)
     const filter = event.target.value.trim().toLowerCase()
     const result = filtredValues(initialUsers, filter)
+    console.log('result => ', result)
     setUsers(filter === '' ? initialUsers : result)
   }
 
@@ -161,12 +161,12 @@ const Users = () => {
                 </CRow>
               </CCardHeader>
 
-              {dataUsers && Array.isArray(dataUsers.data) ? (
+              {users && Array.isArray(users) ? (
                 <CCardBody className="custom-card-body">
                   <Table
                     ref={tableRefUsers}
                     columns={columnsUsers}
-                    data={dataUsers.data}
+                    data={users}
                     ischeckbox={true}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}

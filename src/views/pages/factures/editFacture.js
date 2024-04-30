@@ -11,6 +11,7 @@ import {
   CInputGroup,
   CHeaderText,
   CRow,
+  CFormSelect,
 } from '@coreui/react'
 import { useMessageContext } from 'src/Context/MessageContext'
 import { useNavigate, useLocation } from 'react-router-dom'
@@ -20,6 +21,7 @@ import { useQueryClient } from 'react-query'
 const EditFacture = () => {
   const location = useLocation()
   const { state } = location
+  console.log('state ->', state.data)
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
@@ -53,7 +55,12 @@ const EditFacture = () => {
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText> Nom de l utilisateur </CHeaderText>
-                      <CFormInput id="user" placeholder="Nom de l'utilisateur" disabled />
+                      <CFormInput
+                        id="user"
+                        value={state.data.user}
+                        placeholder="Nom de l'utilisateur"
+                        disabled
+                      />
                       {/* <Controller
                         name="user"
                         control={control}
@@ -76,6 +83,7 @@ const EditFacture = () => {
                         id="dossier"
                         placeholder="dossier"
                         autoComplete="dossier"
+                        value={state.data.dossier}
                         disabled
                       />
                       {/* <Controller
@@ -113,7 +121,7 @@ const EditFacture = () => {
                     </CCol>
                   </CInputGroup>
                   <CInputGroup className="mb-3">
-                    <CCol>
+                    {/* <CCol>
                       <CHeaderText> statut </CHeaderText>
                       <Controller
                         name="statut"
@@ -121,6 +129,21 @@ const EditFacture = () => {
                         defaultValue={state.data.statut}
                         render={({ field }) => (
                           <CFormInput {...field} id="statut" placeholder="statut" />
+                        )}
+                      />
+                    </CCol> */}
+                    <CCol>
+                      <CHeaderText> statut </CHeaderText>
+                      <Controller
+                        name="statut"
+                        control={control}
+                        defaultValue={state.data.statut}
+                        render={({ field }) => (
+                          <CFormSelect id="statut" {...field}>
+                            <option value="Payer">Payer</option>
+                            <option value="Envoyée">Envoyée</option>
+                            <option value="Annulée">Annulée</option>
+                          </CFormSelect>
                         )}
                       />
                     </CCol>

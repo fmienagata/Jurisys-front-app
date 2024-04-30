@@ -54,7 +54,7 @@ const Inbox = ({ messagesSelected, setMessagesDetails, setActiveInboxIndex, acti
 
   return (
     <CCard>
-      {messagesSelected.length > 1 &&
+      {messagesSelected.length > 0 &&
         messagesSelected.map((item, key) => (
           <InboxItem
             key={key}

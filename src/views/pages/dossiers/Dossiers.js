@@ -12,35 +12,58 @@ import {
 import Table from 'src/table/table'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
-import { getDossiers, deleteDossier } from '../../../services/dossiersService'
+import {
+  getDossiers,
+  deleteDossier,
+  useGetAllDossiers,
+  useChangeStatusDossier,
+  changeStatutDossier,
+} from '../../../services/dossiersService'
 import { useDispatch } from 'react-redux'
 import ModalAction from 'src/components/ModalAction'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useMessageContext } from 'src/Context/MessageContext'
 import Styles from './../../../table/TableStyles'
 import { handleErrorResponse } from '../../../utils/handleErrorResponse'
-import { filtredValues } from 'src/utils/utils'
+import { filtredValues, dossierStatusChange } from 'src/utils/utils'
 import { useAuth } from 'src/Context/AuthContext'
+import { useQueryClient } from 'react-query'
 
 const Dossiers = () => {
   const navigate = useNavigate()
   const { disconnect } = useAuth()
+  const queryClient = useQueryClient()
 
   const location = useLocation()
-  const [isActif, setIsActif] = useState()
+  const [isActif, setIsActif] = useState(location.pathname.includes('actifs'))
 
+  const { dossiers: dossiersData, isLoading: loadingDossiers } = useGetAllDossiers({
+    onError: (error) => {
+      handleErrorResponse(error, disconnect, displayError, navigate)
+    },
+  })
+
+  // const { mutate: changeStatus } = useChangeStatusDossier({
+  //   onSuccess: (dataDossier) => {},
+  //   onError: (error) => {
+  //     displayError(
+  //       'Erreur : Impossible de récupérer les données ou données malformé . Veuillez réessayer plus tard.',
+  //     )
+  //   },
+  // })
   const { displayError, displaySuccess } = useMessageContext()
   const tableRefDossiers = useRef(typeof useRowSelect)
   const [currentPage, setCurrentPage] = useState(0)
   const [selection, setSelection] = useState([])
   const [dossiers, setDossiers] = useState([])
   const [dossiersInitial, setDossiersInitial] = useState([])
-  const [loading, setLoading] = useState(false)
   const [columns, setColumns] = useState([])
+
+  const [dataValue, setDataValue] = useState({})
 
   const [openModal, setOpenModal] = useState(false)
 
-  const [dossierIDDelete, setDossierIDDelete] = useState('')
+  const [dossierIDDelete, setDossierIDDelete] = useState({})
 
   const columnsDossiers = [
     {
@@ -93,53 +116,49 @@ const Dossiers = () => {
     },
   ]
 
-  const dispatch = useDispatch()
-
-  const fetchData = async () => {
-    setLoading(true)
-    try {
-      const dossiersData = await getDossiers()
-      if (Array.isArray(dossiersData)) {
-        const filteredData = dossiersData.filter((item) => item.statut === isActif)
-        setDossiers(filteredData)
-        setDossiersInitial(filteredData)
-        setColumns(columnsDossiers)
-        dispatch({ type: 'GET_DATA_DOSSIERS', payload: filteredData })
-      } else {
-        displayError(
-          'Erreur : Impossible de récupérer les données ou données malformé . Veuillez réessayer plus tard.',
-        )
-      }
-    } catch (error) {
-      handleErrorResponse(error, disconnect, displayError, navigate)
-    } finally {
-    }
-    setLoading(false)
-  }
   useEffect(() => {
-    // Code à exécuter à chaque changement de route
     setIsActif(location.pathname.includes('actifs'))
   }, [location])
 
   useEffect(() => {
-    fetchData()
+    if (!loadingDossiers && dossiersData) {
+      try {
+        if (Array.isArray(dossiersData)) {
+          const filteredData = dossiersData.filter((item) => item.statut === isActif)
+          setDossiers(filteredData)
+          setDossiersInitial(filteredData)
+          setColumns(columnsDossiers)
+        } else {
+          displayError(
+            'Erreur : Impossible de récupérer les données ou données malformé . Veuillez réessayer plus tard.',
+          )
+        }
+      } catch (error) {
+        handleErrorResponse(error, disconnect, displayError, navigate)
+      } finally {
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isActif])
+  }, [isActif, loadingDossiers, dossiersData])
 
   const handleDelete = (dossierId) => {
     setOpenModal(true)
     setDossierIDDelete(dossierId)
+    console.log('dossierId => ', dossierId)
+    let data = dossierStatusChange(dossierId)
+    setDataValue(data)
   }
 
   async function deleteAction() {
     try {
-      if (dossierIDDelete !== '') {
-        await deleteDossier(dossierIDDelete)
-      } else {
-        //console.log('selection pour delete =>', selection)
+      if (dossierIDDelete) {
+        await changeStatutDossier(dossierIDDelete.id, dataValue)
       }
-
-      displaySuccess('Supprimer avec sucess')
+      queryClient.invalidateQueries(['getAllDossiers'])
+      displaySuccess(
+        'Modification de status avec sucess',
+        'Modification de status du dossier avec sucess ',
+      )
     } catch (error) {
       displayError(error.messages)
     } finally {
@@ -165,7 +184,7 @@ const Dossiers = () => {
       <Styles>
         <CRow>
           <CCol xs={12}>
-            {!loading ? (
+            {!loadingDossiers ? (
               <CCard className="mb-2">
                 <CCardHeader>
                   <CRow>
@@ -206,8 +225,7 @@ const Dossiers = () => {
                     </CCol>
                   </CRow>
                 </CCardHeader>
-
-                {dossiers.length > 1 && Array.isArray(dossiers) && (
+                {!loadingDossiers && dossiers.length > 0 && Array.isArray(dossiers) && (
                   <CCardBody className="custom-card-body">
                     <Table
                       ref={tableRefDossiers}
@@ -226,14 +244,25 @@ const Dossiers = () => {
                 )}
               </CCard>
             ) : (
-              loading && <CSpinner color="primary" variant="grow" />
+              loadingDossiers && <CSpinner color="primary" variant="grow" />
             )}
             <ModalAction
               openModal={openModal}
               setOpenModal={setOpenModal}
+              titleModal={'Modifier le status'}
+              messageModal={
+                dossierIDDelete.statut === false
+                  ? 'Voulez vous vraiment activer le dossier?'
+                  : 'Voulez vous vraiment archiver le dossier?'
+              }
               action={
-                <CButton color="danger" onClick={deleteAction}>
-                  Désactiver
+                <CButton
+                  color={dossierIDDelete.statut === false ? 'dark' : 'warning'}
+                  onClick={deleteAction}
+                  style={{ color: 'white' }}
+                  className="fw-medium"
+                >
+                  {dossierIDDelete.statut === false ? 'Activer' : 'Archiver'}
                 </CButton>
               }
             />

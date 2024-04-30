@@ -37,11 +37,7 @@ const UserEdit = () => {
   const [usersTypes, setUsersTypes] = useState([])
   const [selectedUsersTypes, setSelectedUsersTypes] = useState('')
 
-  const { data, isLoading } = useGetUsersTypes({
-    onSuccess: (dataUsers) => {
-      setUsersTypes(dataUsers.data)
-      setSelectedUsersTypes(data.data.find((item) => item.label === state.data.userType.label))
-    },
+  const { data: dataUsers, isLoading } = useGetUsersTypes({
     onError: (error) => {
       displayError(
         'Erreur : Impossible de récupérer les données ou données malformé . Veuillez réessayer plus tard.',
@@ -85,13 +81,13 @@ const UserEdit = () => {
   }, [queryClient, isLoadingSocietes, dataSocietes, state.data.societe])
 
   useEffect(() => {
-    if (!isLoading && data) {
-      setUsersTypes(data.data)
-      setSelectedUsersTypes(data.data.find((item) => item.label === state.data.userType.label))
+    if (!isLoading && dataUsers.data) {
+      setUsersTypes(dataUsers.data)
+      setSelectedUsersTypes(dataUsers.data.find((item) => item.label === state.data.userType.label))
     } else {
-      queryClient.invalidateQueries(['getUsersTypes'])
+      //queryClient.invalidateQueries(['getUsersTypes'])
     }
-  }, [isLoading, data, queryClient, state.data.userType.label])
+  }, [isLoading, dataUsers, queryClient, state.data.userType.label])
 
   return (
     <div>

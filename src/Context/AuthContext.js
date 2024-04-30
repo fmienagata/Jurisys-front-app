@@ -63,16 +63,12 @@ export const AuthProvider = ({ children }) => {
     children: PropTypes.node.isRequired,
   }
 
-  //const authContext = useMemo(() => {})
-
   return (
     <AuthContext.Provider value={{ isLogged, user: state.user, disconnect, connect }}>
       {children}
     </AuthContext.Provider>
   )
 }
-
-//useMemo --> callback
 
 export const useAuth = () => {
   return useContext(AuthContext)

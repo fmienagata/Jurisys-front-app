@@ -136,7 +136,7 @@ const Recherche = () => {
                     </div>
                   </CCardHeader>
 
-                  {dossiers && dossiers.length >= 1 && (
+                  {dossiers && dossiers.length > 0 && (
                     <CCardBody className="custom-card-body">
                       <Table
                         ref={tableRefDossiersRecherche}

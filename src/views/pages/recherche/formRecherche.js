@@ -31,6 +31,7 @@ const FormRecherche = ({ setDossiers }) => {
   const { control, reset, handleSubmit } = useForm()
 
   const handleSearch = async (data) => {
+    console.log('data ', data)
     setLoading(true)
     let criteria = removeEmptyAttributes(data)
     try {
@@ -38,10 +39,10 @@ const FormRecherche = ({ setDossiers }) => {
       setDossiers(dossiersData)
       setLoading(false)
     } catch (error) {
-      displayError(error.response.data.message)
-      setLoading(false)
-      disconnect()
-      navigate('/login')
+      // displayError(error.response.data.message)
+      // setLoading(false)
+      // disconnect()
+      // navigate('/login')
     } finally {
       setLoading(false)
     }

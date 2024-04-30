@@ -19,9 +19,13 @@ import { useQueryClient } from 'react-query'
 
 import { useMessageContext } from 'src/Context/MessageContext'
 import { addMessageType } from 'src/services/messagesTypesService'
+import { handleErrorResponse } from '../../../utils/handleErrorResponse'
+import { useAuth } from 'src/Context/AuthContext'
 
 const CreateMessageType = () => {
   const navigate = useNavigate()
+  const { disconnect } = useAuth()
+
   const { control, handleSubmit } = useForm()
   const { displaySuccess, displayError } = useMessageContext()
   const queryClient = useQueryClient()
@@ -33,7 +37,7 @@ const CreateMessageType = () => {
       displaySuccess(`L'Ajout d'un message type `, 'Le message a bien été créé avec sucess')
       navigate('/messages/prewritten')
     } catch (error) {
-      displayError(error.messages)
+      handleErrorResponse(error, disconnect, displayError, navigate)
     }
   }
 
@@ -53,12 +57,15 @@ const CreateMessageType = () => {
                         name="type"
                         control={control}
                         defaultValue=""
-                        render={({ field }) => (
+                        rules={{ required: 'Ce champs est requis' }}
+                        render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
                             id="type"
                             placeholder="Libellé du message à renseigner"
                             autoComplete="Libellé du message à renseigner"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                           />
                         )}
                       />
@@ -71,12 +78,15 @@ const CreateMessageType = () => {
                         name="text"
                         control={control}
                         defaultValue=""
-                        render={({ field }) => (
+                        rules={{ required: 'Ce champs est requis' }}
+                        render={({ field, fieldState: { error } }) => (
                           <CFormTextarea
                             {...field}
                             id="text"
                             placeholder="Contenu du message à renseigner"
                             autoComplete="text"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
                             rows={8}
                           ></CFormTextarea>
                         )}

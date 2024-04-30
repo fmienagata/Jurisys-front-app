@@ -291,7 +291,11 @@ const Table = forwardRef(
                               color={colorIcon}
                               variant="ghost"
                               size="sm"
-                              onClick={() => onDelete(row.original.id)}
+                              onClick={() =>
+                                fromPage === 'dossiers'
+                                  ? onDelete(row.original)
+                                  : onDelete(row.original.id)
+                              }
                             >
                               <CIcon icon={titleIcon} size="sm" />
                             </CButton>
