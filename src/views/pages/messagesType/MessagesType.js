@@ -59,10 +59,10 @@ const MessagesType = () => {
   ]
 
   const { dataMessagesTypes, isLoading, refetch } = useGetAllMessagesTypes({
-    onSuccess: (dataMessagesTypes) => {
-      setInitialMessages(dataMessagesTypes.data)
-      setDataSave(dataMessagesTypes.data)
-    },
+    // onSuccess: (dataMessagesTypes) => {
+    //   setInitialMessages(dataMessagesTypes.data)
+    //   setDataSave(dataMessagesTypes.data)
+    // },
     onError: (error) => {
       displayError('Erreur lors de la requête dans le composant !')
     },

@@ -259,11 +259,7 @@ const Table = forwardRef(
               {page.map((row, i) => {
                 prepareRow(row)
                 return (
-                  <CTableRow
-                    // color={i % 2 === 0 ? '#563d7c' : 'primary'}
-                    {...row.getRowProps()}
-                    onClick={() => handleLineClick(row)}
-                  >
+                  <CTableRow {...row.getRowProps()} onClick={() => handleLineClick(row)}>
                     {row.cells.map((cell) => {
                       if (cell.column.Header === 'Actions') {
                         return (

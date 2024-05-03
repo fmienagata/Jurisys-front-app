@@ -35,7 +35,7 @@ const EditDossier = () => {
   const fileInputRef = useRef(null)
   const [societes, setSocietes] = useState([])
 
-  const { control, handleSubmit, reset } = useForm()
+  const { control, handleSubmit } = useForm()
 
   const { dataSocietesAPI: dataSocietes, isLoading: isLoadingSocietes } = useGetAllSocietes({
     onError: (error) => {
@@ -98,6 +98,7 @@ const EditDossier = () => {
                       />
                     </CCol>
                   </CInputGroup>
+
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText> Prenom </CHeaderText>

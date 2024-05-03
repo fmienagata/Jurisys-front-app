@@ -23,6 +23,8 @@ const Recherche = () => {
 
   const [dossierIDDelete, setDossierIDDelete] = useState('')
 
+  const [isActif, setIsActif] = useState(false)
+
   const columnsDossiers = [
     {
       Header: 'Reference',
@@ -109,7 +111,7 @@ const Recherche = () => {
 
   return (
     <div>
-      <FormRecherche setDossiers={setDossiers} />
+      <FormRecherche setDossiers={setDossiers} setIsActif={setIsActif} />
       <div>
         <Styles>
           <CRow>
@@ -149,6 +151,7 @@ const Recherche = () => {
                         onSelectedRowChange={setSelection}
                         setOpenModal={setOpenModal}
                         onDelete={handleDelete}
+                        isActif={isActif}
                       />
                     </CCardBody>
                   )}

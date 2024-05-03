@@ -3,6 +3,7 @@ import { useQuery } from 'react-query'
 import { handleErrorResponse } from 'src/utils/handleErrorResponse'
 import { useAuth } from 'src/Context/AuthContext'
 import { useMessageContext } from 'src/Context/MessageContext'
+import { getFirstDayOfMonth, getLastDayOfMonth } from 'src/utils/dateTransform'
 
 const getCountUsersActifs = async () => {
   const response = await Axios.get('/api/users?count=true')
@@ -15,7 +16,11 @@ const getCountDossiersActifs = async () => {
 }
 
 const getCountAudiences = async () => {
-  const response = await Axios.get(`/api/messages?criteria=dateAudienceStart:2024-04-01&count=true`)
+  const dateAudienceStart = getFirstDayOfMonth()
+
+  const response = await Axios.get(
+    `/api/messages?criteria=dateAudienceStart:${dateAudienceStart}&count=true`,
+  )
   return response.data
 }
 
@@ -53,8 +58,8 @@ const useDashboardGraphes = (config = {}) => {
 }
 
 const useGetAllAgenda = (config = {}) => {
-  const { disconnect } = useAuth()
-  const { displayError } = useMessageContext()
+  const dateAudienceStart = getFirstDayOfMonth()
+  const dateAudienceEnd = getLastDayOfMonth()
 
   const {
     data: dataAgenda,
@@ -64,7 +69,9 @@ const useGetAllAgenda = (config = {}) => {
   } = useQuery(
     ['getDataAgenda'],
     () =>
-      Axios.get('/api/messages?criteria=dateAudienceStart:2024-04-01,dateAudienceEnd:2024-04-30'),
+      Axios.get(
+        `/api/messages?criteria=dateAudienceStart:${dateAudienceStart},dateAudienceEnd:${dateAudienceEnd}`,
+      ),
     {
       ...config,
       staleTime: Infinity,
