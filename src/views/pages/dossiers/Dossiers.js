@@ -12,14 +12,7 @@ import {
 import Table from 'src/table/table'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
-import {
-  getDossiers,
-  deleteDossier,
-  useGetAllDossiers,
-  useChangeStatusDossier,
-  changeStatutDossier,
-} from '../../../services/dossiersService'
-import { useDispatch } from 'react-redux'
+import { useGetAllDossiers, changeStatutDossier } from '../../../services/dossiersService'
 import ModalAction from 'src/components/ModalAction'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useMessageContext } from 'src/Context/MessageContext'
@@ -43,14 +36,6 @@ const Dossiers = () => {
     },
   })
 
-  // const { mutate: changeStatus } = useChangeStatusDossier({
-  //   onSuccess: (dataDossier) => {},
-  //   onError: (error) => {
-  //     displayError(
-  //       'Erreur : Impossible de récupérer les données ou données malformé . Veuillez réessayer plus tard.',
-  //     )
-  //   },
-  // })
   const { displayError, displaySuccess } = useMessageContext()
   const tableRefDossiers = useRef(typeof useRowSelect)
   const [currentPage, setCurrentPage] = useState(0)
@@ -155,6 +140,7 @@ const Dossiers = () => {
         await changeStatutDossier(dossierIDDelete.id, dataValue)
       }
       queryClient.invalidateQueries(['getAllDossiers'])
+      queryClient.invalidateQueries(['getCountDossiersActifs'])
       displaySuccess(
         'Modification de status avec sucess',
         'Modification de status du dossier avec sucess ',
@@ -175,7 +161,9 @@ const Dossiers = () => {
 
   function handleChange(event) {
     const filter = event.target.value.trim().toLowerCase()
+
     const result = filtredValues(dossiersInitial, filter)
+    console.log('dossiersInitial, filter, result', dossiersInitial, filter, result)
     setDossiers(filter === '' ? dossiersInitial : result)
   }
 
@@ -257,7 +245,7 @@ const Dossiers = () => {
               }
               action={
                 <CButton
-                  color={dossierIDDelete.statut === false ? 'dark' : 'warning'}
+                  color={dossierIDDelete.statut === false ? 'dark' : 'danger'}
                   onClick={deleteAction}
                   style={{ color: 'white' }}
                   className="fw-medium"

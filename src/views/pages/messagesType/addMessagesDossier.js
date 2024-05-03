@@ -281,7 +281,7 @@ const CreateMessagesDossier = () => {
                             {!isLoading ? (
                               messagesTypes &&
                               messagesTypes.data.map((item, key) => (
-                                <option value={item.type} key={key} id={key}>
+                                <option value={item.text} key={key} id={key}>
                                   {item.type}
                                 </option>
                               ))

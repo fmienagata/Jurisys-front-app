@@ -15,21 +15,16 @@ import {
   CHeaderText,
   CSpinner,
 } from '@coreui/react'
-import { useDropzone } from 'react-dropzone'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
 
 import { addDossier, addDossierFiles } from '../../../services/dossiersService'
-import { removeEmptyAttributes } from '../../../utils/utils'
 import { useGetAllSocietes } from 'src/services/societeService'
 import { useMessageContext } from 'src/Context/MessageContext'
 import { useQueryClient } from 'react-query'
-import { DropzoneWithoutDrag } from 'src/components/dropZone'
 import { useNavigate } from 'react-router-dom'
 
 const AddDossier = () => {
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({ noDrag: true })
-  //const files = acceptedFiles.map((file) => <li key={file.path}>{file.path}</li>)
   const navigate = useNavigate()
 
   const { control, handleSubmit, reset } = useForm()
@@ -114,8 +109,6 @@ const AddDossier = () => {
 
   const handleButtonClick = (e) => {
     e.preventDefault()
-
-    // Cliquez sur l'élément input de type "file" lorsque le bouton est cliqué
     fileInputRef.current.click()
   }
 

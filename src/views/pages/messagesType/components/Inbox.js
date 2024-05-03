@@ -24,7 +24,7 @@ const InboxItem = ({ message, active, setActive, setMessagesDetails }) => {
         >
           <CRow>
             <>
-              <CCardTitle className="text-start">{message.type}</CCardTitle>
+              <CCardTitle className="text-start">{message.titre}</CCardTitle>
               <CCardSubtitle className="text-start">{message.text}</CCardSubtitle>
               <CCardText className="text-end">
                 <small>{formattedDate(message.createdAt)}</small>

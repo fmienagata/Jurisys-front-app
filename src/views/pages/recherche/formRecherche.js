@@ -22,7 +22,7 @@ import { useMessageContext } from 'src/Context/MessageContext'
 import { useAuth } from 'src/Context/AuthContext'
 import PropTypes from 'prop-types'
 
-const FormRecherche = ({ setDossiers }) => {
+const FormRecherche = ({ setDossiers, setIsActif }) => {
   const { displayError } = useMessageContext()
   const [loading, setLoading] = useState(false)
   const { disconnect } = useAuth()
@@ -37,6 +37,7 @@ const FormRecherche = ({ setDossiers }) => {
     try {
       const dossiersData = await getRechercheDossiers(criteria)
       setDossiers(dossiersData)
+      setIsActif(Boolean(data.statut == 1))
       setLoading(false)
     } catch (error) {
       // displayError(error.response.data.message)
@@ -127,9 +128,9 @@ const FormRecherche = ({ setDossiers }) => {
                         <CCol size="sm" className="text-center" xs={4}>
                           <CInputGroup className="mb-3">
                             <Controller
-                              name="statusDossier"
+                              name="statut"
                               control={control}
-                              defaultValue={'true'}
+                              defaultValue={1}
                               render={({ field }) => (
                                 <>
                                   <CFormCheck
@@ -137,8 +138,8 @@ const FormRecherche = ({ setDossiers }) => {
                                     id="actif"
                                     label="Dossiers actifs"
                                     {...field}
-                                    value={true}
-                                    checked={field.value === 'true'}
+                                    value={1}
+                                    checked={field.value == 1}
                                   />
                                   <span style={{ marginRight: '20px' }}></span>
                                   <CFormCheck
@@ -146,8 +147,8 @@ const FormRecherche = ({ setDossiers }) => {
                                     id="archive"
                                     label="Dossiers archivés"
                                     {...field}
-                                    value={false}
-                                    checked={field.value === 'false'}
+                                    value={0}
+                                    checked={field.value == 0}
                                   />
                                 </>
                               )}
@@ -180,6 +181,7 @@ const FormRecherche = ({ setDossiers }) => {
 
 FormRecherche.propTypes = {
   setDossiers: PropTypes.array.isRequired,
+  setIsActif: PropTypes.array.isRequired,
 }
 
 export default FormRecherche
