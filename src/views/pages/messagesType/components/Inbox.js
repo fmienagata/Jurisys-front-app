@@ -55,16 +55,19 @@ const Inbox = ({ messagesSelected, setMessagesDetails, setActiveInboxIndex, acti
   return (
     <CCard>
       {messagesSelected.length > 0 &&
-        messagesSelected.map((item, key) => (
-          <InboxItem
-            key={key}
-            message={item}
-            active={key === activeInboxIndex}
-            setActive={() => setActiveInboxIndex(key)}
-            setMessagesDetails={setMessagesDetails}
-            labelClass="item-blue"
-          />
-        ))}
+        messagesSelected
+          .slice()
+          .reverse()
+          .map((item, key) => (
+            <InboxItem
+              key={key}
+              message={item}
+              active={key === activeInboxIndex}
+              setActive={() => setActiveInboxIndex(key)}
+              setMessagesDetails={setMessagesDetails}
+              labelClass="item-blue"
+            />
+          ))}
     </CCard>
   )
 }

@@ -7,13 +7,16 @@ import { useAuth } from 'src/Context/AuthContext'
 import routes from '../routes'
 
 const AppContent = () => {
-  const { user } = useAuth()
+  const { user, isLogged } = useAuth()
 
   return (
     <CContainer className="px-4" lg>
       <Suspense fallback={<CSpinner color="primary" />}>
         <Routes>
-          {user.roles &&
+          {!isLogged ? (
+            <Route path="*" element={<Navigate to="/login" />} />
+          ) : (
+            user.roles &&
             routes.map((route, idx) => {
               const { path, element: Element, allowedRoles } = route
               const isAllowed = allowedRoles
@@ -26,7 +29,8 @@ const AppContent = () => {
                   element={isAllowed ? <Element /> : <Navigate to="/unauthorized" replace />}
                 />
               )
-            })}
+            })
+          )}
           <Route path="/" element={<Navigate to="login" replace />} />
         </Routes>
       </Suspense>

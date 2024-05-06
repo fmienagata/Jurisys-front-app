@@ -21,7 +21,8 @@ api.interceptors.request.use(
 )
 
 const AxiosInterceptor = ({ children }) => {
-  const { disconnect } = useAuth()
+  const { disconnect, isLogged } = useAuth()
+
   const { displayError } = useMessageContext()
   const navigate = useNavigate()
 

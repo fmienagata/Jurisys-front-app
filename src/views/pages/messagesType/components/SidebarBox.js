@@ -9,6 +9,7 @@ const SidebarBox = ({
   setActiveInboxIndex,
   activeNavLink,
   setClickedDossier,
+  fetchDossier,
 }) => {
   return (
     <>
@@ -22,8 +23,9 @@ const SidebarBox = ({
                 key={key}
                 as="button"
                 onClick={() => {
+                  fetchDossier(item.id)
                   setActiveNavLink(key)
-                  setMessagesSelected(item.messages)
+                  // setMessagesSelected(item.messages)
                   setClickedDossier(item.id)
                   setActiveInboxIndex(0)
                 }}
