@@ -83,8 +83,16 @@ const CreateMessagesDossier = () => {
   })
 
   const handleCreateMessage = async (data) => {
-    const formattedDate = data.dateAudience.toISOString()
-    data.dateAudience = formattedDate
+    console.log('data => ', data)
+    if (data.dateAudience === undefined) {
+      data.dateAudience = new Date().toISOString()
+    } else {
+      const formattedDate = data.dateAudience.toISOString()
+      data.dateAudience = formattedDate
+    }
+    if (data.text === undefined) {
+      data.text = ''
+    }
 
     try {
       const result = await addMessage(data)
@@ -154,9 +162,16 @@ const CreateMessagesDossier = () => {
                     <Controller
                       name="titre"
                       defaultValue=""
+                      rules={{ required: 'Ce champs est requis' }}
                       control={control}
-                      render={({ field }) => (
-                        <CFormInput {...field} id="titre" placeholder="Titre du message" />
+                      render={({ field, fieldState: { error } }) => (
+                        <CFormInput
+                          {...field}
+                          id="titre"
+                          placeholder="Titre du message"
+                          invalid={Boolean(error)}
+                          feedbackInvalid={error?.message}
+                        />
                       )}
                     />
                   </CCol>
@@ -165,9 +180,16 @@ const CreateMessagesDossier = () => {
                     <Controller
                       name="typeMessage"
                       defaultValue=""
+                      rules={{ required: 'Ce champs est requis' }}
                       control={control}
-                      render={({ field }) => (
-                        <CFormInput {...field} id="typeMessage" placeholder="Type du message" />
+                      render={({ field, fieldState: { error } }) => (
+                        <CFormInput
+                          {...field}
+                          id="typeMessage"
+                          placeholder="Type du message"
+                          invalid={Boolean(error)}
+                          feedbackInvalid={error?.message}
+                        />
                       )}
                     />
                   </CCol>
@@ -177,9 +199,15 @@ const CreateMessagesDossier = () => {
                       <Controller
                         name="dossier"
                         control={control}
+                        rules={{ required: 'Ce champs est requis' }}
                         defaultValue={dossiers.length > 0 ? dossiers[0].id : ''}
-                        render={({ field }) => (
-                          <CFormSelect id="dossier" {...field}>
+                        render={({ field, fieldState: { error } }) => (
+                          <CFormSelect
+                            id="dossier"
+                            {...field}
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
+                          >
                             {!loadingDossiers ? (
                               dossiers &&
                               dossiers.map((item, key) => (
@@ -206,7 +234,7 @@ const CreateMessagesDossier = () => {
                       name="dateAudience"
                       control={control}
                       // defaultValue={defaultDate}
-                      render={({ field }) => (
+                      render={({ field, fieldState: { error } }) => (
                         <LocalizationProvider dateAdapter={AdapterDayjs} size="small">
                           <DateTimePicker
                             size="small"
@@ -303,7 +331,8 @@ const CreateMessagesDossier = () => {
                           <CFormTextarea
                             {...field}
                             id="text"
-                            value={selectedMessageType}
+                            defaultValue={''}
+                            value={selectedMessageType !== 'undefined' ? selectedMessageType : ''}
                             onChange={(e) => {
                               field.onChange(e)
                               setSelectedMessageType(e.target.value)

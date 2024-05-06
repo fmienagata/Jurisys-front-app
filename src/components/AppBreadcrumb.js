@@ -8,10 +8,28 @@ import { CBreadcrumb, CBreadcrumbItem } from '@coreui/react'
 const AppBreadcrumb = () => {
   const currentLocation = useLocation().pathname
 
-  const getRouteName = (pathname, routes) => {
-    console.log('pathname, routes ->', pathname)
+  // const getRouteName = (pathname, routes) => {
+  //   console.log('pathname, routes ->', pathname)
 
-    const currentRoute = routes.find((route) => route.path.includes(pathname))
+  //   const currentRoute = routes.find((route) => route.path === pathname)
+  //   return currentRoute ? currentRoute.name : false
+  // }
+
+  const getRouteName = (pathname, routes) => {
+    const currentRoute = routes.find((route) => {
+      // Séparer les parties statiques du chemin de la route
+      const routePathSegments = route.path.split('/')
+      // Séparer les parties statiques du chemin de l'URL
+      const urlPathSegments = pathname.split('/')
+      // Vérifier si les parties statiques correspondent
+      if (routePathSegments.length !== urlPathSegments.length) return false
+      for (let i = 0; i < routePathSegments.length; i++) {
+        if (routePathSegments[i] !== urlPathSegments[i] && !routePathSegments[i].startsWith(':')) {
+          return false
+        }
+      }
+      return true
+    })
     return currentRoute ? currentRoute.name : false
   }
 
@@ -20,7 +38,6 @@ const AppBreadcrumb = () => {
     location.split('/').reduce((prev, curr, index, array) => {
       const currentPathname = `${prev}/${curr}`
       const routeName = getRouteName(currentPathname, routes)
-      console.log('routeName ->', routeName)
 
       routeName &&
         breadcrumbs.push({
@@ -41,7 +58,7 @@ const AppBreadcrumb = () => {
       {breadcrumbs.map((breadcrumb, index) => {
         return (
           <CBreadcrumbItem
-            // {...(breadcrumb.active ? { active: false } : { href: breadcrumb.pathname })}
+            {...(breadcrumb.active ? { active: false } : { href: breadcrumb.pathname })}
             key={index}
           >
             {breadcrumb.name}
