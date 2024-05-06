@@ -24,6 +24,8 @@ import {
   CTableHeaderCell,
   CBadge,
   CRow,
+  CFormSwitch,
+  CFormInput,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
@@ -66,6 +68,8 @@ const Table = forwardRef(
     const navigate = useNavigate()
     const [openMessage, setOpenMessage] = useState(false)
     const [message, setMessage] = useState(false)
+
+    const [isChecked, setIsChecked] = useState(isActif)
 
     const [openSociete, setOpenSociete] = useState(false)
     const [societe, setSociete] = useState(false)
@@ -264,7 +268,7 @@ const Table = forwardRef(
                     {row.cells.map((cell) => {
                       if (cell.column.Header === 'Actions') {
                         return (
-                          <CTableDataCell>
+                          <CTableDataCell className="align-items-center">
                             <CButton
                               color="success"
                               variant="ghost"
@@ -283,7 +287,7 @@ const Table = forwardRef(
                             >
                               <CIcon icon={icon.cilPen} size="sm" />
                             </CButton>
-                            <CButton
+                            {/* <CButton
                               title={title}
                               color={colorIcon}
                               variant="ghost"
@@ -295,7 +299,40 @@ const Table = forwardRef(
                               }
                             >
                               <CIcon icon={titleIcon} size="sm" />
-                            </CButton>
+                            </CButton> */}
+
+                            {fromPage === 'dossiers' ? (
+                              <label className="switch">
+                                <CFormInput
+                                  type="checkbox"
+                                  id="togBtn"
+                                  checked={isActif}
+                                  onChange={() =>
+                                    fromPage === 'dossiers'
+                                      ? onDelete(row.original)
+                                      : onDelete(row.original.id)
+                                  }
+                                />
+                                <div className="slider round">
+                                  <span className="on">ON</span>
+                                  <span className="off">OFF</span>
+                                </div>
+                              </label>
+                            ) : (
+                              <CButton
+                                title={title}
+                                color={colorIcon}
+                                variant="ghost"
+                                size="sm"
+                                onClick={() =>
+                                  fromPage === 'dossiers'
+                                    ? onDelete(row.original)
+                                    : onDelete(row.original.id)
+                                }
+                              >
+                                <CIcon icon={titleIcon} size="sm" />
+                              </CButton>
+                            )}
                           </CTableDataCell>
                         )
                       }
