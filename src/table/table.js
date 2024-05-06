@@ -23,6 +23,7 @@ import {
   CTableHead,
   CTableHeaderCell,
   CBadge,
+  CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
@@ -332,9 +333,9 @@ const Table = forwardRef(
             />
           </CTable>
         </div>
-        <div
+        <CRow
           style={{
-            display: 'inline-block',
+            // display: 'inline-block',
             marginLeft: '10px',
             width: '100%',
           }}
@@ -356,7 +357,7 @@ const Table = forwardRef(
             onRowsPerPageChange={(event) => setPageSize(Number(event.target.value))}
             ActionsComponent={TablePaginationActions}
           />
-        </div>
+        </CRow>
       </Styles>
     )
   },

@@ -27,6 +27,9 @@ const messageries = React.lazy(() => import('./views/pages/messagesType/Messager
 const newMessagesType = React.lazy(() => import('./views/pages/messagesType/addMessagesTypes'))
 const editMessagesType = React.lazy(() => import('./views/pages/messagesType/editMessageType'))
 const addMessageDossier = React.lazy(() => import('./views/pages/messagesType/addMessagesDossier'))
+const MessageriesTransmis = React.lazy(
+  () => import('./views/pages/messagesType/MessageriesTransmis'),
+)
 
 // Agenda
 const diary = React.lazy(() => import('./views/pages/Agenda/MyCalendar'))
@@ -105,6 +108,13 @@ const routes = [
     name: 'Messageries',
     allowedRoles: [Accesses.AVOCAT],
     element: messageries,
+    exact: true,
+  },
+  {
+    path: '/messages/send',
+    name: 'Messageries',
+    allowedRoles: [Accesses.AVOCAT],
+    element: MessageriesTransmis,
     exact: true,
   },
   {

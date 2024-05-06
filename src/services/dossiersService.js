@@ -121,7 +121,7 @@ const useGetOneDossier = (id, config = {}) => {
 }
 
 const useGetDossierMessages = (config = {}) => {
-  const mutateDossier = useMutation((id) => getDossierID(id), {
+  const mutateDossier = useMutation((id) => getMessagesDossier(id), {
     ...config,
     staleTime: Infinity,
   })

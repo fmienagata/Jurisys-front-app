@@ -75,9 +75,10 @@ const FormRecherche = ({ setDossiers, setIsActif }) => {
                                   floatingClassName="pt-2"
                                 >
                                   <option value="">-- Selectionner un type de dossier --</option>
-                                  <option value="A">type A</option>
-                                  <option value="B">type B</option>
-                                  <option value="C">type C</option>
+                                  <option value="Conciliation">Conciliation</option>
+                                  <option value="Référé">Référé</option>
+                                  <option value="Au pied de requête">Au pied de requête</option>
+                                  <option value="Du fond">Du fond</option>
                                 </CFormSelect>
                               )}
                             />

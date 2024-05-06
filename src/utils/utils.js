@@ -90,6 +90,14 @@ function prepareDataUpdate(frm) {
   return selectedObject
 }
 
+function filterMessages(messages, role) {
+  return messages.filter((message) => {
+    return role === 'avocat'
+      ? message.user.roles.includes('ROLE_AVOCAT')
+      : !message.user.roles.includes('ROLE_AVOCAT')
+  })
+}
+
 export {
   formatFrenchDate,
   removeEmptyAttributes,
@@ -98,4 +106,5 @@ export {
   filtredValues,
   dossierStatusChange,
   prepareDataUpdate,
+  filterMessages,
 }

@@ -24,7 +24,7 @@ import { useAuth } from 'src/Context/AuthContext'
 import { formatFrenchDate, filterMessages } from 'src/utils/utils'
 import { handleErrorResponse } from '../../../utils/handleErrorResponse'
 
-const Messageries = () => {
+const MessageriesTransmis = () => {
   const queryClient = useQueryClient()
   const { displayError } = useMessageContext()
   const { disconnect } = useAuth()
@@ -85,7 +85,7 @@ const Messageries = () => {
   useEffect(() => {
     if (messagesDossier) {
       console.log('useEffect - messagesDossier =>', messagesDossier.length)
-      const messagesFiltered = messagesDossier && filterMessages(messagesDossier, 'avocat')
+      const messagesFiltered = messagesDossier && filterMessages(messagesDossier, 'all')
       setMessagesSelected(messagesFiltered)
       console.log('useEffect - messagesDossier =>', messagesFiltered.length)
     }
@@ -202,4 +202,4 @@ const Messageries = () => {
   )
 }
 
-export default Messageries
+export default MessageriesTransmis
