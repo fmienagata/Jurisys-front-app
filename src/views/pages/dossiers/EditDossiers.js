@@ -14,6 +14,7 @@ import {
   CSpinner,
   CHeaderText,
   CFormSelect,
+  CFormCheck,
 } from '@coreui/react'
 import { useQueryClient } from 'react-query'
 import { updateDossier } from '../../../services/dossiersService'
@@ -101,7 +102,7 @@ const EditDossier = () => {
 
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Prenom </CHeaderText>
+                      <CHeaderText> Prénom </CHeaderText>
                       <Controller
                         defaultValue={state.data.prenom}
                         name="prenom"
@@ -308,7 +309,7 @@ const EditDossier = () => {
                       />{' '}
                     </CCol>
                   </CInputGroup>
-                  <CInputGroup className="mb-3">
+                  {/* <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText> Dossier </CHeaderText>
                       <Controller
@@ -323,7 +324,7 @@ const EditDossier = () => {
                         )}
                       />{' '}
                     </CCol>
-                  </CInputGroup>
+                  </CInputGroup> */}
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText> Montant prejudice </CHeaderText>
@@ -396,172 +397,207 @@ const EditDossier = () => {
                       />
                     </CCol>
                   </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <Controller
+                      name="statut"
+                      id="statut"
+                      control={control}
+                      defaultValue={Boolean(state.data.statut)}
+                      render={({ field }) => (
+                        <>
+                          {' '}
+                          <CHeaderText>Statut dossier :</CHeaderText>
+                          <span style={{ marginRight: '20px' }}></span>
+                          <CFormCheck
+                            type="radio"
+                            label="Actif"
+                            {...field}
+                            value={Boolean(true)}
+                            checked={field.value === true}
+                            onChange={() => field.onChange(true)}
+                          />
+                          <span style={{ marginRight: '20px' }}></span>
+                          <CFormCheck
+                            type="radio"
+                            label="Archivé"
+                            {...field}
+                            value={Boolean(false)}
+                            onChange={() => field.onChange(false)}
+                            checked={field.value === false}
+                          />
+                        </>
+                      )}
+                    />
+                  </CInputGroup>
                 </CCol>
-                <CCol sm="4">
-                  <CInputGroup className="mb-3">
-                    <CCol>
-                      <CHeaderText> Partie adverse objet </CHeaderText>
-                      <Controller
-                        name="objet"
-                        defaultValue={state.data.objet}
-                        control={control}
-                        rules={{ required: 'Ce champs est requis' }}
-                        render={({ field, fieldState: { error } }) => (
-                          <CFormInput
-                            {...field}
-                            invalid={Boolean(error)}
-                            feedbackInvalid={error?.message}
-                            id="objet"
-                            placeholder="Partie adverse objet"
-                          />
-                        )}
-                      />
-                    </CCol>
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <CCol>
-                      <CHeaderText> Partie adverse nom </CHeaderText>
-                      <Controller
-                        name="partieAdverseNom"
-                        control={control}
-                        defaultValue={state.data.partieAdverseNom}
-                        rules={{ required: 'Ce champs est requis' }}
-                        render={({ field, fieldState: { error } }) => (
-                          <CFormInput
-                            {...field}
-                            id="partieAdverseNom"
-                            placeholder="Partie adverse nom"
-                            invalid={Boolean(error)}
-                            feedbackInvalid={error?.message}
-                          />
-                        )}
-                      />{' '}
-                    </CCol>
-                  </CInputGroup>
-                  <CCol className="mb-3">
-                    <CCol>
-                      <CHeaderText> Partie adverse prenom </CHeaderText>
-                      <Controller
-                        name="partieAdversePrenom"
-                        control={control}
-                        rules={{ required: 'Ce champs est requis' }}
-                        defaultValue={state.data.partieAdversePrenom}
-                        render={({ field, fieldState: { error } }) => (
-                          <CFormInput
-                            {...field}
-                            id="partieAdversePrenom"
-                            placeholder="Partie adverse prenom"
-                            invalid={Boolean(error)}
-                            feedbackInvalid={error?.message}
-                          />
-                        )}
-                      />{' '}
-                    </CCol>
-                  </CCol>
-                  <CCol>
-                    <CHeaderText> Partie adverse e-mail </CHeaderText>
+                <CCol sm="4" style={{ paddingBottom: '10px' }}>
+                  <fieldset className="grey" id="shifter">
+                    <h5 style={{ color: 'purple' }}>Partie adverse</h5>
                     <CInputGroup className="mb-3">
-                      <CInputGroupText>@</CInputGroupText>
-                      <Controller
-                        name="partieAdverseEmail"
-                        control={control}
-                        defaultValue={state.data.partieAdverseEmail}
-                        rules={{ required: 'Ce champs est requis' }}
-                        render={({ field, fieldState: { error } }) => (
-                          <CFormInput
-                            {...field}
-                            id="partieAdverseEmail"
-                            type="email"
-                            placeholder="Partie adverse e-mail"
-                            invalid={Boolean(error)}
-                            feedbackInvalid={error?.message}
-                          />
-                        )}
-                      />
+                      <CCol>
+                        <CHeaderText> Partie adverse objet </CHeaderText>
+                        <Controller
+                          name="objet"
+                          defaultValue={state.data.objet}
+                          control={control}
+                          rules={{ required: 'Ce champs est requis' }}
+                          render={({ field, fieldState: { error } }) => (
+                            <CFormInput
+                              {...field}
+                              invalid={Boolean(error)}
+                              feedbackInvalid={error?.message}
+                              id="objet"
+                              placeholder="Partie adverse objet"
+                            />
+                          )}
+                        />
+                      </CCol>
                     </CInputGroup>
-                  </CCol>
-                  <CInputGroup className="mb-3">
+                    <CInputGroup className="mb-3">
+                      <CCol>
+                        <CHeaderText> Partie adverse nom </CHeaderText>
+                        <Controller
+                          name="partieAdverseNom"
+                          control={control}
+                          defaultValue={state.data.partieAdverseNom}
+                          rules={{ required: 'Ce champs est requis' }}
+                          render={({ field, fieldState: { error } }) => (
+                            <CFormInput
+                              {...field}
+                              id="partieAdverseNom"
+                              placeholder="Partie adverse nom"
+                              invalid={Boolean(error)}
+                              feedbackInvalid={error?.message}
+                            />
+                          )}
+                        />{' '}
+                      </CCol>
+                    </CInputGroup>
+                    <CCol className="mb-3">
+                      <CCol>
+                        <CHeaderText> Prénom </CHeaderText>
+                        <Controller
+                          name="partieAdversePrenom"
+                          control={control}
+                          rules={{ required: 'Ce champs est requis' }}
+                          defaultValue={state.data.partieAdversePrenom}
+                          render={({ field, fieldState: { error } }) => (
+                            <CFormInput
+                              {...field}
+                              id="partieAdversePrenom"
+                              placeholder="Partie adverse prenom"
+                              invalid={Boolean(error)}
+                              feedbackInvalid={error?.message}
+                            />
+                          )}
+                        />{' '}
+                      </CCol>
+                    </CCol>
                     <CCol>
-                      <CHeaderText> Partie adverse adresse </CHeaderText>
+                      <CHeaderText> E-mail </CHeaderText>
+                      <CInputGroup className="mb-3">
+                        <CInputGroupText>@</CInputGroupText>
+                        <Controller
+                          name="partieAdverseEmail"
+                          control={control}
+                          defaultValue={state.data.partieAdverseEmail}
+                          rules={{ required: 'Ce champs est requis' }}
+                          render={({ field, fieldState: { error } }) => (
+                            <CFormInput
+                              {...field}
+                              id="partieAdverseEmail"
+                              type="email"
+                              placeholder="Partie adverse e-mail"
+                              invalid={Boolean(error)}
+                              feedbackInvalid={error?.message}
+                            />
+                          )}
+                        />
+                      </CInputGroup>
+                    </CCol>
+                    <CInputGroup className="mb-3">
+                      <CCol>
+                        <CHeaderText> Adresse </CHeaderText>
 
-                      <Controller
-                        name="partieAdverseAdresse"
-                        defaultValue={state.data.partieAdverseAdresse}
-                        control={control}
-                        rules={{ required: 'Ce champs est requis' }}
-                        render={({ field, fieldState: { error } }) => (
-                          <CFormInput
-                            {...field}
-                            id="partieAdverseAdresse"
-                            placeholder="Partie adverse adresse"
-                            invalid={Boolean(error)}
-                            feedbackInvalid={error?.message}
-                          />
-                        )}
-                      />
-                    </CCol>
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <CCol>
-                      <CHeaderText> Partie adverse ville </CHeaderText>
-                      <Controller
-                        name="partieAdverseVille"
-                        control={control}
-                        defaultValue={state.data.partieAdverseVille}
-                        rules={{ required: 'Ce champs est requis' }}
-                        render={({ field, fieldState: { error } }) => (
-                          <CFormInput
-                            {...field}
-                            id="partieAdverseVille"
-                            placeholder="Partie adverse ville"
-                            invalid={Boolean(error)}
-                            feedbackInvalid={error?.message}
-                          />
-                        )}
-                      />
-                    </CCol>
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <CCol>
-                      <CHeaderText> Partie adverse pays </CHeaderText>
-                      <Controller
-                        name="partieAdversePays"
-                        control={control}
-                        defaultValue={state.data.partieAdversePays}
-                        rules={{ required: 'Ce champs est requis' }}
-                        render={({ field, fieldState: { error } }) => (
-                          <CFormInput
-                            {...field}
-                            id="partieAdversePays"
-                            placeholder="Partie adverse pays"
-                            invalid={Boolean(error)}
-                            feedbackInvalid={error?.message}
-                          />
-                        )}
-                      />{' '}
-                    </CCol>
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <CCol>
-                      <CHeaderText> Partie adverse telephone </CHeaderText>
+                        <Controller
+                          name="partieAdverseAdresse"
+                          defaultValue={state.data.partieAdverseAdresse}
+                          control={control}
+                          rules={{ required: 'Ce champs est requis' }}
+                          render={({ field, fieldState: { error } }) => (
+                            <CFormInput
+                              {...field}
+                              id="partieAdverseAdresse"
+                              placeholder="Partie adverse adresse"
+                              invalid={Boolean(error)}
+                              feedbackInvalid={error?.message}
+                            />
+                          )}
+                        />
+                      </CCol>
+                    </CInputGroup>
+                    <CInputGroup className="mb-3">
+                      <CCol>
+                        <CHeaderText> Ville </CHeaderText>
+                        <Controller
+                          name="partieAdverseVille"
+                          control={control}
+                          defaultValue={state.data.partieAdverseVille}
+                          rules={{ required: 'Ce champs est requis' }}
+                          render={({ field, fieldState: { error } }) => (
+                            <CFormInput
+                              {...field}
+                              id="partieAdverseVille"
+                              placeholder="Partie adverse ville"
+                              invalid={Boolean(error)}
+                              feedbackInvalid={error?.message}
+                            />
+                          )}
+                        />
+                      </CCol>
+                    </CInputGroup>
+                    <CInputGroup className="mb-3">
+                      <CCol>
+                        <CHeaderText> Pays </CHeaderText>
+                        <Controller
+                          name="partieAdversePays"
+                          control={control}
+                          defaultValue={state.data.partieAdversePays}
+                          rules={{ required: 'Ce champs est requis' }}
+                          render={({ field, fieldState: { error } }) => (
+                            <CFormInput
+                              {...field}
+                              id="partieAdversePays"
+                              placeholder="Partie adverse pays"
+                              invalid={Boolean(error)}
+                              feedbackInvalid={error?.message}
+                            />
+                          )}
+                        />{' '}
+                      </CCol>
+                    </CInputGroup>
+                    <CInputGroup className="mb-3">
+                      <CCol>
+                        <CHeaderText> Telephone </CHeaderText>
 
-                      <Controller
-                        name="partieAdverseTelephone"
-                        control={control}
-                        defaultValue={state.data.partieAdverseTelephone}
-                        rules={{ required: 'Ce champs est requis' }}
-                        render={({ field, fieldState: { error } }) => (
-                          <CFormInput
-                            {...field}
-                            id="partieAdverseTelephone"
-                            placeholder="Partie adverse telephone"
-                            invalid={Boolean(error)}
-                            feedbackInvalid={error?.message}
-                          />
-                        )}
-                      />
-                    </CCol>
-                  </CInputGroup>
+                        <Controller
+                          name="partieAdverseTelephone"
+                          control={control}
+                          defaultValue={state.data.partieAdverseTelephone}
+                          rules={{ required: 'Ce champs est requis' }}
+                          render={({ field, fieldState: { error } }) => (
+                            <CFormInput
+                              {...field}
+                              id="partieAdverseTelephone"
+                              placeholder="Partie adverse telephone"
+                              invalid={Boolean(error)}
+                              feedbackInvalid={error?.message}
+                            />
+                          )}
+                        />
+                      </CCol>
+                    </CInputGroup>
+                  </fieldset>
                 </CCol>
               </CRow>
 

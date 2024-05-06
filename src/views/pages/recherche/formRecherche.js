@@ -31,7 +31,6 @@ const FormRecherche = ({ setDossiers, setIsActif }) => {
   const { control, reset, handleSubmit } = useForm()
 
   const handleSearch = async (data) => {
-    console.log('data ', data)
     setLoading(true)
     let criteria = removeEmptyAttributes(data)
     try {

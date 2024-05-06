@@ -50,8 +50,9 @@ const editfacture = React.lazy(() => import('./views/pages/factures/editFacture'
 const unauthorized = React.lazy(() => import('./views/pages/page404/Page404'))
 
 const routes = [
-  { path: '/dossier-edit/:dossierId', name: 'Dossier modifier', element: dossierEdit },
+  // { path: '/', exact: true, name: 'Home' },
   { path: '/dossier/:dossierId', name: 'Dossier', element: dossier, exact: true },
+  { path: '/dossier-edit/:dossierId', name: 'Dossier modifier', element: dossierEdit },
   { path: '/dossier-add', name: 'Ajouter un dossier', element: AddDossier, exact: true },
   { path: '/dossiers/actifs', name: 'Liste des dossiers actifs', element: dossiers, exact: true },
   { path: '/research', name: 'Recherche', element: recherche, exact: true },
@@ -105,14 +106,14 @@ const routes = [
   },
   {
     path: '/messages/messaging',
-    name: 'Messageries',
+    name: 'Messages reçus',
     allowedRoles: [Accesses.AVOCAT],
     element: messageries,
     exact: true,
   },
   {
     path: '/messages/send',
-    name: 'Messageries',
+    name: 'Messages envoyés',
     allowedRoles: [Accesses.AVOCAT],
     element: MessageriesTransmis,
     exact: true,
@@ -196,7 +197,6 @@ const routes = [
     element: unauthorized,
     exact: true,
   },
-  { path: '/', exact: true, name: 'Home' },
 ]
 
 export default routes

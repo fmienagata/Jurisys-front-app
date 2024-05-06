@@ -4,13 +4,18 @@ import { CCard, CCardBody, CCardHeader, CCol, CRow, CButton, CSpinner } from '@c
 import FormRecherche from './formRecherche'
 import { useMessageContext } from 'src/Context/MessageContext'
 import ModalAction from 'src/components/ModalAction'
-import { deleteDossier } from '../../../services/dossiersService'
+import { changeStatutDossier } from '../../../services/dossiersService'
+import { filtredValues, dossierStatusChange } from 'src/utils/utils'
+
 import Styles from './../../../table/TableStyles'
 import Table from 'src/table/table'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
+import { useQueryClient } from 'react-query'
 
 const Recherche = () => {
+  const queryClient = useQueryClient()
+
   const tableRefDossiersRecherche = useRef(typeof useRowSelect)
   const { displayError, displaySuccess } = useMessageContext()
   const [dossiers, setDossiers] = useState([])
@@ -22,6 +27,7 @@ const Recherche = () => {
   const [openModal, setOpenModal] = useState(false)
 
   const [dossierIDDelete, setDossierIDDelete] = useState('')
+  const [dataValue, setDataValue] = useState({})
 
   const [isActif, setIsActif] = useState(false)
 
@@ -84,17 +90,21 @@ const Recherche = () => {
   const handleDelete = (dossierId) => {
     setOpenModal(true)
     setDossierIDDelete(dossierId)
+    let data = dossierStatusChange(dossierId)
+    setDataValue(data)
   }
 
   async function deleteAction() {
     try {
-      if (dossierIDDelete !== '') {
-        await deleteDossier(dossierIDDelete)
-      } else {
-        //console.log('selection pour delete =>', selection)
+      if (dossierIDDelete) {
+        await changeStatutDossier(dossierIDDelete.id, dataValue)
       }
-
-      displaySuccess('Supprimer avec sucess')
+      queryClient.invalidateQueries(['getAllDossiers'])
+      queryClient.invalidateQueries(['getCountDossiersActifs'])
+      displaySuccess(
+        'Modification de status avec sucess',
+        'Modification de status du dossier avec sucess ',
+      )
     } catch (error) {
       displayError(error.messages)
     } finally {
@@ -162,9 +172,20 @@ const Recherche = () => {
               <ModalAction
                 openModal={openModal}
                 setOpenModal={setOpenModal}
+                titleModal={'Modifier le status'}
+                messageModal={
+                  dossierIDDelete.statut === false
+                    ? 'Voulez vous vraiment activer le dossier?'
+                    : 'Voulez vous vraiment archiver le dossier?'
+                }
                 action={
-                  <CButton color="danger" onClick={deleteAction}>
-                    Désactiver
+                  <CButton
+                    color={dossierIDDelete.statut === false ? 'dark' : 'danger'}
+                    onClick={deleteAction}
+                    style={{ color: 'white' }}
+                    className="fw-medium"
+                  >
+                    {dossierIDDelete.statut === false ? 'Activer' : 'Archiver'}
                   </CButton>
                 }
               />

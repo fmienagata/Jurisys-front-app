@@ -89,3 +89,20 @@
 
 // If you want to add custom CSS you can put it here.
 @import 'custom';
+
+#shifter {
+  position: relative;
+}
+#cataright {
+  position: absolute;
+  top: -10px;
+  right: 20px;
+}
+.grey {
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border: solid black 1px;
+  border-radius: 7px;
+  background-color: #dddddd;
+}
