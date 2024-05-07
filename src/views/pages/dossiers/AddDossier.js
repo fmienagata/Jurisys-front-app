@@ -484,7 +484,7 @@ const AddDossier = () => {
                               invalid={Boolean(error)}
                               feedbackInvalid={error?.message}
                               id="objet"
-                              placeholder="Partie adverse objet"
+                              placeholder="Objet"
                             />
                           )}
                         />
@@ -502,7 +502,7 @@ const AddDossier = () => {
                             <CFormInput
                               {...field}
                               id="partieAdverseNom"
-                              placeholder="Partie adverse nom"
+                              placeholder="Nom"
                               invalid={Boolean(error)}
                               feedbackInvalid={error?.message}
                             />
@@ -522,7 +522,7 @@ const AddDossier = () => {
                             <CFormInput
                               {...field}
                               id="partieAdversePrenom"
-                              placeholder="Partie adverse prénom"
+                              placeholder="Prénom"
                               invalid={Boolean(error)}
                               feedbackInvalid={error?.message}
                             />
@@ -544,7 +544,7 @@ const AddDossier = () => {
                               {...field}
                               id="partieAdverseEmail"
                               type="email"
-                              placeholder="Partie adverse e-mail"
+                              placeholder="E-mail"
                               invalid={Boolean(error)}
                               feedbackInvalid={error?.message}
                             />
@@ -565,7 +565,7 @@ const AddDossier = () => {
                             <CFormInput
                               {...field}
                               id="partieAdverseAdresse"
-                              placeholder="Partie adverse adresse"
+                              placeholder="Adresse"
                               invalid={Boolean(error)}
                               feedbackInvalid={error?.message}
                             />
@@ -585,7 +585,7 @@ const AddDossier = () => {
                             <CFormInput
                               {...field}
                               id="partieAdverseVille"
-                              placeholder="Partie adverse ville"
+                              placeholder="Ville"
                               invalid={Boolean(error)}
                               feedbackInvalid={error?.message}
                             />
@@ -605,7 +605,7 @@ const AddDossier = () => {
                             <CFormInput
                               {...field}
                               id="partieAdversePays"
-                              placeholder="Partie adverse pays"
+                              placeholder="Pays"
                               invalid={Boolean(error)}
                               feedbackInvalid={error?.message}
                             />
@@ -626,7 +626,7 @@ const AddDossier = () => {
                             <CFormInput
                               {...field}
                               id="partieAdverseTelephone"
-                              placeholder="Partie adverse telephone"
+                              placeholder="Telephone"
                               invalid={Boolean(error)}
                               feedbackInvalid={error?.message}
                             />

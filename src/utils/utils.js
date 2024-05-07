@@ -98,6 +98,10 @@ function filterMessages(messages, role) {
   })
 }
 
+function formatNumberWithPoints(number) {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+}
+
 export {
   formatFrenchDate,
   removeEmptyAttributes,
@@ -107,4 +111,5 @@ export {
   dossierStatusChange,
   prepareDataUpdate,
   filterMessages,
+  formatNumberWithPoints,
 }
