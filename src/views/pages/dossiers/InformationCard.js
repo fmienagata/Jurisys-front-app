@@ -11,7 +11,7 @@ import {
   CBadge,
 } from '@coreui/react'
 import PropTypes from 'prop-types'
-import { capitalizeFirstLetter, formatFrenchDate } from 'src/utils/utils'
+import { capitalizeFirstLetter, formatFrenchDate, formatNumberWithPoints } from 'src/utils/utils'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
 
@@ -25,6 +25,9 @@ const InformationCard = ({ dataDossier, setListPJ, setOpenModalPJ, setTitleModal
   function getKeyName(key) {
     let result = ''
     switch (key) {
+      case 'reference':
+        result = 'Référence'
+        break
       case 'createdAt':
         result = 'Créé le'
         break
@@ -41,22 +44,25 @@ const InformationCard = ({ dataDossier, setListPJ, setOpenModalPJ, setTitleModal
         result = 'Adverse nom'
         break
       case 'partieAdversePrenom':
-        result = 'Adverse prenom'
+        result = 'Partie adverse prenom'
         break
       case 'partieAdverseEmail':
-        result = 'Adverse Email'
+        result = 'Partie adverse Email'
         break
       case 'partieAdverseAdresse':
-        result = 'Adverse adresse'
+        result = 'Partie adverse adresse'
         break
       case 'partieAdverseVille':
-        result = 'Adverse ville'
+        result = 'Partie adverse ville'
         break
       case 'partieAdversePays':
-        result = 'Adverse pays'
+        result = 'Partie adverse pays'
         break
       case 'partieAdverseTelephone':
-        result = 'Adverse telephone'
+        result = 'Partie adverse telephone'
+        break
+      case 'prenom':
+        result = 'Prénom'
         break
       default:
         result = key
@@ -66,10 +72,12 @@ const InformationCard = ({ dataDossier, setListPJ, setOpenModalPJ, setTitleModal
 
   function getKeyValue(key, value) {
     let result = ''
-    if (key === 'updatedAt' || key === 'createdAt') result = formatFrenchDate(value)
-    else result = value
-
-    return capitalizeFirstLetter(result)
+    if (key === 'montantPrejudice') return formatNumberWithPoints(value)
+    else {
+      if (key === 'updatedAt' || key === 'createdAt') result = formatFrenchDate(value)
+      else result = value
+      return capitalizeFirstLetter(result)
+    }
   }
 
   const generateMetadatas = (metadataSpliced) => {
@@ -89,7 +97,7 @@ const InformationCard = ({ dataDossier, setListPJ, setOpenModalPJ, setTitleModal
                 ) : (
                   <b className="fw-semibold">{value === null ? '---' : getKeyValue(key, value)}</b>
                 )}
-                {key === 'montantPrejudice' && <b> € </b>}
+                {key === 'montantPrejudice' && <b className="fw-semibold"> FCFA </b>}
               </CCol>
             </CRow>
           </CListGroupItem>

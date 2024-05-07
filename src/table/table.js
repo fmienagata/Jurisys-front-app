@@ -3,6 +3,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable react/jsx-key */
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
+import { formatNumberWithPoints } from 'src/utils/utils'
 
 import {
   useMountedLayoutEffect,
@@ -343,6 +344,19 @@ const Table = forwardRef(
                             <CBadge color={cell.value === 'Payer' ? 'dark' : 'danger'}>
                               {cell.render('Cell')}
                             </CBadge>
+                          </CTableDataCell>
+                        )
+                      }
+
+                      if (cell.column.Header === 'Montant FCFA') {
+                        console.log(
+                          'cell=',
+                          formatNumberWithPoints(cell.render('Cell').props.value) + 'FCFA',
+                        )
+
+                        return (
+                          <CTableDataCell {...cell.getCellProps()}>
+                            {formatNumberWithPoints(cell.render('Cell').props.value)}
                           </CTableDataCell>
                         )
                       }

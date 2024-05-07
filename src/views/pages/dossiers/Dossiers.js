@@ -52,47 +52,62 @@ const Dossiers = () => {
 
   const columnsDossiers = [
     {
-      Header: 'Reference',
+      Header: 'Référence',
       accessor: 'reference',
     },
+    // {
+    //   Header: 'Nom',
+    //   accessor: 'nom',
+    // },
+    // {
+    //   Header: 'Prénom',
+    //   accessor: 'prenom',
+    // },
     {
-      Header: 'Nom',
-      accessor: 'nom',
-    },
-    {
-      Header: 'Prenom',
-      accessor: 'prenom',
+      Header: 'Société',
+      accessor: 'societe',
     },
     {
       Header: 'Adresse',
       accessor: 'adresse',
     },
-    {
-      Header: 'Email',
-      accessor: 'email',
-    },
-    {
-      Header: 'Telephone',
-      accessor: 'telephone',
-    },
-    {
-      Header: 'Societe',
-      accessor: 'societe',
-    },
+    // {
+    //   Header: 'Email',
+    //   accessor: 'email',
+    // },
+    // {
+    //   Header: 'Telephone',
+    //   accessor: 'telephone',
+    // },
+
     {
       Header: 'Ville',
       accessor: 'ville',
     },
+    // {
+    //   Header: 'Pays',
+    //   accessor: 'pays',
+    // },
+
     {
-      Header: 'Pays',
-      accessor: 'pays',
+      Header: 'Objet',
+      accessor: 'objet',
     },
+    {
+      Header: 'Partie adverse Nom',
+      accessor: 'partieAdverseNom',
+    },
+    {
+      Header: 'Partie adverse Prénom',
+      accessor: 'partieAdversePrenom',
+    },
+
     {
       Header: 'Juridiction',
       accessor: 'juridiction',
     },
     {
-      Header: 'Montant',
+      Header: 'Montant FCFA',
       accessor: 'montantPrejudice',
     },
     {
