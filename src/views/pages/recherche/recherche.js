@@ -115,7 +115,6 @@ const Recherche = () => {
   }
 
   function DeleteMultiDossiers() {
-    console.log('selection =>', selection)
     setOpenModal(true)
   }
 

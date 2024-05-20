@@ -123,7 +123,10 @@ const AddDossier = () => {
                 <CCol sm="4">
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Nom </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Nom</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="nom"
                         defaultValue=""
@@ -144,7 +147,10 @@ const AddDossier = () => {
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Prénom </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Prénom</b>{' '}
+                      </CHeaderText>
                       <Controller
                         defaultValue=""
                         name="prenom"
@@ -164,7 +170,9 @@ const AddDossier = () => {
                     </CCol>
                   </CInputGroup>
                   <CCol>
-                    <CHeaderText> E-mail </CHeaderText>
+                    <CHeaderText>
+                      <b> E-mail</b>{' '}
+                    </CHeaderText>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>@</CInputGroupText>
                       <Controller
@@ -188,7 +196,10 @@ const AddDossier = () => {
                   </CCol>
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Telephone </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Telephone</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="telephone"
                         defaultValue=""
@@ -210,7 +221,10 @@ const AddDossier = () => {
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Adresse </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Adresse</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="adresse"
                         control={control}
@@ -231,7 +245,10 @@ const AddDossier = () => {
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Ville </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Ville</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="ville"
                         control={control}
@@ -252,7 +269,10 @@ const AddDossier = () => {
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Pays </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Pays</b>{' '}
+                      </CHeaderText>
 
                       <Controller
                         name="pays"
@@ -313,7 +333,10 @@ const AddDossier = () => {
                   {' '}
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Reference </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Reference</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="reference"
                         control={control}
@@ -334,7 +357,10 @@ const AddDossier = () => {
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Type procedure </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Type procedure</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="typeProcedure"
                         control={control}
@@ -370,7 +396,10 @@ const AddDossier = () => {
                   </CInputGroup> */}
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Montant prejudice </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Montant prejudice</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="montantPrejudice"
                         control={control}
@@ -391,7 +420,10 @@ const AddDossier = () => {
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Entreprise </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Entreprise</b>{' '}
+                      </CHeaderText>
                       {!isLoadingSocietes && societes.length > 0 ? (
                         <Controller
                           name="societe"
@@ -414,7 +446,10 @@ const AddDossier = () => {
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Juridiction </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Juridiction</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="juridiction"
                         defaultValue=""
@@ -442,7 +477,9 @@ const AddDossier = () => {
                       render={({ field }) => (
                         <>
                           {' '}
-                          <CHeaderText>Statut dossier :</CHeaderText>
+                          <CHeaderText>
+                            <b>Statut dossier :</b>
+                          </CHeaderText>
                           <span style={{ marginRight: '20px' }}></span>
                           <CFormCheck
                             type="radio"
@@ -472,7 +509,10 @@ const AddDossier = () => {
 
                     <CInputGroup className="mb-3">
                       <CCol>
-                        <CHeaderText> Objet </CHeaderText>
+                        <CHeaderText>
+                          {' '}
+                          <b>Objet</b>{' '}
+                        </CHeaderText>
                         <Controller
                           name="objet"
                           defaultValue=""
@@ -492,7 +532,10 @@ const AddDossier = () => {
                     </CInputGroup>
                     <CInputGroup className="mb-3">
                       <CCol>
-                        <CHeaderText> Nom </CHeaderText>
+                        <CHeaderText>
+                          {' '}
+                          <b>Nom</b>{' '}
+                        </CHeaderText>
                         <Controller
                           name="partieAdverseNom"
                           control={control}
@@ -512,7 +555,10 @@ const AddDossier = () => {
                     </CInputGroup>
                     <CCol className="mb-3">
                       <CCol>
-                        <CHeaderText> Prénom </CHeaderText>
+                        <CHeaderText>
+                          {' '}
+                          <b>Prénom</b>{' '}
+                        </CHeaderText>
                         <Controller
                           name="partieAdversePrenom"
                           control={control}
@@ -531,7 +577,10 @@ const AddDossier = () => {
                       </CCol>
                     </CCol>
                     <CCol>
-                      <CHeaderText> E-mail </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>E-mail</b>{' '}
+                      </CHeaderText>
                       <CInputGroup className="mb-3">
                         <CInputGroupText>@</CInputGroupText>
                         <Controller
@@ -554,7 +603,10 @@ const AddDossier = () => {
                     </CCol>
                     <CInputGroup className="mb-3">
                       <CCol>
-                        <CHeaderText> Adresse </CHeaderText>
+                        <CHeaderText>
+                          {' '}
+                          <b>Adresse</b>{' '}
+                        </CHeaderText>
 
                         <Controller
                           name="partieAdverseAdresse"
@@ -575,7 +627,10 @@ const AddDossier = () => {
                     </CInputGroup>
                     <CInputGroup className="mb-3">
                       <CCol>
-                        <CHeaderText> Ville </CHeaderText>
+                        <CHeaderText>
+                          {' '}
+                          <b>Ville</b>{' '}
+                        </CHeaderText>
                         <Controller
                           name="partieAdverseVille"
                           control={control}
@@ -595,7 +650,10 @@ const AddDossier = () => {
                     </CInputGroup>
                     <CInputGroup className="mb-3">
                       <CCol>
-                        <CHeaderText> Pays </CHeaderText>
+                        <CHeaderText>
+                          {' '}
+                          <b>Pays</b>{' '}
+                        </CHeaderText>
                         <Controller
                           name="partieAdversePays"
                           control={control}
@@ -615,7 +673,10 @@ const AddDossier = () => {
                     </CInputGroup>
                     <CInputGroup className="mb-3">
                       <CCol>
-                        <CHeaderText> Telephone </CHeaderText>
+                        <CHeaderText>
+                          {' '}
+                          <b>Telephone</b>{' '}
+                        </CHeaderText>
 
                         <Controller
                           name="partieAdverseTelephone"

@@ -12,6 +12,7 @@ import {
   CInputGroupText,
   CRow,
   CFormSelect,
+  CHeaderText,
   CSpinner,
 } from '@coreui/react'
 import { useLocation } from 'react-router-dom'
@@ -100,106 +101,142 @@ const UserEdit = () => {
                   {/* <h1>{labels.registre.titleHeader}</h1> */}
                   <p className="text-body-secondary">Modifier un utilisateur</p>
                   <CInputGroup className="mb-3">
-                    {!isLoading && usersTypes.length > 0 ? (
-                      <Controller
-                        name="userType"
-                        control={control}
-                        defaultValue={selectedUsersTypes.id || ''}
-                        render={({ field }) => (
-                          <CFormSelect id="userType" {...field}>
-                            {usersTypes.map((item, key) => (
-                              <option value={item.id} key={key}>
-                                {item.label}
-                              </option>
-                            ))}
-                          </CFormSelect>
-                        )}
-                      />
-                    ) : (
-                      isLoading && <CSpinner color="primary" variant="grow" />
-                    )}
+                    <CCol>
+                      <CHeaderText>
+                        {' '}
+                        <b>Utilisateur type</b>{' '}
+                      </CHeaderText>
+                      {!isLoading && usersTypes.length > 0 ? (
+                        <Controller
+                          name="userType"
+                          control={control}
+                          defaultValue={selectedUsersTypes.id || ''}
+                          render={({ field }) => (
+                            <CFormSelect id="userType" {...field}>
+                              {usersTypes.map((item, key) => (
+                                <option value={item.id} key={key}>
+                                  {item.label}
+                                </option>
+                              ))}
+                            </CFormSelect>
+                          )}
+                        />
+                      ) : (
+                        isLoading && <CSpinner color="primary" variant="grow" />
+                      )}
+                    </CCol>
                   </CInputGroup>
 
                   <CInputGroup className="mb-3">
-                    <Controller
-                      name="nom"
-                      control={control}
-                      defaultValue={state.data.nom}
-                      render={({ field }) => (
-                        <CFormInput
-                          {...field}
-                          id="nom"
-                          placeholder="Nom d'utilisateur"
-                          autoComplete="nom"
-                        />
-                      )}
-                    />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <Controller
-                      name="prenom"
-                      control={control}
-                      defaultValue={state.data.prenom}
-                      render={({ field }) => (
-                        <CFormInput
-                          {...field}
-                          id="prenom"
-                          placeholder="Prenom d'utilisateur"
-                          autoComplete="prenom"
-                        />
-                      )}
-                    />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <Controller
-                      name="username"
-                      control={control}
-                      defaultValue={state.data.username}
-                      render={({ field }) => (
-                        <CFormInput
-                          {...field}
-                          id="username"
-                          placeholder="username"
-                          autoComplete="username"
-                        />
-                      )}
-                    />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <Controller
-                      name="password"
-                      defaultValue={state.data.password}
-                      control={control}
-                      render={({ field }) => (
-                        <CFormInput
-                          {...field}
-                          id="password"
-                          type="password"
-                          placeholder="Mot de passe"
-                          autoComplete="current-password"
-                        />
-                      )}
-                    />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    {!isLoadingSocietes && societes.length > 0 ? (
+                    <CCol>
+                      <CHeaderText>
+                        {' '}
+                        <b>Nom</b>{' '}
+                      </CHeaderText>
                       <Controller
-                        name="societe"
+                        name="nom"
                         control={control}
-                        defaultValue={selectedSociete.id || ''}
+                        defaultValue={state.data.nom}
                         render={({ field }) => (
-                          <CFormSelect id="societe" {...field}>
-                            {societes.map((item, key) => (
-                              <option value={item.id} key={key}>
-                                {item.nomSociete}
-                              </option>
-                            ))}
-                          </CFormSelect>
+                          <CFormInput
+                            {...field}
+                            id="nom"
+                            placeholder="Nom d'utilisateur"
+                            autoComplete="nom"
+                          />
                         )}
                       />
-                    ) : (
-                      isLoadingSocietes && <CSpinner color="primary" variant="grow" />
-                    )}
+                    </CCol>
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText>
+                        {' '}
+                        <b>Prenom</b>{' '}
+                      </CHeaderText>
+                      <Controller
+                        name="prenom"
+                        control={control}
+                        defaultValue={state.data.prenom}
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="prenom"
+                            placeholder="Prenom d'utilisateur"
+                            autoComplete="prenom"
+                          />
+                        )}
+                      />
+                    </CCol>
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText>
+                        {' '}
+                        <b>Nom de utilisateur</b>{' '}
+                      </CHeaderText>
+                      <Controller
+                        name="username"
+                        control={control}
+                        defaultValue={state.data.username}
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="username"
+                            placeholder="username"
+                            autoComplete="username"
+                          />
+                        )}
+                      />
+                    </CCol>
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText>
+                        {' '}
+                        <b>Mot de passe</b>{' '}
+                      </CHeaderText>
+                      <Controller
+                        name="password"
+                        defaultValue={state.data.password}
+                        control={control}
+                        render={({ field }) => (
+                          <CFormInput
+                            {...field}
+                            id="password"
+                            type="password"
+                            placeholder="Mot de passe"
+                            autoComplete="current-password"
+                          />
+                        )}
+                      />
+                    </CCol>
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText>
+                        {' '}
+                        <b>Entreprise</b>{' '}
+                      </CHeaderText>
+                      {!isLoadingSocietes && societes.length > 0 ? (
+                        <Controller
+                          name="societe"
+                          control={control}
+                          defaultValue={selectedSociete.id || ''}
+                          render={({ field }) => (
+                            <CFormSelect id="societe" {...field}>
+                              {societes.map((item, key) => (
+                                <option value={item.id} key={key}>
+                                  {item.nomSociete}
+                                </option>
+                              ))}
+                            </CFormSelect>
+                          )}
+                        />
+                      ) : (
+                        isLoadingSocietes && <CSpinner color="primary" variant="grow" />
+                      )}
+                    </CCol>
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CInputGroupText>@</CInputGroupText>

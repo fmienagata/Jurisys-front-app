@@ -67,7 +67,7 @@ const MessagesView = ({ messages, isDashboard, setListPJ, setOpenModalPJ, setTit
         <CListGroup flush>
           {messages &&
             messages.map((item, key) => (
-              <CListGroupItem key={key}>
+              <CListGroupItem key={key} style={{ borderBottom: '1px solid gray' }}>
                 <CCardHeader className="text-center">
                   <CRow className="align-items-center">
                     <CCol className="text-start" xs={4}>

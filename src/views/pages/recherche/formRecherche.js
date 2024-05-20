@@ -117,7 +117,7 @@ const FormRecherche = ({ setDossiers, setIsActif }) => {
                                   aria-label="example sm input example"
                                   size="sm"
                                   placeholder="nom"
-                                  floatingLabel="Nom du débiteur ou du demandeur"
+                                  floatingLabel="Nom de la partie adverse"
                                 />
                               )}
                             />

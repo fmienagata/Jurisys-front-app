@@ -21,7 +21,6 @@ import { useQueryClient } from 'react-query'
 const EditFacture = () => {
   const location = useLocation()
   const { state } = location
-  console.log('state ->', state.data)
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
@@ -54,7 +53,10 @@ const EditFacture = () => {
 
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Nom de l utilisateur </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Nom de l utilisateur</b>{' '}
+                      </CHeaderText>
                       <CFormInput
                         id="user"
                         value={state.data.user}
@@ -78,7 +80,10 @@ const EditFacture = () => {
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Dossier </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Dossier</b>{' '}
+                      </CHeaderText>
                       <CFormInput
                         id="dossier"
                         placeholder="dossier"
@@ -104,7 +109,10 @@ const EditFacture = () => {
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Montant </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Montant</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="montant"
                         control={control}
@@ -133,7 +141,10 @@ const EditFacture = () => {
                       />
                     </CCol> */}
                     <CCol>
-                      <CHeaderText> statut </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>statut</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="statut"
                         control={control}

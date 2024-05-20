@@ -75,7 +75,10 @@ const AddFacture = () => {
                   {!isLoading && dataUsers.data.length > 0 ? (
                     <CInputGroup className="mb-3">
                       <CCol>
-                        <CHeaderText> Nom de l utilisateur </CHeaderText>
+                        <CHeaderText>
+                          {' '}
+                          <b>Nom de l utilisateur</b>{' '}
+                        </CHeaderText>
                         <Controller
                           name="user"
                           control={control}
@@ -100,7 +103,10 @@ const AddFacture = () => {
                   {!isLoadingDossiers && dossiers.length > 0 ? (
                     <CInputGroup className="mb-3">
                       <CCol>
-                        <CHeaderText> Dossier </CHeaderText>
+                        <CHeaderText>
+                          {' '}
+                          <b>Dossier</b>{' '}
+                        </CHeaderText>
                         <Controller
                           name="dossier"
                           control={control}
@@ -122,7 +128,10 @@ const AddFacture = () => {
                   )}
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Montant </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Montant</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="montant"
                         control={control}
@@ -142,7 +151,10 @@ const AddFacture = () => {
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> statut </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>statut</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="statut"
                         control={control}

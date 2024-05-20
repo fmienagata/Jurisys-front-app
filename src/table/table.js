@@ -26,7 +26,9 @@ import {
   CBadge,
   CRow,
   CFormSwitch,
+  CPagination,
   CFormInput,
+  CCol,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
@@ -34,6 +36,7 @@ import { Checkbox } from './checkbox'
 import TablePaginationActions from './tablePaginationActions'
 import ModalMessageType from 'src/components/ModalMessageType'
 import ModalSociete from 'src/components/ModalSocietes'
+import { isUserConnect } from 'src/utils/utils'
 import Styles from 'src/table/TableStyles.js'
 
 const Table = forwardRef(
@@ -44,6 +47,7 @@ const Table = forwardRef(
       onDelete,
       isActif,
       fromPage,
+      userConnected,
       manualPagination = false,
       onSelectedRowChange,
       isFetchDataFinished = true,
@@ -231,7 +235,7 @@ const Table = forwardRef(
     }
 
     return (
-      <Styles>
+      <>
         <div className="table-responsive">
           <CTable {...getTableProps()} class="table table-striped align-middle text-center">
             <CTableHead class="align-middle table-light">
@@ -288,19 +292,6 @@ const Table = forwardRef(
                             >
                               <CIcon icon={icon.cilPen} size="sm" />
                             </CButton>
-                            {/* <CButton
-                              title={title}
-                              color={colorIcon}
-                              variant="ghost"
-                              size="sm"
-                              onClick={() =>
-                                fromPage === 'dossiers'
-                                  ? onDelete(row.original)
-                                  : onDelete(row.original.id)
-                              }
-                            >
-                              <CIcon icon={titleIcon} size="sm" />
-                            </CButton> */}
 
                             {fromPage === 'dossiers' ? (
                               <label className="switch">
@@ -320,19 +311,21 @@ const Table = forwardRef(
                                 </div>
                               </label>
                             ) : (
-                              <CButton
-                                title={title}
-                                color={colorIcon}
-                                variant="ghost"
-                                size="sm"
-                                onClick={() =>
-                                  fromPage === 'dossiers'
-                                    ? onDelete(row.original)
-                                    : onDelete(row.original.id)
-                                }
-                              >
-                                <CIcon icon={titleIcon} size="sm" />
-                              </CButton>
+                              (fromPage !== 'users' || userConnected !== row.original.username) && (
+                                <CButton
+                                  title={title}
+                                  color={colorIcon}
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() =>
+                                    fromPage === 'dossiers'
+                                      ? onDelete(row.original)
+                                      : onDelete(row.original.id)
+                                  }
+                                >
+                                  <CIcon icon={titleIcon} size="sm" />
+                                </CButton>
+                              )
                             )}
                           </CTableDataCell>
                         )
@@ -386,30 +379,33 @@ const Table = forwardRef(
         </div>
         <CRow
           style={{
-            // display: 'inline-block',
-            marginLeft: '10px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
             width: '100%',
           }}
         >
-          <TablePagination
-            rowsPerPageOptions={[10]}
-            component="div"
-            count={data.length}
-            rowsPerPage={10}
-            page={pageIndex}
-            // canNextPage={canNextPage}
-            // canPreviousPage={canPreviousPage}
-            labelDisplayedRows={({ from, to, count }) =>
-              `${'Éléments'} ${from}
+          <CCol className="px-5">
+            <TablePagination
+              style={{ display: 'contents' }}
+              rowsPerPageOptions={[10]}
+              count={data.length}
+              rowsPerPage={10}
+              page={pageIndex}
+              // canNextPage={canNextPage}
+              // canPreviousPage={canPreviousPage}
+              labelDisplayedRows={({ from, to, count }) =>
+                `${'Éléments'} ${from}
             ${'à'} ${to}
             ${'sur'} ${count}`
-            }
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={(event) => setPageSize(Number(event.target.value))}
-            ActionsComponent={TablePaginationActions}
-          />
+              }
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={(event) => setPageSize(Number(event.target.value))}
+              ActionsComponent={TablePaginationActions}
+            />
+          </CCol>
         </CRow>
-      </Styles>
+      </>
     )
   },
 )

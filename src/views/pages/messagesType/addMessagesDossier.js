@@ -83,7 +83,6 @@ const CreateMessagesDossier = () => {
   })
 
   const handleCreateMessage = async (data) => {
-    console.log('data => ', data)
     if (data.dateAudience === undefined) {
       data.dateAudience = new Date().toISOString()
     } else {

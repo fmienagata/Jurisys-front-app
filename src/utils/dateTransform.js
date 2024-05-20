@@ -15,7 +15,6 @@ function getFirstDayOfMonth() {
 function getLastDayOfMonth() {
   const date = new Date()
   const lastDayDate = new Date(date.getFullYear(), date.getMonth() + 1, 0)
-  console.log('lastDayDate->', lastDayDate)
   return formatDateAgenda(lastDayDate)
 }
 

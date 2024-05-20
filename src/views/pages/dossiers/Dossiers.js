@@ -144,7 +144,6 @@ const Dossiers = () => {
   const handleDelete = (dossierId) => {
     setOpenModal(true)
     setDossierIDDelete(dossierId)
-    console.log('dossierId => ', dossierId)
     let data = dossierStatusChange(dossierId)
     setDataValue(data)
   }
@@ -178,7 +177,6 @@ const Dossiers = () => {
     const filter = event.target.value.trim().toLowerCase()
 
     const result = filtredValues(dossiersInitial, filter)
-    console.log('dossiersInitial, filter, result', dossiersInitial, filter, result)
     setDossiers(filter === '' ? dossiersInitial : result)
   }
 
