@@ -101,7 +101,9 @@ const AddUser = () => {
 
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Nom </CHeaderText>
+                      <CHeaderText>
+                        <b> Nom</b>{' '}
+                      </CHeaderText>
 
                       <Controller
                         name="nom"
@@ -126,7 +128,10 @@ const AddUser = () => {
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Prenom </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Prenom</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="prenom"
                         control={control}
@@ -147,7 +152,10 @@ const AddUser = () => {
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Nom de utilisateur </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Nom de utilisateur</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="username"
                         control={control}
@@ -170,7 +178,10 @@ const AddUser = () => {
                   {!isLoading && usersTypes.length > 0 ? (
                     <CInputGroup className="mb-3">
                       <CCol>
-                        <CHeaderText> Utilisateur type </CHeaderText>
+                        <CHeaderText>
+                          {' '}
+                          <b>Utilisateur type</b>{' '}
+                        </CHeaderText>
                         <Controller
                           name="userType"
                           control={control}
@@ -192,7 +203,10 @@ const AddUser = () => {
                   )}
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Mot de passe </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Mot de passe</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="password"
                         control={control}
@@ -213,7 +227,10 @@ const AddUser = () => {
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Entreprise </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Entreprise</b>{' '}
+                      </CHeaderText>
                       {!isLoadingSocietes && societes.length > 0 ? (
                         <Controller
                           name="societe"

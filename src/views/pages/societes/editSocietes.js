@@ -52,7 +52,10 @@ const EditSociete = () => {
 
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Nom de l entreprise </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Nom de l entreprise</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="nomSociete"
                         control={control}
@@ -69,7 +72,10 @@ const EditSociete = () => {
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Type </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Type</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="type"
                         control={control}
@@ -83,7 +89,10 @@ const EditSociete = () => {
 
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Pays </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Pays</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="pays"
                         control={control}
@@ -96,7 +105,10 @@ const EditSociete = () => {
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> ville </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>ville</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="ville"
                         control={control}
@@ -114,7 +126,10 @@ const EditSociete = () => {
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Adresse </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Adresse</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="adresse"
                         control={control}
@@ -145,7 +160,10 @@ const EditSociete = () => {
 
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Téléphone </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Téléphone</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="telephone"
                         control={control}
@@ -163,7 +181,10 @@ const EditSociete = () => {
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
-                      <CHeaderText> Fax </CHeaderText>
+                      <CHeaderText>
+                        {' '}
+                        <b>Fax</b>{' '}
+                      </CHeaderText>
                       <Controller
                         name="fax"
                         control={control}

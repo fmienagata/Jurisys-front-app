@@ -19,9 +19,6 @@
   border-right: 1px solid black;
 }
 
-.MuiTablePagination-spacer {
-}
-
 .badge {
   --cui-badge-padding-x: 0.8em;
   --cui-badge-padding-y: 0.5em;
@@ -200,4 +197,8 @@ input:checked + .slider .off {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.grid-force {
+  display: grid !important;
 }

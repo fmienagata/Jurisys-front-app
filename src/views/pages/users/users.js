@@ -14,8 +14,11 @@ import { deleteUser, useGetAllUsers } from '../../../services/usersService'
 import { useMessageContext } from 'src/Context/MessageContext'
 import Styles from './../../../table/TableStyles'
 import { useQueryClient } from 'react-query'
+import { useAuth } from 'src/Context/AuthContext'
 
 const Users = () => {
+  const { user } = useAuth()
+
   const tableRefUsers = useRef(typeof useRowSelect)
   const navigate = useNavigate()
 
@@ -105,10 +108,8 @@ const Users = () => {
   }
 
   function handleChange(event) {
-    console.log('initialUsers => ', initialUsers)
     const filter = event.target.value.trim().toLowerCase()
     const result = filtredValues(initialUsers, filter)
-    console.log('result => ', result)
     setUsers(filter === '' ? initialUsers : result)
   }
 
@@ -173,6 +174,7 @@ const Users = () => {
                     setOpenModal={setOpenModal}
                     onSelectedRowChange={setSelection}
                     fromPage={'users'}
+                    userConnected={user.username}
                     onDelete={handleDeleteUser}
                   />
                 </CCardBody>

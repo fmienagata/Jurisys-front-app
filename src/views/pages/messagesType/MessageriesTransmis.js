@@ -84,10 +84,8 @@ const MessageriesTransmis = () => {
 
   useEffect(() => {
     if (messagesDossier) {
-      console.log('useEffect - messagesDossier =>', messagesDossier.length)
       const messagesFiltered = messagesDossier && filterMessages(messagesDossier, 'all')
       setMessagesSelected(messagesFiltered)
-      console.log('useEffect - messagesDossier =>', messagesFiltered.length)
     }
   }, [clickedDossier, messagesDossier])
 

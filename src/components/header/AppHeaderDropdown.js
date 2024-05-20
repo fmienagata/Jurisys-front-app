@@ -40,7 +40,7 @@ const AppHeaderDropdown = () => {
           <CIcon icon={cilUser} className="me-2" />
           Profile
         </CDropdownItem>
-        <CDropdownItem href="#">
+        <CDropdownItem href="/#/messages/messaging">
           <CIcon icon={cilEnvelopeOpen} className="me-2" />
           Messages
           <CBadge color="success" className="ms-2">
@@ -48,7 +48,7 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem>
 
-        <CDropdownItem href="/subscription">
+        <CDropdownItem href="/#/abonnement">
           <CIcon icon={cilCreditCard} className="me-2" />
           Abonnement
           <CBadge color="secondary" className="ms-2">
@@ -56,10 +56,10 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem>
 
-        <CDropdownItem href="#">
+        {/* <CDropdownItem href="#">
           <CIcon icon={cilSettings} className="me-2" />
           Paramètres
-        </CDropdownItem>
+        </CDropdownItem> */}
 
         <CDropdownDivider />
         <CDropdownItem onClick={() => logout()}>
