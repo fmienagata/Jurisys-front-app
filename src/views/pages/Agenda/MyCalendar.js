@@ -12,15 +12,17 @@ import { useQueryClient } from 'react-query'
 import { handleErrorResponse } from 'src/utils/handleErrorResponse'
 import { useAuth } from 'src/Context/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import { Modal, Button } from 'react-bootstrap'
 
 const MyCalendar = ({ isDashboard }) => {
   const { displayError } = useMessageContext()
   const { disconnect } = useAuth()
   const navigate = useNavigate()
-
   const queryClient = useQueryClient()
 
   const [dataEvents, setDataEvents] = useState([])
+  const [showModal, setShowModal] = useState(false)
+  const [modalData, setModalData] = useState({ dossier: '', text: '' })
 
   const { dataAgenda, isLoading, refetch } = useGetAllAgenda({
     onSuccess: (data) => {
@@ -28,7 +30,10 @@ const MyCalendar = ({ isDashboard }) => {
         type: item.type,
         title: item.text,
         date: item.dateAudience,
+        dossier: item.dossier, // ajout de la référence du dossier
+        text: item.text,
       }))
+      // console.log(data)
       setDataEvents(transformedData)
     },
     onError: (error) => {
@@ -44,6 +49,8 @@ const MyCalendar = ({ isDashboard }) => {
             type: item.type,
             title: item.text,
             date: item.dateAudience,
+            dossier: item.dossier, // ajout de la référence du dossier
+            text: item.text,
           }))
         : []
       setDataEvents(transformedData)
@@ -62,13 +69,12 @@ const MyCalendar = ({ isDashboard }) => {
   }
 
   const handleEventClick = (info) => {
-    console.log('info.event.extendedProps:', info.event)
-    //alert(`Clic sur l'événement : ${info.event.title} `)
+    console.log('info.event.extendedProps:', info.event.extendedProps)
+    setModalData({ dossier: info.event.extendedProps.dossier, text: info.event.extendedProps.text })
+    setShowModal(true)
   }
 
-  // const handleDayClick = (info) => {
-  //   console.log('tooltipRef.current -->', info)
-  // }
+  const handleCloseModal = () => setShowModal(false)
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -88,8 +94,6 @@ const MyCalendar = ({ isDashboard }) => {
                 events={dataEvents}
                 eventClick={handleEventClick}
                 dateClick={handleDateClick2}
-                // eventMouseEnter={handleDayClick}
-                // eventMouseLeave={handleEventMouseLeave}
               />
             ) : (
               <CSpinner color="primary" variant="grow" />
@@ -97,27 +101,23 @@ const MyCalendar = ({ isDashboard }) => {
           </div>
         </CCardBody>
       </CCard>
-      {/* <div style={!isDashboard ? { height: '50vh', width: '50vw' } : {}}>
-        {!isLoading && dataEvents ? (
-          <FullCalendar
-            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-            initialView="dayGridMonth"
-            locale={frLang}
-            headerToolbar={{
-              left: 'prev,next today',
-              center: 'title',
-              right: 'dayGridMonth,timeGridWeek,timeGridDay',
-            }}
-            events={dataEvents}
-            eventClick={handleEventClick}
-            dateClick={handleDateClick2}
-            // eventMouseEnter={handleDayClick}
-            // eventMouseLeave={handleEventMouseLeave}
-          />
-        ) : (
-          <CSpinner color="primary" variant="grow" />
-        )}
-      </div> */}
+
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton></Modal.Header>
+        <Modal.Body>
+          <p>
+            <strong>Référence du dossier:</strong> {modalData.dossier}
+          </p>
+          <p>
+            <strong>Message:</strong> {modalData.text}
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Fermer
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Suspense>
   )
 }
