@@ -24,7 +24,7 @@ const User = () => {
         result = 'Créé le'
         break
       case 'updatedAt':
-        result = 'Mis à jour'
+        result = 'Mis à jour le'
         break
       case 'user':
         result = 'Utilisateur'
@@ -36,7 +36,7 @@ const User = () => {
         result = `Etat`
         break
       case 'userType':
-        result = `Role`
+        result = `Rôle`
         break
       default:
         result = key

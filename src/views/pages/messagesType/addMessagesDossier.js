@@ -303,7 +303,7 @@ const CreateMessagesDossier = () => {
                             }}
                           >
                             <option value="" key="key">
-                              {' -- Selectionner un messages -- '}
+                              {' -- Sélectionner un message -- '}
                             </option>
                             {!isLoading ? (
                               messagesTypes &&
