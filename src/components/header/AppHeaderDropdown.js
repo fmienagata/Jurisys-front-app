@@ -11,7 +11,7 @@ import {
   CDropdownMenu,
   CDropdownToggle,
 } from '@coreui/react'
-import { cilCreditCard, cilEnvelopeOpen, cilLockLocked, cilSettings, cilUser } from '@coreui/icons'
+import { cilCreditCard, cilEnvelopeOpen, cilLockLocked, cilUser } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { useAuth } from 'src/Context/AuthContext'
 import { useQueryClient } from 'react-query'
@@ -21,22 +21,22 @@ import labels from 'src/translations/labels.json'
 const AppHeaderDropdown = () => {
   const { disconnect } = useAuth()
   const queryClient = useQueryClient()
-
   const navigate = useNavigate()
 
-  function logout() {
+  const handleLogout = () => {
     queryClient.clear()
     disconnect()
     navigate('/login')
   }
+
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
-        <CAvatar src={avatar} size="md"></CAvatar>
+        <CAvatar src={avatar} size="md" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-body-secondary fw-semibold py-2">Compte</CDropdownHeader>
-        <CDropdownItem href="#">
+        <CDropdownItem href="/#/profile">
           <CIcon icon={cilUser} className="me-2" />
           Profile
         </CDropdownItem>
@@ -47,7 +47,6 @@ const AppHeaderDropdown = () => {
             42
           </CBadge>
         </CDropdownItem>
-
         <CDropdownItem href="/#/abonnement">
           <CIcon icon={cilCreditCard} className="me-2" />
           Abonnement
@@ -56,14 +55,9 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem>
 
-        {/* <CDropdownItem href="#">
-          <CIcon icon={cilSettings} className="me-2" />
-          Paramètres
-        </CDropdownItem> */}
-
         <CDropdownDivider />
-        <CDropdownItem onClick={() => logout()}>
-          <CIcon icon={cilLockLocked} className="me-2" onClick={() => logout()} />
+        <CDropdownItem onClick={handleLogout} style={{ cursor: 'pointer' }}>
+          <CIcon icon={cilLockLocked} className="me-2" />
           {labels.header.logout}
         </CDropdownItem>
       </CDropdownMenu>
