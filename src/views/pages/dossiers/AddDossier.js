@@ -160,7 +160,7 @@ const AddDossier = () => {
                           <CFormInput
                             {...field}
                             id="prenom"
-                            placeholder="prenom"
+                            placeholder="prénom"
                             autoComplete="prenom"
                             invalid={Boolean(error)}
                             feedbackInvalid={error?.message}
@@ -198,7 +198,7 @@ const AddDossier = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Telephone</b>{' '}
+                        <b>Téléphone</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="telephone"
@@ -210,7 +210,7 @@ const AddDossier = () => {
                             {...field}
                             id="telephone"
                             type="number"
-                            placeholder="telephone"
+                            placeholder="téléphone"
                             autoComplete="telephone"
                             invalid={Boolean(error)}
                             feedbackInvalid={error?.message}
@@ -335,7 +335,7 @@ const AddDossier = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Reference</b>{' '}
+                        <b>Référence</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="reference"
@@ -346,7 +346,7 @@ const AddDossier = () => {
                           <CFormInput
                             {...field}
                             id="reference"
-                            placeholder="reference"
+                            placeholder="référence"
                             autoComplete="reference"
                             invalid={Boolean(error)}
                             feedbackInvalid={error?.message}
@@ -359,7 +359,7 @@ const AddDossier = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Type procedure</b>{' '}
+                        <b>Type de procédure</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="typeProcedure"
@@ -367,7 +367,7 @@ const AddDossier = () => {
                         defaultValue=""
                         render={({ field, fieldState: { error } }) => (
                           <CFormSelect id="typeProcedure" {...field}>
-                            <option value="">-- Selectionner un type de dossier --</option>
+                            <option value="">-- Sélectionner un type de dossier --</option>
                             <option value="Conciliation">Conciliation</option>
                             <option value="Référé">Référé</option>
                             <option value="Au pied de requête">Au pied de requête</option>
@@ -398,7 +398,7 @@ const AddDossier = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Montant prejudice</b>{' '}
+                        <b>Montant préjudice</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="montantPrejudice"
@@ -478,7 +478,7 @@ const AddDossier = () => {
                         <>
                           {' '}
                           <CHeaderText>
-                            <b>Statut dossier :</b>
+                            <b>Statut du dossier :</b>
                           </CHeaderText>
                           <span style={{ marginRight: '20px' }}></span>
                           <CFormCheck
@@ -675,7 +675,7 @@ const AddDossier = () => {
                       <CCol>
                         <CHeaderText>
                           {' '}
-                          <b>Telephone</b>{' '}
+                          <b>Téléphone</b>{' '}
                         </CHeaderText>
 
                         <Controller
@@ -687,7 +687,7 @@ const AddDossier = () => {
                             <CFormInput
                               {...field}
                               id="partieAdverseTelephone"
-                              placeholder="Telephone"
+                              placeholder="Téléphone"
                               invalid={Boolean(error)}
                               feedbackInvalid={error?.message}
                             />

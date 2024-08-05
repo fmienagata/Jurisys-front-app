@@ -194,7 +194,7 @@ const CreateMessagesDossier = () => {
                   </CCol>
                   {!loadingDossiers && dossiers.length > 0 ? (
                     <CCol>
-                      <CHeaderText> Liste des references </CHeaderText>
+                      <CHeaderText> Liste des références </CHeaderText>
                       <Controller
                         name="dossier"
                         control={control}
