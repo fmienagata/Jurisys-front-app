@@ -92,7 +92,7 @@ const CreateMessagesDossier = () => {
     if (data.text === undefined) {
       data.text = ''
     }
-
+    console.log('Create message', data)
     try {
       const result = await addMessage(data)
       if (files.length > 0) {
