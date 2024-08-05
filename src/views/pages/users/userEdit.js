@@ -104,7 +104,7 @@ const UserEdit = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Utilisateur type</b>{' '}
+                        <b>Type d&apos;utilisateur</b>{' '}
                       </CHeaderText>
                       {!isLoading && usersTypes.length > 0 ? (
                         <Controller
@@ -152,7 +152,7 @@ const UserEdit = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Prenom</b>{' '}
+                        <b>Prénom</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="prenom"
@@ -162,7 +162,7 @@ const UserEdit = () => {
                           <CFormInput
                             {...field}
                             id="prenom"
-                            placeholder="Prenom d'utilisateur"
+                            placeholder="Prénom d'utilisateur"
                             autoComplete="prenom"
                           />
                         )}
@@ -173,7 +173,7 @@ const UserEdit = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Nom de utilisateur</b>{' '}
+                        <b>Username</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="username"

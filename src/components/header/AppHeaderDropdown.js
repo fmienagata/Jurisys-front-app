@@ -17,11 +17,13 @@ import { useAuth } from 'src/Context/AuthContext'
 import { useQueryClient } from 'react-query'
 import avatar from './../../assets/images/avatars/avatar2.jpg'
 import labels from 'src/translations/labels.json'
+import { jwtDecode } from 'jwt-decode'
 
 const AppHeaderDropdown = () => {
   const { disconnect } = useAuth()
   const queryClient = useQueryClient()
   const navigate = useNavigate()
+  const decoded = jwtDecode(localStorage.getItem('token'))
 
   const handleLogout = () => {
     queryClient.clear()
@@ -36,10 +38,11 @@ const AppHeaderDropdown = () => {
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-body-secondary fw-semibold py-2">Compte</CDropdownHeader>
-        <CDropdownItem href="/#/profile">
+        <CDropdownItem href={`/user-display/${decoded.id}`}>
           <CIcon icon={cilUser} className="me-2" />
           Profile
         </CDropdownItem>
+
         <CDropdownItem href="/#/messages/messaging">
           <CIcon icon={cilEnvelopeOpen} className="me-2" />
           Messages

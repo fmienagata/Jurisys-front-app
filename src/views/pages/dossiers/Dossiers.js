@@ -94,11 +94,11 @@ const Dossiers = () => {
       accessor: 'objet',
     },
     {
-      Header: 'Partie adverse Nom',
+      Header: 'Partie adverse/Nom',
       accessor: 'partieAdverseNom',
     },
     {
-      Header: 'Partie adverse Prénom',
+      Header: 'Partie adverse/Prénom',
       accessor: 'partieAdversePrenom',
     },
 
@@ -107,7 +107,7 @@ const Dossiers = () => {
       accessor: 'juridiction',
     },
     {
-      Header: 'Montant FCFA',
+      Header: 'Montant en FCFA',
       accessor: 'montantPrejudice',
     },
     {

@@ -115,7 +115,7 @@ const AddUser = () => {
                             <CFormInput
                               {...field}
                               id="nom"
-                              placeholder="Nom d'utilisateur"
+                              placeholder="Nom"
                               autoComplete="nom"
                               invalid={Boolean(error)}
                               feedbackInvalid={error?.message}
@@ -130,7 +130,7 @@ const AddUser = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Prenom</b>{' '}
+                        <b>Prénom</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="prenom"
@@ -141,7 +141,7 @@ const AddUser = () => {
                           <CFormInput
                             {...field}
                             id="prenom"
-                            placeholder="Prenom d'utilisateur"
+                            placeholder="Prénom"
                             autoComplete="prenom"
                             invalid={Boolean(error)}
                             feedbackInvalid={error?.message}
@@ -154,7 +154,7 @@ const AddUser = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Nom de utilisateur</b>{' '}
+                        <b>Username</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="username"
@@ -180,7 +180,7 @@ const AddUser = () => {
                       <CCol>
                         <CHeaderText>
                           {' '}
-                          <b>Utilisateur type</b>{' '}
+                          <b>Type d&apos;utilisateur</b>{' '}
                         </CHeaderText>
                         <Controller
                           name="userType"
