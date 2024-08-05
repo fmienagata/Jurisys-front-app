@@ -33,7 +33,7 @@ const Recherche = () => {
 
   const columnsDossiers = [
     {
-      Header: 'Reference',
+      Header: 'Référence',
       accessor: 'reference',
     },
     {
@@ -41,7 +41,7 @@ const Recherche = () => {
       accessor: 'nom',
     },
     {
-      Header: 'Prenom',
+      Header: 'Prénom',
       accessor: 'prenom',
     },
     {
@@ -53,11 +53,11 @@ const Recherche = () => {
       accessor: 'email',
     },
     {
-      Header: 'Telephone',
+      Header: 'Téléphone',
       accessor: 'telephone',
     },
     {
-      Header: 'Societe',
+      Header: 'Société',
       accessor: 'societe',
     },
     {
@@ -73,7 +73,7 @@ const Recherche = () => {
       accessor: 'juridiction',
     },
     {
-      Header: 'Montant',
+      Header: 'Montant en FCFA',
       accessor: 'montantPrejudice',
     },
     {
