@@ -78,9 +78,16 @@ const MyCalendar = ({ isDashboard }) => {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
+      <style>
+        {`
+          .fc-day {
+            border: none !important;
+          }
+        `}
+      </style>
       <CCard>
         <CCardBody>
-          <div>
+          <div style={{}}>
             {!isLoading && dataEvents ? (
               <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}

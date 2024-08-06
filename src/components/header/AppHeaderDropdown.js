@@ -23,7 +23,9 @@ const AppHeaderDropdown = () => {
   const { disconnect } = useAuth()
   const queryClient = useQueryClient()
   const navigate = useNavigate()
-  const decoded = jwtDecode(localStorage.getItem('token'))
+  // const token = localStorage.getItem('token')
+
+  // const decoded = token ? jwtDecode(token) : null
 
   const handleLogout = () => {
     queryClient.clear()
@@ -38,7 +40,7 @@ const AppHeaderDropdown = () => {
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-body-secondary fw-semibold py-2">Compte</CDropdownHeader>
-        <CDropdownItem href={`/user-display/${decoded.id}`}>
+        <CDropdownItem href="#">
           <CIcon icon={cilUser} className="me-2" />
           Profile
         </CDropdownItem>
