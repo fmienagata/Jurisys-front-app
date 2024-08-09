@@ -47,7 +47,7 @@ const Societes = () => {
 
   const columnsSocietes = [
     {
-      Header: 'Societe',
+      Header: 'Société',
       accessor: 'nomSociete',
     },
     {
@@ -67,7 +67,7 @@ const Societes = () => {
       accessor: 'adresse',
     },
     {
-      Header: 'Telephone',
+      Header: 'Téléphone',
       accessor: 'telephone',
     },
     {

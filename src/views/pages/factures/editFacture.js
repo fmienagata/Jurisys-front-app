@@ -55,7 +55,7 @@ const EditFacture = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Nom de l utilisateur</b>{' '}
+                        <b>Nom de l&apos;utilisateur</b>{' '}
                       </CHeaderText>
                       <CFormInput
                         id="user"
@@ -82,7 +82,7 @@ const EditFacture = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Dossier</b>{' '}
+                        <b>Référence du dossier</b>{' '}
                       </CHeaderText>
                       <CFormInput
                         id="dossier"
@@ -111,7 +111,7 @@ const EditFacture = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Montant</b>{' '}
+                        <b>Montant en FCFA</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="montant"
@@ -143,7 +143,7 @@ const EditFacture = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>statut</b>{' '}
+                        <b>Statut</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="statut"
@@ -151,7 +151,7 @@ const EditFacture = () => {
                         defaultValue={state.data.statut}
                         render={({ field }) => (
                           <CFormSelect id="statut" {...field}>
-                            <option value="Payer">Payer</option>
+                            <option value="Payée">Payée</option>
                             <option value="Envoyée">Envoyée</option>
                             <option value="Annulée">Annulée</option>
                           </CFormSelect>
