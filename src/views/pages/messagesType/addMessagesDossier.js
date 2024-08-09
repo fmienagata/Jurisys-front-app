@@ -92,7 +92,7 @@ const CreateMessagesDossier = () => {
     if (data.text === undefined) {
       data.text = ''
     }
-
+    console.log('Create message', data)
     try {
       const result = await addMessage(data)
       if (files.length > 0) {
@@ -194,7 +194,7 @@ const CreateMessagesDossier = () => {
                   </CCol>
                   {!loadingDossiers && dossiers.length > 0 ? (
                     <CCol>
-                      <CHeaderText> Liste des references </CHeaderText>
+                      <CHeaderText> Liste des références </CHeaderText>
                       <Controller
                         name="dossier"
                         control={control}
@@ -303,7 +303,7 @@ const CreateMessagesDossier = () => {
                             }}
                           >
                             <option value="" key="key">
-                              {' -- Selectionner un messages -- '}
+                              {' -- Sélectionner un message -- '}
                             </option>
                             {!isLoading ? (
                               messagesTypes &&

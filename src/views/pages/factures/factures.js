@@ -61,7 +61,7 @@ const Factures = () => {
       accessor: 'statut',
     },
     {
-      Header: 'Montant',
+      Header: 'Montant en FCFA',
       accessor: 'montant',
     },
     {
