@@ -17,7 +17,6 @@ import { useAuth } from 'src/Context/AuthContext'
 import { useQueryClient } from 'react-query'
 import avatar from './../../assets/images/avatars/avatar2.jpg'
 import labels from 'src/translations/labels.json'
-import { jwtDecode } from 'jwt-decode'
 
 const AppHeaderDropdown = () => {
   const { disconnect } = useAuth()
