@@ -34,21 +34,21 @@ const Users = () => {
       Header: 'Prenom',
       accessor: 'prenom',
     },
-    {
-      Header: 'Username',
-      accessor: 'username',
-    },
+    // {
+    //   Header: 'Username',
+    //   accessor: 'username',
+    // },
     // {
     //   Header: 'UserIdentifier',
     //   accessor: 'userIdentifier',
     // },
+    // {
+    //   Header: 'Societe',
+    //   accessor: 'societe',
+    // },
     {
-      Header: 'Societe',
-      accessor: 'societe',
-    },
-    {
-      Header: 'Email',
-      accessor: 'email',
+      Header: 'Role',
+      accessor: 'userType.label',
     },
     {
       Header: 'Actions',
@@ -112,7 +112,6 @@ const Users = () => {
     const result = filtredValues(initialUsers, filter)
     setUsers(filter === '' ? initialUsers : result)
   }
-
   return (
     <div>
       <Styles>

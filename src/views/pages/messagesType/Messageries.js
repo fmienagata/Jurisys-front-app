@@ -73,7 +73,6 @@ const Messageries = () => {
   }
 
   useEffect(() => {
-    console.log('messagesDossier =>', messagesDossier)
     if (dossiers) {
       //setDataDossiers(dossiers)
       // setClickedDossier(dossiers[0].id)

@@ -30,11 +30,6 @@ import { useAuth } from 'src/Context/AuthContext'
 import dayjs from 'dayjs'
 import 'dayjs/locale/fr'
 
-// import DateTimePicker from 'react-datetime-picker'
-// import 'react-datetime-picker/dist/DateTimePicker.css'
-// import 'react-calendar/dist/Calendar.css'
-// import 'react-clock/dist/Clock.css'
-
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
