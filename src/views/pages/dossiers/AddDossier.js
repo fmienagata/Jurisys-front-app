@@ -15,6 +15,7 @@ import {
   CHeaderText,
   CSpinner,
   CFormCheck,
+  CCardTitle,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
@@ -120,7 +121,7 @@ const AddDossier = () => {
           <CCardBody className="p-4">
             <form onSubmit={handleSubmit(handleAdd)}>
               <CRow className="justify-content-center">
-                <CCol sm="4">
+                <CCol sm="3">
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText>
@@ -198,7 +199,7 @@ const AddDossier = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Telephone</b>{' '}
+                        <b>Téléphone</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="telephone"
@@ -210,8 +211,8 @@ const AddDossier = () => {
                             {...field}
                             id="telephone"
                             type="number"
-                            placeholder="telephone"
-                            autoComplete="telephone"
+                            placeholder="Téléphone"
+                            autoComplete="Téléphone"
                             invalid={Boolean(error)}
                             feedbackInvalid={error?.message}
                           />
@@ -329,7 +330,7 @@ const AddDossier = () => {
                     </div>
                   </CCol>
                 </CCol>
-                <CCol sm="4">
+                <CCol sm="3">
                   {' '}
                   <CInputGroup className="mb-3">
                     <CCol>
@@ -503,9 +504,9 @@ const AddDossier = () => {
                     />
                   </CInputGroup>
                 </CCol>
-                <CCol sm="4" style={{ paddingBottom: '10px' }}>
+                <CCol sm="3" style={{ paddingBottom: '10px' }}>
                   <fieldset className="grey" id="shifter">
-                    <h5 style={{ color: 'purple' }}>Partie adverse</h5>
+                    <CCardTitle style={{ color: 'teal' }}>Partie adverse</CCardTitle>
 
                     <CInputGroup className="mb-3">
                       <CCol>
@@ -525,6 +526,29 @@ const AddDossier = () => {
                               feedbackInvalid={error?.message}
                               id="objet"
                               placeholder="Objet"
+                            />
+                          )}
+                        />
+                      </CCol>
+                    </CInputGroup>
+                    <CInputGroup className="mb-3">
+                      <CCol>
+                        <CHeaderText>
+                          {' '}
+                          <b>Partie adverse</b>{' '}
+                        </CHeaderText>
+                        <Controller
+                          name="partieAdverse"
+                          defaultValue=""
+                          control={control}
+                          rules={{ required: 'Ce champs est requis' }}
+                          render={({ field, fieldState: { error } }) => (
+                            <CFormInput
+                              {...field}
+                              invalid={Boolean(error)}
+                              feedbackInvalid={error?.message}
+                              id="partieAdverse"
+                              placeholder="Partie adverse"
                             />
                           )}
                         />
@@ -675,7 +699,7 @@ const AddDossier = () => {
                       <CCol>
                         <CHeaderText>
                           {' '}
-                          <b>Telephone</b>{' '}
+                          <b>Téléphone</b>{' '}
                         </CHeaderText>
 
                         <Controller
@@ -687,7 +711,182 @@ const AddDossier = () => {
                             <CFormInput
                               {...field}
                               id="partieAdverseTelephone"
-                              placeholder="Telephone"
+                              placeholder="Téléphone"
+                              invalid={Boolean(error)}
+                              feedbackInvalid={error?.message}
+                            />
+                          )}
+                        />
+                      </CCol>
+                    </CInputGroup>
+                  </fieldset>
+                </CCol>
+
+                <CCol sm="3" style={{ paddingBottom: '10px' }}>
+                  <fieldset className="blue-info" id="shifter">
+                    <h5 style={{ color: 'teal' }}>Partie adverse conseil</h5>
+
+                    <CInputGroup className="mb-3">
+                      <CCol>
+                        <CHeaderText>
+                          {' '}
+                          <b>Nom</b>{' '}
+                        </CHeaderText>
+                        <Controller
+                          name="conseilPartieAdverseNom"
+                          defaultValue=""
+                          control={control}
+                          rules={{ required: 'Ce champs est requis' }}
+                          render={({ field, fieldState: { error } }) => (
+                            <CFormInput
+                              {...field}
+                              invalid={Boolean(error)}
+                              feedbackInvalid={error?.message}
+                              id="conseilPartieAdverseNom"
+                              placeholder="Nom"
+                            />
+                          )}
+                        />
+                      </CCol>
+                    </CInputGroup>
+                    <CInputGroup className="mb-3">
+                      <CCol>
+                        <CHeaderText>
+                          {' '}
+                          <b>Prénom</b>{' '}
+                        </CHeaderText>
+                        <Controller
+                          name="conseilPartieAdversePrenom"
+                          control={control}
+                          defaultValue=""
+                          rules={{ required: 'Ce champs est requis' }}
+                          render={({ field, fieldState: { error } }) => (
+                            <CFormInput
+                              {...field}
+                              id="conseilPartieAdversePrenom"
+                              placeholder="Prénom"
+                              invalid={Boolean(error)}
+                              feedbackInvalid={error?.message}
+                            />
+                          )}
+                        />{' '}
+                      </CCol>
+                    </CInputGroup>
+                    <CCol className="mb-3">
+                      <CCol>
+                        <CHeaderText>
+                          {' '}
+                          <b>E-mail</b>{' '}
+                        </CHeaderText>
+                        <CInputGroup className="mb-3">
+                          <CInputGroupText>@</CInputGroupText>
+                          <Controller
+                            name="conseilPartieAdverseEmail"
+                            control={control}
+                            defaultValue=""
+                            rules={{ required: 'Ce champs est requis' }}
+                            render={({ field, fieldState: { error } }) => (
+                              <CFormInput
+                                {...field}
+                                id="conseilPartieAdverseEmail"
+                                type="email"
+                                placeholder="E-mail"
+                                invalid={Boolean(error)}
+                                feedbackInvalid={error?.message}
+                              />
+                            )}
+                          />
+                        </CInputGroup>
+                      </CCol>
+                    </CCol>
+
+                    <CInputGroup className="mb-3">
+                      <CCol>
+                        <CHeaderText>
+                          {' '}
+                          <b>Adresse</b>{' '}
+                        </CHeaderText>
+
+                        <Controller
+                          name="conseilPartieAdverseAdresse"
+                          defaultValue=""
+                          control={control}
+                          rules={{ required: 'Ce champs est requis' }}
+                          render={({ field, fieldState: { error } }) => (
+                            <CFormInput
+                              {...field}
+                              id="conseilPartieAdverseAdresse"
+                              placeholder="Adresse"
+                              invalid={Boolean(error)}
+                              feedbackInvalid={error?.message}
+                            />
+                          )}
+                        />
+                      </CCol>
+                    </CInputGroup>
+                    <CInputGroup className="mb-3">
+                      <CCol>
+                        <CHeaderText>
+                          {' '}
+                          <b>Ville</b>{' '}
+                        </CHeaderText>
+                        <Controller
+                          name="conseilPartieAdverseVille"
+                          control={control}
+                          defaultValue=""
+                          rules={{ required: 'Ce champs est requis' }}
+                          render={({ field, fieldState: { error } }) => (
+                            <CFormInput
+                              {...field}
+                              id="conseilPartieAdverseVille"
+                              placeholder="Ville"
+                              invalid={Boolean(error)}
+                              feedbackInvalid={error?.message}
+                            />
+                          )}
+                        />
+                      </CCol>
+                    </CInputGroup>
+                    <CInputGroup className="mb-3">
+                      <CCol>
+                        <CHeaderText>
+                          {' '}
+                          <b>Pays</b>{' '}
+                        </CHeaderText>
+                        <Controller
+                          name="conseilPartieAdversePays"
+                          control={control}
+                          defaultValue=""
+                          rules={{ required: 'Ce champs est requis' }}
+                          render={({ field, fieldState: { error } }) => (
+                            <CFormInput
+                              {...field}
+                              id="conseilPartieAdversePays"
+                              placeholder="Pays"
+                              invalid={Boolean(error)}
+                              feedbackInvalid={error?.message}
+                            />
+                          )}
+                        />{' '}
+                      </CCol>
+                    </CInputGroup>
+                    <CInputGroup className="mb-3">
+                      <CCol>
+                        <CHeaderText>
+                          {' '}
+                          <b>Téléphone</b>{' '}
+                        </CHeaderText>
+
+                        <Controller
+                          name="conseilPartieAdverseTelephone"
+                          control={control}
+                          defaultValue=""
+                          rules={{ required: 'Ce champs est requis' }}
+                          render={({ field, fieldState: { error } }) => (
+                            <CFormInput
+                              {...field}
+                              id="conseilPartieAdverseTelephone"
+                              placeholder="Téléphone"
                               invalid={Boolean(error)}
                               feedbackInvalid={error?.message}
                             />

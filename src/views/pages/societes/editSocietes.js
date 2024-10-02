@@ -12,6 +12,7 @@ import {
   CHeaderText,
   CRow,
   CInputGroupText,
+  CFormSelect,
 } from '@coreui/react'
 import { useNavigate, useLocation } from 'react-router-dom'
 
@@ -76,12 +77,30 @@ const EditSociete = () => {
                         {' '}
                         <b>Type</b>{' '}
                       </CHeaderText>
-                      <Controller
+                      {/* <Controller
                         name="type"
                         control={control}
                         defaultValue={state.data.type ? state.data.type : 'type'}
                         render={({ field }) => (
                           <CFormInput {...field} id="type" placeholder={`type`} />
+                        )}
+                      /> */}
+                      <Controller
+                        name="type"
+                        control={control}
+                        defaultValue={state.data.type}
+                        render={({ field, fieldState: { error } }) => (
+                          <CFormSelect
+                            id="floatingSelect"
+                            {...field}
+                            aria-label="Small select example"
+                            floatingClassName="pt-2"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
+                          >
+                            <option value="Société">Société</option>
+                            <option value="Particulier">Particulier</option>
+                          </CFormSelect>
                         )}
                       />
                     </CCol>
@@ -90,8 +109,7 @@ const EditSociete = () => {
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText>
-                        {' '}
-                        <b>Pays</b>{' '}
+                        <b>Pays</b>
                       </CHeaderText>
                       <Controller
                         name="pays"

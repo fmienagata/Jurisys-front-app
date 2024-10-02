@@ -67,10 +67,10 @@ const Dossiers = () => {
       Header: 'Société',
       accessor: 'societe',
     },
-    {
-      Header: 'Adresse',
-      accessor: 'adresse',
-    },
+    // {
+    //   Header: 'Adresse',
+    //   accessor: 'adresse',
+    // },
     // {
     //   Header: 'Email',
     //   accessor: 'email',
@@ -94,14 +94,13 @@ const Dossiers = () => {
       accessor: 'objet',
     },
     {
-      Header: 'Partie adverse Nom',
+      Header: 'Partie adverse Nom Prénom',
       accessor: 'partieAdverseNom',
     },
     {
       Header: 'Partie adverse Prénom',
       accessor: 'partieAdversePrenom',
     },
-
     {
       Header: 'Juridiction',
       accessor: 'juridiction',

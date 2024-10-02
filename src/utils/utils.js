@@ -61,6 +61,14 @@ const selectedKeys = [
   'partieAdverseTelephone',
   'statut',
   'montantPrejudice',
+  'partieAdverse',
+  'conseilPartieAdverseEmail',
+  'conseilPartieAdverseNom',
+  'conseilPartieAdversePrenom',
+  'conseilPartieAdverseAdresse',
+  'conseilPartieAdverseVille',
+  'conseilPartieAdversePays',
+  'conseilPartieAdverseTelephone',
 ]
 
 function dossierStatusChange(frm) {
@@ -91,10 +99,11 @@ function prepareDataUpdate(frm) {
 }
 
 function filterMessages(messages, role) {
+  console.log('messages --> ', messages)
   return messages.filter((message) => {
     return role === 'avocat'
-      ? message.user.roles.includes('ROLE_AVOCAT')
-      : !message.user.roles.includes('ROLE_AVOCAT')
+      ? message.user.userType.roles.includes('ROLE_AVOCAT')
+      : !message.user.userType.roles.includes('ROLE_AVOCAT')
   })
 }
 

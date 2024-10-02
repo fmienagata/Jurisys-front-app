@@ -15,9 +15,17 @@ import { capitalizeFirstLetter, formatFrenchDate, formatNumberWithPoints } from 
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
 
-const InformationCard = ({ dataDossier, setListPJ, setOpenModalPJ, setTitleModal }) => {
+const InformationCard = ({
+  dataDossier,
+  setListPJ,
+  setOpenModalPJ,
+  setTitleModal,
+  isPartieAdverse,
+}) => {
   const { id, dossierFiles, messages, ...dataInfos } = dataDossier
   const [lengthLimit, setLengthLimit] = useState(8)
+
+  const titleInformation = isPartieAdverse ? 'Information dossier' : 'Information partie adverse'
 
   const dataEntries = Object.entries(dataInfos)
   const slicedData = Object.fromEntries(dataEntries.slice(0, lengthLimit))
@@ -37,32 +45,59 @@ const InformationCard = ({ dataDossier, setListPJ, setOpenModalPJ, setTitleModal
       case 'typeProcedure':
         result = 'Type de procédure'
         break
+      case 'telephone':
+        result = 'Téléphone'
+        break
       case 'montantPrejudice':
         result = 'Montant de prejudice'
         break
       case 'partieAdverseNom':
-        result = 'Adverse nom'
+        result = 'Nom'
+        break
+      case 'partieAdverse':
+        result = 'Partie adverse'
         break
       case 'partieAdversePrenom':
-        result = 'Partie adverse prenom'
+        result = 'prenom'
         break
       case 'partieAdverseEmail':
-        result = 'Partie adverse Email'
+        result = 'Email'
         break
       case 'partieAdverseAdresse':
-        result = 'Partie adverse adresse'
+        result = 'adresse'
         break
       case 'partieAdverseVille':
-        result = 'Partie adverse ville'
+        result = 'ville'
         break
       case 'partieAdversePays':
-        result = 'Partie adverse pays'
+        result = 'pays'
         break
       case 'partieAdverseTelephone':
-        result = 'Partie adverse telephone'
+        result = 'Téléphone'
         break
       case 'prenom':
         result = 'Prénom'
+        break
+      case 'conseilPartieAdverseNom':
+        result = 'Nom de conseil'
+        break
+      case 'conseilPartieAdversePrenom':
+        result = 'Prénom de conseil'
+        break
+      case 'conseilPartieAdverseTelephone':
+        result = 'Téléphone conseil'
+        break
+      case 'conseilPartieAdverseEmail':
+        result = 'E-Mail de conseil'
+        break
+      case 'conseilPartieAdverseAdresse':
+        result = 'Adresse de conseil'
+        break
+      case 'conseilPartieAdverseVille':
+        result = 'Ville de conseil'
+        break
+      case 'conseilPartieAdversePays':
+        result = 'Pays de conseil'
         break
       default:
         result = key
@@ -106,18 +141,20 @@ const InformationCard = ({ dataDossier, setListPJ, setOpenModalPJ, setTitleModal
     )
   }
 
+  console.log('dataDossier  --> ', dataDossier)
+
   return (
-    <CCard>
+    <CCard className="mb-4">
       <CCardHeader className="text-center">
         <CRow>
           <CCol className="text-start" xs={6}>
             <CCardTitle>
-              <small>Information</small>
+              <small>{titleInformation}</small>
             </CCardTitle>
           </CCol>
           {/* <CCol className="text-center" xs={3}></CCol> */}
           <CCol className="text-end" xs={6}>
-            {dossierFiles.length > 0 && (
+            {dossierFiles && dossierFiles.length > 0 && (
               <CButton
                 color="success"
                 variant="ghost"
@@ -157,6 +194,7 @@ InformationCard.propTypes = {
   setListPJ: PropTypes.string,
   setOpenModalPJ: PropTypes.string,
   setTitleModal: PropTypes.string,
+  isPartieAdverse: PropTypes.bool,
   dataDossier: PropTypes.shape({
     id: PropTypes.string,
     dossierFiles: PropTypes.array,

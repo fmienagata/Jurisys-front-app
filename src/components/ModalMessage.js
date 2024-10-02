@@ -10,14 +10,22 @@ import {
   CListGroupItem,
   CListGroup,
   CRow,
+  CCardTitle,
 } from '@coreui/react'
 import PropTypes from 'prop-types'
 import { capitalizeFirstLetter, formatFrenchDate } from 'src/utils/utils'
+import CIcon from '@coreui/icons-react'
+import * as icon from '@coreui/icons'
+import { getFileDossier } from 'src/services/dossiersService'
+import { useMessageContext } from 'src/Context/MessageContext'
 
 const ModalMessage = (props) => {
   // eslint-disable-next-line react/prop-types
   const { openModal, setOpenModal, action, dataMessage } = props
   const { id, messageFiles, ...newData } = dataMessage
+  const { displaySuccess, displayError } = useMessageContext()
+
+  console.log('dataMessage --> ', dataMessage)
 
   function getKeyName(key) {
     let result = ''
@@ -57,6 +65,20 @@ const ModalMessage = (props) => {
     }
     return capitalizeFirstLetter(result)
   }
+
+  const downloadFile = async (file) => {
+    try {
+      const blobData = await getFileDossier(file)
+      const url = window.URL.createObjectURL(blobData)
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', `${file}`)
+      document.body.appendChild(link)
+      link.click()
+    } catch (error) {
+      displayError(error.messages, 'Une erreur est survenue lors de téléchargement du fichier')
+    }
+  }
   return (
     <>
       <CModal
@@ -87,91 +109,37 @@ const ModalMessage = (props) => {
                 </CListGroupItem>
               ))}
           </CListGroup>
-
-          {/* {dataMessage && (
+          {dataMessage.messageFiles.length > 0 && (
             <CListGroup flush>
-              <CListGroupItem key={'type'}>
-                <CRow className="align-items-center">
-                  <CCol className="text-start" xs={6}>
-                    Type
-                  </CCol>
-                  <CCol className="text-start" xs={6}>
-                    <b>
-                      {dataMessage.type === null ? '---' : capitalizeFirstLetter(dataMessage.type)}
-                    </b>
-                  </CCol>
-                </CRow>
-              </CListGroupItem>
-              <CListGroupItem key={'text'}>
-                <CRow className="align-items-center">
-                  <CCol className="text-start" xs={6}>
-                    Text
-                  </CCol>
-                  <CCol className="text-start" xs={6}>
-                    <b>
-                      {dataMessage.text === null ? '---' : capitalizeFirstLetter(dataMessage.text)}
-                    </b>
-                  </CCol>
-                </CRow>
-              </CListGroupItem>
-              <CListGroupItem key={'audience'}>
-                <CRow className="align-items-center">
-                  <CCol className="text-start" xs={6}>
-                    Date audience
-                  </CCol>
-                  <CCol className="text-start" xs={6}>
-                    <b>
-                      {dataMessage.dateAudience === null
-                        ? '---'
-                        : capitalizeFirstLetter(dataMessage.dateAudience)}
-                    </b>
-                  </CCol>
-                </CRow>
-              </CListGroupItem>
-              <CListGroupItem key={'dossier'}>
-                <CRow className="align-items-center">
-                  <CCol className="text-start" xs={6}>
-                    Dossier
-                  </CCol>
-                  <CCol className="text-start" xs={6}>
-                    <b>
-                      {dataMessage.dossier === null
-                        ? '---'
-                        : capitalizeFirstLetter(dataMessage.dossier)}
-                    </b>
-                  </CCol>
-                </CRow>
-              </CListGroupItem>
-              <CListGroupItem key={'createdAt'}>
-                <CRow className="align-items-center">
-                  <CCol className="text-start" xs={6}>
-                    Créé le
-                  </CCol>
-                  <CCol className="text-start" xs={6}>
-                    <b>
-                      {dataMessage.createdAt === null
-                        ? '---'
-                        : capitalizeFirstLetter(dataMessage.createdAt)}
-                    </b>
-                  </CCol>
-                </CRow>
-              </CListGroupItem>
-              <CListGroupItem key={'jour'}>
-                <CRow className="align-items-center">
-                  <CCol className="text-start" xs={6}>
-                    Mis à jour
-                  </CCol>
-                  <CCol className="text-start" xs={6}>
-                    <b>
-                      {dataMessage.updatedAt === null
-                        ? '---'
-                        : capitalizeFirstLetter(dataMessage.updatedAt)}
-                    </b>
-                  </CCol>
-                </CRow>
-              </CListGroupItem>
+              <CCardTitle className="mt-4 teal " style={{ color: 'teal' }}>
+                Liste des piéces jointes:
+              </CCardTitle>
+              {dataMessage &&
+                // eslint-disable-next-line react/prop-types
+                dataMessage.messageFiles.map((value, key) => (
+                  <CListGroupItem key={key}>
+                    <CRow className="align-items-center">
+                      <CCol className="text-start" xs={1}>
+                        {key + 1}
+                      </CCol>
+                      <CCol className="text-start " xs={8}>
+                        <b className="fw-semibold">{value === null ? '---' : value.fileName}</b>
+                      </CCol>
+                      <CCol className="text-start" xs={3}>
+                        <CButton
+                          color="dark"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => downloadFile(value.fileName)}
+                        >
+                          <CIcon icon={icon.cilCloudDownload} size="sm" /> Télécharger
+                        </CButton>
+                      </CCol>
+                    </CRow>
+                  </CListGroupItem>
+                ))}
             </CListGroup>
-          )} */}
+          )}
         </CModalBody>
         <CModalFooter>
           <CButton color="secondary" onClick={() => setOpenModal(false)}>

@@ -10,6 +10,7 @@ import {
   CFormInput,
   CInputGroup,
   CInputGroupText,
+  CFormSelect,
   CHeaderText,
   CRow,
 } from '@coreui/react'
@@ -80,6 +81,24 @@ const AddSociete = () => {
                       <Controller
                         name="type"
                         control={control}
+                        defaultValue=""
+                        render={({ field, fieldState: { error } }) => (
+                          <CFormSelect
+                            id="floatingSelect"
+                            {...field}
+                            aria-label="Small select example"
+                            floatingClassName="pt-2"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
+                          >
+                            <option value="Société">Société</option>
+                            <option value="Particulier">Particulier</option>
+                          </CFormSelect>
+                        )}
+                      />
+                      {/* <Controller
+                        name="type"
+                        control={control}
                         rules={{ required: 'Ce champs est requis' }}
                         defaultValue=""
                         render={({ field, fieldState: { error } }) => (
@@ -92,7 +111,7 @@ const AddSociete = () => {
                             autoComplete="type"
                           />
                         )}
-                      />
+                      /> */}
                     </CCol>
                   </CInputGroup>
                   <CInputGroup className="mb-3">
