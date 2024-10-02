@@ -118,7 +118,7 @@ const EditDossier = () => {
                           <CFormInput
                             {...field}
                             id="prenom"
-                            placeholder="prenom"
+                            placeholder="prénom"
                             autoComplete="prenom"
                             invalid={Boolean(error)}
                             feedbackInvalid={error?.message}
@@ -157,7 +157,7 @@ const EditDossier = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Telephone</b>{' '}
+                        <b>Téléphone</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="telephone"
@@ -169,7 +169,7 @@ const EditDossier = () => {
                             {...field}
                             id="telephone"
                             type="number"
-                            placeholder="telephone"
+                            placeholder="téléphone"
                             autoComplete="telephone"
                             invalid={Boolean(error)}
                             feedbackInvalid={error?.message}
@@ -294,7 +294,7 @@ const EditDossier = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Reference</b>{' '}
+                        <b>Référence</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="reference"
@@ -305,7 +305,7 @@ const EditDossier = () => {
                           <CFormInput
                             {...field}
                             id="reference"
-                            placeholder="reference"
+                            placeholder="référence"
                             autoComplete="reference"
                             invalid={Boolean(error)}
                             feedbackInvalid={error?.message}
@@ -318,7 +318,7 @@ const EditDossier = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Type procedure</b>{' '}
+                        <b>Type de procédure</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="typeProcedure"
@@ -326,7 +326,7 @@ const EditDossier = () => {
                         defaultValue={state.data.typeProcedure}
                         render={({ field, fieldState: { error } }) => (
                           <CFormSelect id="typeProcedure" {...field}>
-                            <option value="">-- Selectionner un type de dossier --</option>
+                            <option value="">-- Sélectionner un type de dossier --</option>
                             <option value="Conciliation">Conciliation</option>
                             <option value="Référé">Référé</option>
                             <option value="Au pied de requête">Au pied de requête</option>
@@ -356,7 +356,7 @@ const EditDossier = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Montant prejudice</b>{' '}
+                        <b>Montant préjudice</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="montantPrejudice"
@@ -368,7 +368,7 @@ const EditDossier = () => {
                             {...field}
                             type="number"
                             id="montantPrejudice"
-                            placeholder="montant Prejudice"
+                            placeholder="montant Préjudice"
                             autoComplete="montant Prejudice"
                             invalid={Boolean(error)}
                             feedbackInvalid={error?.message}
@@ -553,7 +553,7 @@ const EditDossier = () => {
                             <CFormInput
                               {...field}
                               id="partieAdversePrenom"
-                              placeholder="Partie adverse prenom"
+                              placeholder="Partie adverse prénom"
                               invalid={Boolean(error)}
                               feedbackInvalid={error?.message}
                             />
@@ -659,7 +659,7 @@ const EditDossier = () => {
                       <CCol>
                         <CHeaderText>
                           {' '}
-                          <b>Telephone</b>{' '}
+                          <b>Téléphone</b>{' '}
                         </CHeaderText>
 
                         <Controller
@@ -671,7 +671,7 @@ const EditDossier = () => {
                             <CFormInput
                               {...field}
                               id="partieAdverseTelephone"
-                              placeholder="Partie adverse telephone"
+                              placeholder="Partie adverse téléphone"
                               invalid={Boolean(error)}
                               feedbackInvalid={error?.message}
                             />

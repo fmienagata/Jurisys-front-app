@@ -75,7 +75,7 @@ const EditSociete = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Type</b>{' '}
+                        <b>Type d&apos;entreprise</b>{' '}
                       </CHeaderText>
                       {/* <Controller
                         name="type"
@@ -125,7 +125,7 @@ const EditSociete = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>ville</b>{' '}
+                        <b>Ville</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="ville"

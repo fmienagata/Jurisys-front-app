@@ -31,9 +31,13 @@ const Users = () => {
       accessor: 'nom',
     },
     {
-      Header: 'Prenom',
+      Header: 'Prénom',
       accessor: 'prenom',
     },
+    // {
+    //   Header: 'Username',
+    //   accessor: 'username',
+    // },
     // {
     //   Header: 'Username',
     //   accessor: 'username',

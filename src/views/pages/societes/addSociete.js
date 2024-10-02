@@ -76,7 +76,7 @@ const AddSociete = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Type entreprise</b>{' '}
+                        <b>Type d&apos;entreprise</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="type"

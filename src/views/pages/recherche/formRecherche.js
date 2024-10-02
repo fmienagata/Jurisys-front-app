@@ -35,6 +35,7 @@ const FormRecherche = ({ setDossiers, setIsActif }) => {
     let criteria = removeEmptyAttributes(data)
     try {
       const dossiersData = await getRechercheDossiers(criteria)
+      console.log(dossiersData)
       setDossiers(dossiersData)
       setIsActif(Boolean(data.statut == 1))
       setLoading(false)
@@ -62,18 +63,18 @@ const FormRecherche = ({ setDossiers, setIsActif }) => {
                         <CCol className="text-end" xs={4}>
                           <CInputGroup>
                             <Controller
-                              name="typeDossier"
+                              name="typeProcedure"
                               control={control}
                               defaultValue=""
                               render={({ field }) => (
                                 <CFormSelect
                                   id="floatingSelect"
                                   {...field}
-                                  floatingLabel="Type de dossier"
+                                  floatingLabel="Type de procédure"
                                   aria-label="Small select example"
                                   floatingClassName="pt-2"
                                 >
-                                  <option value="">-- Selectionner un type de dossier --</option>
+                                  <option value="">-- Sélectionner un type de procédure --</option>
                                   <option value="Conciliation">Conciliation</option>
                                   <option value="Référé">Référé</option>
                                   <option value="Au pied de requête">Au pied de requête</option>
@@ -93,8 +94,8 @@ const FormRecherche = ({ setDossiers, setIsActif }) => {
                                 <CFormInput
                                   {...field}
                                   id="reference"
-                                  placeholder="Reference"
-                                  floatingLabel="Reference du dossier"
+                                  placeholder="Référence"
+                                  floatingLabel="Référence du dossier"
                                   floatingClassName="pt-2"
                                   aria-label="example sm input example"
                                 />
@@ -106,13 +107,13 @@ const FormRecherche = ({ setDossiers, setIsActif }) => {
                         <CCol className="text-start" xs={4}>
                           <CInputGroup>
                             <Controller
-                              name="nom"
+                              name="partieAdverseNom"
                               control={control}
                               defaultValue=""
                               render={({ field }) => (
                                 <CFormInput
                                   {...field}
-                                  id="nom"
+                                  id="partieAdverseNom"
                                   floatingClassName="pt-2"
                                   aria-label="example sm input example"
                                   size="sm"
