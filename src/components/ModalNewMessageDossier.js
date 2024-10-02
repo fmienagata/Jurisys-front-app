@@ -45,8 +45,7 @@ const ModalNewMessageDossier = (props) => {
 
   // eslint-disable-next-line react/prop-types
   const { displaySuccess, displayError } = useMessageContext()
-  const { disconnect } = useAuth()
-  const queryClient = useQueryClient()
+  const [loading, setLoading] = useState(false)
   const fileInputRef2 = useRef(null)
 
   const { control, handleSubmit, setValue, reset } = useForm()
@@ -91,10 +90,13 @@ const ModalNewMessageDossier = (props) => {
       setFiles([])
     } catch (error) {
       console.error("Une erreur s'est produite lors de l'envoi des fichiers:", error)
+    } finally {
+      setLoading(false) // Arrêter le spinner après l'attente
     }
   }
 
   const handleCreateMessage = async (data) => {
+    setLoading(true)
     if (data.dateAudience === undefined) {
       data.dateAudience = new Date().toISOString()
     } else {
@@ -119,6 +121,9 @@ const ModalNewMessageDossier = (props) => {
       reset()
     } catch (error) {
       displayError(error.messages)
+    } finally {
+      setOpenModal(false)
+      setLoading(false) // Arrêter le spinner après l'attente
     }
   }
 
@@ -154,174 +159,178 @@ const ModalNewMessageDossier = (props) => {
             </CCol>
           </CRow>
 
-          <CForm onSubmit={handleSubmit(handleCreateMessage)}>
-            <CRow className="justify-content-center ">
-              <CCol sm="5">
-                <CCol className="mb-2">
-                  <CHeaderText> Titre du message </CHeaderText>
-                  <Controller
-                    name="titre"
-                    defaultValue=""
-                    rules={{ required: 'Ce champs est requis' }}
-                    control={control}
-                    render={({ field, fieldState: { error } }) => (
-                      <CFormInput
-                        {...field}
-                        id="titre"
-                        placeholder="Titre du message"
-                        invalid={Boolean(error)}
-                        feedbackInvalid={error?.message}
-                      />
-                    )}
-                  />
-                </CCol>
-                <CCol className="mb-2">
-                  <CHeaderText> Type du message </CHeaderText>
-                  <Controller
-                    name="typeMessage"
-                    defaultValue=""
-                    rules={{ required: 'Ce champs est requis' }}
-                    control={control}
-                    render={({ field, fieldState: { error } }) => (
-                      <CFormInput
-                        {...field}
-                        id="typeMessage"
-                        placeholder="Type du message"
-                        invalid={Boolean(error)}
-                        feedbackInvalid={error?.message}
-                      />
-                    )}
-                  />
-                </CCol>
+          {loading && <CSpinner color="danger" variant="grow" />}
 
-                <CCol>
-                  <CInputGroup className="mb-4"></CInputGroup>
-                  <CHeaderText>{"Sélectionner une date et l'heure de l'audience"}</CHeaderText>
-                  <CInputGroup className="mb-2"></CInputGroup>
-                  <Controller
-                    name="dateAudience"
-                    control={control}
-                    // defaultValue={defaultDate}
-                    render={({ field, fieldState: { error } }) => (
-                      <LocalizationProvider dateAdapter={AdapterDayjs} size="small">
-                        <DateTimePicker
-                          size="small"
-                          format="DD/MM/YYYY HH:mm"
-                          renderInput={(props) => <TextField size="small" {...props} />}
-                          placeholder="Sélectionner une date et une heure"
-                          {...field}
-                        />
-                      </LocalizationProvider>
-                    )}
-                  />
-
-                  <CRow>
-                    <div>
-                      <CInputGroup className="mb-2"></CInputGroup>
-                      <h6>Importer des fichiers</h6>
-
-                      <CFormInput
-                        type="file"
-                        ref={fileInputRef2}
-                        onChange={handleFileChange}
-                        multiple
-                      />
-
-                      <span>
-                        {files.length} fichier{files.length !== 1 ? 's' : ''} sélectionné
-                        {files.length !== 1 ? 's' : ''}
-                      </span>
-
-                      <div>
-                        <ul>
-                          {files.map((file, index) => (
-                            <li key={index}>
-                              {file.name} -{' '}
-                              <CButton
-                                onClick={(e) => handleRemoveFile(index, e)}
-                                variant="outline"
-                                color="danger"
-                                size="sm"
-                              >
-                                <CIcon icon={icon.cilTrash} size="sm" /> Supprimer
-                              </CButton>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </CRow>
-                </CCol>
-              </CCol>
-              <CCol sm="5">
-                <CInputGroup className="mb-3">
-                  <CCol>
-                    <CHeaderText> Liste des messages types </CHeaderText>
+          {!loading && (
+            <CForm onSubmit={handleSubmit(handleCreateMessage)}>
+              <CRow className="justify-content-center ">
+                <CCol sm="5">
+                  <CCol className="mb-2">
+                    <CHeaderText> Titre du message </CHeaderText>
                     <Controller
-                      name="type"
-                      control={control}
+                      name="titre"
                       defaultValue=""
-                      render={({ field }) => (
-                        <CFormSelect
-                          id="type"
-                          {...field}
-                          onChange={(e) => {
-                            field.onChange(e)
-                            setSelectedMessageType(e.target.value)
-                            setValue('text', e.target.value)
-                          }}
-                        >
-                          <option value="" key="key">
-                            {' -- Selectionner un messages -- '}
-                          </option>
-                          {!isLoading ? (
-                            messagesTypes &&
-                            messagesTypes.data.map((item, key) => (
-                              <option value={item.text} key={key} id={key}>
-                                {item.type}
-                              </option>
-                            ))
-                          ) : (
-                            <CSpinner color="primary" variant="grow" />
-                          )}
-                        </CFormSelect>
-                      )}
-                    />
-                  </CCol>
-                </CInputGroup>
-                <CInputGroup className="mb-3">
-                  <CCol>
-                    <CHeaderText> Message </CHeaderText>
-                    <Controller
-                      name="text"
+                      rules={{ required: 'Ce champs est requis' }}
                       control={control}
-                      render={({ field }) => (
-                        <CFormTextarea
+                      render={({ field, fieldState: { error } }) => (
+                        <CFormInput
                           {...field}
-                          id="text"
-                          defaultValue={''}
-                          value={selectedMessageType !== 'undefined' ? selectedMessageType : ''}
-                          onChange={(e) => {
-                            field.onChange(e)
-                            setSelectedMessageType(e.target.value)
-                          }}
-                          placeholder="Contenu du message à renseigner"
-                          autoComplete="text"
-                          rows={8}
-                        ></CFormTextarea>
+                          id="titre"
+                          placeholder="Titre du message"
+                          invalid={Boolean(error)}
+                          feedbackInvalid={error?.message}
+                        />
                       )}
                     />
                   </CCol>
-                </CInputGroup>
+                  <CCol className="mb-2">
+                    <CHeaderText> Type du message </CHeaderText>
+                    <Controller
+                      name="typeMessage"
+                      defaultValue=""
+                      rules={{ required: 'Ce champs est requis' }}
+                      control={control}
+                      render={({ field, fieldState: { error } }) => (
+                        <CFormInput
+                          {...field}
+                          id="typeMessage"
+                          placeholder="Type du message"
+                          invalid={Boolean(error)}
+                          feedbackInvalid={error?.message}
+                        />
+                      )}
+                    />
+                  </CCol>
 
-                <div className="d-grid">
-                  <CButton type="submit" color="success">
-                    Ajouter
-                  </CButton>
-                </div>
-              </CCol>
-            </CRow>
-          </CForm>
+                  <CCol>
+                    <CInputGroup className="mb-4"></CInputGroup>
+                    <CHeaderText>{"Sélectionner une date et l'heure de l'audience"}</CHeaderText>
+                    <CInputGroup className="mb-2"></CInputGroup>
+                    <Controller
+                      name="dateAudience"
+                      control={control}
+                      // defaultValue={defaultDate}
+                      render={({ field, fieldState: { error } }) => (
+                        <LocalizationProvider dateAdapter={AdapterDayjs} size="small">
+                          <DateTimePicker
+                            size="small"
+                            format="DD/MM/YYYY HH:mm"
+                            renderInput={(props) => <TextField size="small" {...props} />}
+                            placeholder="Sélectionner une date et une heure"
+                            {...field}
+                          />
+                        </LocalizationProvider>
+                      )}
+                    />
+
+                    <CRow>
+                      <div>
+                        <CInputGroup className="mb-2"></CInputGroup>
+                        <h6>Importer des fichiers</h6>
+
+                        <CFormInput
+                          type="file"
+                          ref={fileInputRef2}
+                          onChange={handleFileChange}
+                          multiple
+                        />
+
+                        <span>
+                          {files.length} fichier{files.length !== 1 ? 's' : ''} sélectionné
+                          {files.length !== 1 ? 's' : ''}
+                        </span>
+
+                        <div>
+                          <ul>
+                            {files.map((file, index) => (
+                              <li key={index}>
+                                {file.name} -{' '}
+                                <CButton
+                                  onClick={(e) => handleRemoveFile(index, e)}
+                                  variant="outline"
+                                  color="danger"
+                                  size="sm"
+                                >
+                                  <CIcon icon={icon.cilTrash} size="sm" /> Supprimer
+                                </CButton>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </CRow>
+                  </CCol>
+                </CCol>
+                <CCol sm="5">
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText> Liste des messages types </CHeaderText>
+                      <Controller
+                        name="type"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <CFormSelect
+                            id="type"
+                            {...field}
+                            onChange={(e) => {
+                              field.onChange(e)
+                              setSelectedMessageType(e.target.value)
+                              setValue('text', e.target.value)
+                            }}
+                          >
+                            <option value="" key="key">
+                              {' -- Selectionner un messages -- '}
+                            </option>
+                            {!isLoading ? (
+                              messagesTypes &&
+                              messagesTypes.data.map((item, key) => (
+                                <option value={item.text} key={key} id={key}>
+                                  {item.type}
+                                </option>
+                              ))
+                            ) : (
+                              <CSpinner color="primary" variant="grow" />
+                            )}
+                          </CFormSelect>
+                        )}
+                      />
+                    </CCol>
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText> Message </CHeaderText>
+                      <Controller
+                        name="text"
+                        control={control}
+                        render={({ field }) => (
+                          <CFormTextarea
+                            {...field}
+                            id="text"
+                            defaultValue={''}
+                            value={selectedMessageType !== 'undefined' ? selectedMessageType : ''}
+                            onChange={(e) => {
+                              field.onChange(e)
+                              setSelectedMessageType(e.target.value)
+                            }}
+                            placeholder="Contenu du message à renseigner"
+                            autoComplete="text"
+                            rows={8}
+                          ></CFormTextarea>
+                        )}
+                      />
+                    </CCol>
+                  </CInputGroup>
+
+                  <div className="d-grid">
+                    <CButton type="submit" color="success" disabled={loading}>
+                      Ajouter
+                    </CButton>
+                  </div>
+                </CCol>
+              </CRow>
+            </CForm>
+          )}
         </CModalBody>
         {/* <CModalFooter>
           <CButton color="secondary" onClick={() => setOpenModal(false)}>
