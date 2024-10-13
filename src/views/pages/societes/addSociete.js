@@ -81,7 +81,7 @@ const AddSociete = () => {
                       <Controller
                         name="type"
                         control={control}
-                        defaultValue=""
+                        defaultValue="Société"
                         render={({ field, fieldState: { error } }) => (
                           <CFormSelect
                             id="floatingSelect"

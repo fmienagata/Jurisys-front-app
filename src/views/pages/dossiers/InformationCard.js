@@ -16,6 +16,7 @@ import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
 
 const InformationCard = ({
+  title,
   dataDossier,
   setListPJ,
   setOpenModalPJ,
@@ -23,9 +24,18 @@ const InformationCard = ({
   isPartieAdverse,
 }) => {
   const { id, dossierFiles, messages, ...dataInfos } = dataDossier
-  const [lengthLimit, setLengthLimit] = useState(8)
+  const lengthLimitInitial = isPartieAdverse ? 6 : 3
+  const [lengthLimit, setLengthLimit] = useState(lengthLimitInitial)
 
-  const titleInformation = isPartieAdverse ? 'Information dossier' : 'Information partie adverse'
+  const titleInformation = title
+
+  const classNameMap = {
+    'Information dossier': 'text-center',
+    'Information partie adverse': 'text-center grey-info-Card-adverse',
+    'Information partie conseil': 'text-center blue-info-Card-conseil',
+  }
+
+  const classNameCard = classNameMap[title]
 
   const dataEntries = Object.entries(dataInfos)
   const slicedData = Object.fromEntries(dataEntries.slice(0, lengthLimit))
@@ -79,25 +89,25 @@ const InformationCard = ({
         result = 'Prénom'
         break
       case 'conseilPartieAdverseNom':
-        result = 'Nom de conseil'
+        result = 'Nom'
         break
       case 'conseilPartieAdversePrenom':
-        result = 'Prénom de conseil'
+        result = 'Prénom'
         break
       case 'conseilPartieAdverseTelephone':
-        result = 'Téléphone conseil'
+        result = 'Téléphone'
         break
       case 'conseilPartieAdverseEmail':
-        result = 'E-Mail de conseil'
+        result = 'E-Mail'
         break
       case 'conseilPartieAdverseAdresse':
-        result = 'Adresse de conseil'
+        result = 'Adresse'
         break
       case 'conseilPartieAdverseVille':
-        result = 'Ville de conseil'
+        result = 'Ville'
         break
       case 'conseilPartieAdversePays':
-        result = 'Pays de conseil'
+        result = 'Pays'
         break
       default:
         result = key
@@ -141,11 +151,9 @@ const InformationCard = ({
     )
   }
 
-  console.log('dataDossier  --> ', dataDossier)
-
   return (
     <CCard className="mb-4">
-      <CCardHeader className="text-center">
+      <CCardHeader className={classNameCard}>
         <CRow>
           <CCol className="text-start" xs={6}>
             <CCardTitle>
@@ -173,7 +181,7 @@ const InformationCard = ({
         </CRow>
       </CCardHeader>
       <CListGroup flush>{generateMetadatas(slicedData)}</CListGroup>
-      {lengthLimit === 8 ? (
+      {lengthLimit === lengthLimitInitial ? (
         <CButton
           color="warning"
           variant="ghost"
@@ -182,7 +190,7 @@ const InformationCard = ({
           {'charger plus...'}
         </CButton>
       ) : (
-        <CButton color="warning" variant="ghost" onClick={() => setLengthLimit(8)}>
+        <CButton color="warning" variant="ghost" onClick={() => setLengthLimit(lengthLimitInitial)}>
           {'charger moins...'}
         </CButton>
       )}
@@ -191,6 +199,7 @@ const InformationCard = ({
 }
 
 InformationCard.propTypes = {
+  title: PropTypes.string,
   setListPJ: PropTypes.string,
   setOpenModalPJ: PropTypes.string,
   setTitleModal: PropTypes.string,
