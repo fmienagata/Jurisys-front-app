@@ -280,7 +280,7 @@ const ModalNewMessageDossier = (props) => {
                             }}
                           >
                             <option value="" key="key">
-                              {' -- Selectionner un messages -- '}
+                              {' -- Selectionner un message -- '}
                             </option>
                             {!isLoading ? (
                               messagesTypes &&

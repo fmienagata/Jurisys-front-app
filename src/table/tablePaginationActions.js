@@ -74,15 +74,19 @@ const TablePaginationActions = (props) => {
     // </CCol>
     <Box
       sx={{
-        display: 'flex',
         flex: '1 1 auto',
         alignItems: 'center',
         justifyContent: 'flex-end',
         mr: 2.5,
+        display: 'ruby',
       }}
       className="col px-5 grid-force"
     >
-      <CPagination>
+      <CPagination
+        sx={{
+          display: 'ruby',
+        }}
+      >
         <CPaginationItem
           aria-label="Previous"
           onClick={() => {

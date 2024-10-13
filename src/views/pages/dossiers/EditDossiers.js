@@ -356,7 +356,7 @@ const EditDossier = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Montant préjudice</b>{' '}
+                        <b>Honoraires</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="montantPrejudice"
@@ -368,7 +368,7 @@ const EditDossier = () => {
                             {...field}
                             type="number"
                             id="montantPrejudice"
-                            placeholder="montant Préjudice"
+                            placeholder="Honoraires"
                             autoComplete="montant Prejudice"
                             invalid={Boolean(error)}
                             feedbackInvalid={error?.message}
@@ -684,7 +684,7 @@ const EditDossier = () => {
 
                 <CCol sm="3" style={{ paddingBottom: '10px' }}>
                   <fieldset className="blue-info" id="shifter">
-                    <h5 style={{ color: 'purple' }}>Partie adverse conseil</h5>
+                    <h5 style={{ color: 'purple' }}>Partie conseil</h5>
 
                     <CInputGroup className="mb-3">
                       <CCol>

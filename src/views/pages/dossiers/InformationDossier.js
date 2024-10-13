@@ -1,34 +1,33 @@
-import React, { useState } from 'react'
-import {
-  CCard,
-  CCardHeader,
-  CListGroup,
-  CListGroupItem,
-  CCol,
-  CRow,
-  CButton,
-  CCardTitle,
-  CBadge,
-} from '@coreui/react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { capitalizeFirstLetter, formatFrenchDate, formatNumberWithPoints } from 'src/utils/utils'
-import CIcon from '@coreui/icons-react'
-import * as icon from '@coreui/icons'
 
 import InformationCard from './InformationCard'
 
 const InformationDossier = ({ dataDossier, setListPJ, setOpenModalPJ, setTitleModal }) => {
-  const dataAdverse = Object.fromEntries(
-    Object.entries(dataDossier).filter(([key]) => key.includes('artieAdverse')),
-  )
+  const dataNoDossier = {}
+  const dataInfosAdverse = {}
+  const dataConseil = {}
+  const dataForDossier = {}
 
-  const dataForDossier = Object.fromEntries(
-    Object.entries(dataDossier).filter(([key]) => !key.includes('artieAdverse')),
-  )
+  Object.entries(dataDossier).forEach(([key, value]) => {
+    if (key.includes('artieAdverse')) {
+      dataNoDossier[key] = value
+      if (!key.includes('conseilParti')) {
+        dataInfosAdverse[key] = value
+      }
+    } else {
+      dataForDossier[key] = value
+    }
+
+    if (key.includes('conseilParti')) {
+      dataConseil[key] = value
+    }
+  })
 
   return (
     <>
       <InformationCard
+        title="Information dossier"
         isPartieAdverse={true}
         dataDossier={dataForDossier}
         setListPJ={setListPJ}
@@ -37,8 +36,18 @@ const InformationDossier = ({ dataDossier, setListPJ, setOpenModalPJ, setTitleMo
       />
 
       <InformationCard
+        title="Information partie adverse"
         isPartieAdverse={false}
-        dataDossier={dataAdverse}
+        dataDossier={dataInfosAdverse}
+        setListPJ={setListPJ}
+        setTitleModal={setTitleModal}
+        setOpenModalPJ={setOpenModalPJ}
+      />
+
+      <InformationCard
+        title="Information partie conseil"
+        isPartieAdverse={false}
+        dataDossier={dataConseil}
         setListPJ={setListPJ}
         setTitleModal={setTitleModal}
         setOpenModalPJ={setOpenModalPJ}
