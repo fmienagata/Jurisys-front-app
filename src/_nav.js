@@ -18,7 +18,7 @@ import { CNavGroup, CNavItem } from '@coreui/react'
 const _nav = [
   {
     component: CNavItem,
-    name: 'Dashboard',
+    name: 'Tableau de bord',
     to: '/dashboard',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
     // access: Accesses.USER,
@@ -34,7 +34,7 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Entreprises',
+    name: 'Client',
     to: '/societes',
     icon: <CIcon icon={cilIndustry} customClassName="nav-icon" />,
   },

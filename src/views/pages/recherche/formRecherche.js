@@ -35,7 +35,6 @@ const FormRecherche = ({ setDossiers, setIsActif }) => {
     let criteria = removeEmptyAttributes(data)
     try {
       const dossiersData = await getRechercheDossiers(criteria)
-      console.log(dossiersData)
       setDossiers(dossiersData)
       setIsActif(Boolean(data.statut == 1))
       setLoading(false)

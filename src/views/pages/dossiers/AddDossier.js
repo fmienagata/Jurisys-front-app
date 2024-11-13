@@ -155,7 +155,7 @@ const AddDossier = () => {
                       <Controller
                         defaultValue=""
                         name="prenom"
-                        rules={{ required: 'Ce champs est requis' }}
+                        // rules={{ required: 'Ce champs est requis' }}
                         control={control}
                         render={({ field, fieldState: { error } }) => (
                           <CFormInput
@@ -179,7 +179,7 @@ const AddDossier = () => {
                       <Controller
                         name="email"
                         defaultValue=""
-                        rules={{ required: 'Ce champs est requis' }}
+                        // rules={{ required: 'Ce champs est requis' }}
                         control={control}
                         render={({ field, fieldState: { error } }) => (
                           <CFormInput
@@ -404,7 +404,7 @@ const AddDossier = () => {
                       <Controller
                         name="montantPrejudice"
                         control={control}
-                        rules={{ required: 'Ce champs est requis' }}
+                        // rules={{ required: 'Ce champs est requis' }}
                         render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
@@ -531,7 +531,7 @@ const AddDossier = () => {
                         />
                       </CCol>
                     </CInputGroup>
-                    <CInputGroup className="mb-3">
+                    {/* <CInputGroup className="mb-3">
                       <CCol>
                         <CHeaderText>
                           {' '}
@@ -541,7 +541,7 @@ const AddDossier = () => {
                           name="partieAdverse"
                           defaultValue=""
                           control={control}
-                          rules={{ required: 'Ce champs est requis' }}
+                          // rules={{ required: 'Ce champs est requis' }}
                           render={({ field, fieldState: { error } }) => (
                             <CFormInput
                               {...field}
@@ -553,7 +553,7 @@ const AddDossier = () => {
                           )}
                         />
                       </CCol>
-                    </CInputGroup>
+                    </CInputGroup> */}
                     <CInputGroup className="mb-3">
                       <CCol>
                         <CHeaderText>
@@ -611,7 +611,7 @@ const AddDossier = () => {
                           name="partieAdverseEmail"
                           control={control}
                           defaultValue=""
-                          rules={{ required: 'Ce champs est requis' }}
+                          // rules={{ required: 'Ce champs est requis' }}
                           render={({ field, fieldState: { error } }) => (
                             <CFormInput
                               {...field}
@@ -736,7 +736,7 @@ const AddDossier = () => {
                           name="conseilPartieAdverseNom"
                           defaultValue=""
                           control={control}
-                          rules={{ required: 'Ce champs est requis' }}
+                          // rules={{ required: 'Ce champs est requis' }}
                           render={({ field, fieldState: { error } }) => (
                             <CFormInput
                               {...field}
@@ -759,7 +759,7 @@ const AddDossier = () => {
                           name="conseilPartieAdversePrenom"
                           control={control}
                           defaultValue=""
-                          rules={{ required: 'Ce champs est requis' }}
+                          // rules={{ required: 'Ce champs est requis' }}
                           render={({ field, fieldState: { error } }) => (
                             <CFormInput
                               {...field}
@@ -784,7 +784,7 @@ const AddDossier = () => {
                             name="conseilPartieAdverseEmail"
                             control={control}
                             defaultValue=""
-                            rules={{ required: 'Ce champs est requis' }}
+                            // rules={{ required: 'Ce champs est requis' }}
                             render={({ field, fieldState: { error } }) => (
                               <CFormInput
                                 {...field}
@@ -811,7 +811,7 @@ const AddDossier = () => {
                           name="conseilPartieAdverseAdresse"
                           defaultValue=""
                           control={control}
-                          rules={{ required: 'Ce champs est requis' }}
+                          // rules={{ required: 'Ce champs est requis' }}
                           render={({ field, fieldState: { error } }) => (
                             <CFormInput
                               {...field}
@@ -834,7 +834,7 @@ const AddDossier = () => {
                           name="conseilPartieAdverseVille"
                           control={control}
                           defaultValue=""
-                          rules={{ required: 'Ce champs est requis' }}
+                          // rules={{ required: 'Ce champs est requis' }}
                           render={({ field, fieldState: { error } }) => (
                             <CFormInput
                               {...field}
@@ -857,7 +857,7 @@ const AddDossier = () => {
                           name="conseilPartieAdversePays"
                           control={control}
                           defaultValue=""
-                          rules={{ required: 'Ce champs est requis' }}
+                          // rules={{ required: 'Ce champs est requis' }}
                           render={({ field, fieldState: { error } }) => (
                             <CFormInput
                               {...field}
@@ -881,7 +881,7 @@ const AddDossier = () => {
                           name="conseilPartieAdverseTelephone"
                           control={control}
                           defaultValue=""
-                          rules={{ required: 'Ce champs est requis' }}
+                          // rules={{ required: 'Ce champs est requis' }}
                           render={({ field, fieldState: { error } }) => (
                             <CFormInput
                               {...field}

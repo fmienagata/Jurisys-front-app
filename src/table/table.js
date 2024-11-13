@@ -343,11 +343,6 @@ const Table = forwardRef(
                       }
 
                       if (cell.column.Header === 'Montant FCFA') {
-                        console.log(
-                          'cell=',
-                          formatNumberWithPoints(cell.render('Cell').props.value) + 'FCFA',
-                        )
-
                         return (
                           <CTableDataCell {...cell.getCellProps()}>
                             {formatNumberWithPoints(cell.render('Cell').props.value)}

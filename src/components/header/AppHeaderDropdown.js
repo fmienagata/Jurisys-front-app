@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 
 import {
   CAvatar,
-  CBadge,
   CDropdown,
   CDropdownDivider,
   CDropdownHeader,
@@ -47,16 +46,16 @@ const AppHeaderDropdown = () => {
         <CDropdownItem href="/#/messages/messaging">
           <CIcon icon={cilEnvelopeOpen} className="me-2" />
           Messages
-          <CBadge color="success" className="ms-2">
+          {/* <CBadge color="success" className="ms-2">
             42
-          </CBadge>
+          </CBadge> */}
         </CDropdownItem>
         <CDropdownItem href="/#/abonnement">
           <CIcon icon={cilCreditCard} className="me-2" />
           Abonnement
-          <CBadge color="secondary" className="ms-2">
+          {/* <CBadge color="secondary" className="ms-2">
             42
-          </CBadge>
+          </CBadge> */}
         </CDropdownItem>
 
         <CDropdownDivider />

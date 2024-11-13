@@ -99,7 +99,6 @@ function prepareDataUpdate(frm) {
 }
 
 function filterMessages(messages, role) {
-  console.log('messages --> ', messages)
   return messages.filter((message) => {
     return role === 'avocat'
       ? message.user.userType.roles.includes('ROLE_AVOCAT')
