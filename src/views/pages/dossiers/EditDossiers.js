@@ -492,7 +492,7 @@ const EditDossier = () => {
                         />
                       </CCol>
                     </CInputGroup>
-                    <CInputGroup className="mb-3">
+                    {/* <CInputGroup className="mb-3">
                       <CCol>
                         <CHeaderText>
                           {' '}
@@ -514,7 +514,7 @@ const EditDossier = () => {
                           )}
                         />
                       </CCol>
-                    </CInputGroup>
+                    </CInputGroup> */}
                     <CInputGroup className="mb-3">
                       <CCol>
                         <CHeaderText>

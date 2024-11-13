@@ -25,8 +25,6 @@ const ModalMessage = (props) => {
   const { id, messageFiles, ...newData } = dataMessage
   const { displaySuccess, displayError } = useMessageContext()
 
-  console.log('dataMessage --> ', dataMessage)
-
   function getKeyName(key) {
     let result = ''
     switch (key) {

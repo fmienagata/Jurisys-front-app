@@ -154,6 +154,30 @@ const AddUser = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
+                        <b>Fonction</b>{' '}
+                      </CHeaderText>
+                      <Controller
+                        name="fonction"
+                        control={control}
+                        rules={{ required: 'Ce champs est requis' }}
+                        defaultValue=""
+                        render={({ field, fieldState: { error } }) => (
+                          <CFormInput
+                            {...field}
+                            id="fonction"
+                            placeholder="fonction"
+                            autoComplete="fonction"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
+                          />
+                        )}
+                      />
+                    </CCol>
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText>
+                        {' '}
                         <b>Username</b>{' '}
                       </CHeaderText>
                       <Controller

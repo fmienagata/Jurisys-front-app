@@ -127,7 +127,7 @@ const Login = () => {
                     <br></br>
                     <br></br>
                     <p>{labels.description}</p>
-                    <span className="ml-6">V1.10.13</span>
+                    <span className="ml-6">V1.11.13</span>
 
                     {/* <Link to="/register">
                       <CButton color="secondary" className="mt-3" active tabIndex={-1}>

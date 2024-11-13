@@ -4,14 +4,8 @@ import {
   CCol,
   CModal,
   CModalBody,
-  CModalFooter,
   CModalHeader,
   CModalTitle,
-  CListGroupItem,
-  CListGroup,
-  CCard,
-  CCardBody,
-  CContainer,
   CFormInput,
   CInputGroup,
   CHeaderText,
@@ -20,12 +14,10 @@ import {
   CRow,
   CFormSelect,
   CSpinner,
-  CHeaderDivider,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
 
-import { useQueryClient } from 'react-query'
 import PropTypes from 'prop-types'
 import { Controller, useForm } from 'react-hook-form'
 import { useGetAllMessagesTypes } from 'src/services/messagesTypesService'
@@ -42,6 +34,7 @@ import 'dayjs/locale/fr'
 
 const ModalNewMessageDossier = (props) => {
   const { openModal, setOpenModal, dataDossier, refresh, action } = props
+  const { user } = useAuth()
 
   // eslint-disable-next-line react/prop-types
   const { displaySuccess, displayError } = useMessageContext()
@@ -106,6 +99,7 @@ const ModalNewMessageDossier = (props) => {
     if (data.text === undefined) {
       data.text = ''
     }
+    data.typeMessage = user.roles === 'ROLE_AVOCAT' ? true : false
 
     data.dossier = dataDossier.id
     try {
@@ -183,7 +177,7 @@ const ModalNewMessageDossier = (props) => {
                       )}
                     />
                   </CCol>
-                  <CCol className="mb-2">
+                  {/* <CCol className="mb-2">
                     <CHeaderText> Type du message </CHeaderText>
                     <Controller
                       name="typeMessage"
@@ -200,7 +194,7 @@ const ModalNewMessageDossier = (props) => {
                         />
                       )}
                     />
-                  </CCol>
+                  </CCol> */}
 
                   <CCol>
                     <CInputGroup className="mb-4"></CInputGroup>

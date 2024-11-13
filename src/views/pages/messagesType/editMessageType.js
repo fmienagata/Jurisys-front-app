@@ -31,7 +31,7 @@ const EditMessageType = () => {
   const handleCreateMessagesTypes = async (data) => {
     try {
       await updateMessageType(state.data.id, data)
-      displaySuccess('Mise à jours ', 'Le message a bien été créé avec sucess')
+      displaySuccess('Mise à jours ', 'le message a bien été modifier avec suces')
       queryClient.invalidateQueries(['getAllMsgsType'])
       navigate('/messages/prewritten')
     } catch (error) {

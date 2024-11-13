@@ -16,7 +16,6 @@ import * as icon from '@coreui/icons'
 import { useMessageContext } from 'src/Context/MessageContext'
 import { useNavigate } from 'react-router-dom'
 import { useGetAllDossiers, useGetDossierMessages } from 'src/services/dossiersService'
-import { useQueryClient } from 'react-query'
 import Inbox from './components/Inbox'
 import SidebarBox from './components/SidebarBox'
 import './components/style.scss'
@@ -25,13 +24,10 @@ import { formatFrenchDate, filterMessages } from 'src/utils/utils'
 import { handleErrorResponse } from '../../../utils/handleErrorResponse'
 
 const MessageriesTransmis = () => {
-  const queryClient = useQueryClient()
   const { displayError } = useMessageContext()
   const { disconnect } = useAuth()
 
   const navigate = useNavigate()
-
-  const [dataDossiers, setDataDossiers] = useState([])
 
   const [messagesSelected, setMessagesSelected] = useState([])
   const [messagesDetails, setMessagesDetails] = useState([])
@@ -73,7 +69,6 @@ const MessageriesTransmis = () => {
   }
 
   useEffect(() => {
-    console.log('messagesDossier =>', messagesDossier)
     if (dossiers) {
       //setDataDossiers(dossiers)
       // setClickedDossier(dossiers[0].id)

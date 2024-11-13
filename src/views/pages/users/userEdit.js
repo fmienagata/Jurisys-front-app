@@ -110,7 +110,7 @@ const UserEdit = () => {
                         <Controller
                           name="userType"
                           control={control}
-                          defaultValue={selectedUsersTypes.id || ''}
+                          defaultValue={selectedUsersTypes.id}
                           render={({ field }) => (
                             <CFormSelect id="userType" {...field}>
                               {usersTypes.map((item, key) => (
@@ -173,6 +173,30 @@ const UserEdit = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
+                        <b>Fonction</b>{' '}
+                      </CHeaderText>
+                      <Controller
+                        name="fonction"
+                        control={control}
+                        rules={{ required: 'Ce champs est requis' }}
+                        defaultValue={state.data.fonction ?? ''}
+                        render={({ field, fieldState: { error } }) => (
+                          <CFormInput
+                            {...field}
+                            id="fonction"
+                            placeholder="fonction"
+                            autoComplete="fonction"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
+                          />
+                        )}
+                      />
+                    </CCol>
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText>
+                        {' '}
                         <b>Username</b>{' '}
                       </CHeaderText>
                       <Controller
@@ -222,7 +246,9 @@ const UserEdit = () => {
                         <Controller
                           name="societe"
                           control={control}
-                          defaultValue={selectedSociete.id || ''}
+                          defaultValue={
+                            selectedSociete?.id || (societes.length > 0 ? societes[0].id : '')
+                          }
                           render={({ field }) => (
                             <CFormSelect id="societe" {...field}>
                               {societes.map((item, key) => (
@@ -243,7 +269,7 @@ const UserEdit = () => {
                     <Controller
                       name="email"
                       control={control}
-                      defaultValue={state.data.email}
+                      defaultValue={state.data.email ?? ''}
                       render={({ field }) => (
                         <CFormInput
                           {...field}

@@ -12,7 +12,7 @@ import { useQueryClient } from 'react-query'
 import { handleErrorResponse } from 'src/utils/handleErrorResponse'
 import { useAuth } from 'src/Context/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import { Modal, Button } from 'react-bootstrap'
+import ModalAgendaMessage from 'src/components/ModalAgenda'
 
 const MyCalendar = ({ isDashboard }) => {
   const { displayError } = useMessageContext()
@@ -24,20 +24,19 @@ const MyCalendar = ({ isDashboard }) => {
   const [showModal, setShowModal] = useState(false)
   const [modalData, setModalData] = useState({ dossier: '', text: '' })
 
-  const { dataAgenda, isLoading, refetch } = useGetAllAgenda({
+  const { dataAgenda, isLoading } = useGetAllAgenda({
     onSuccess: (data) => {
       const transformedData = data.data.map((item) => ({
+        id: item.id,
         type: item.type,
-        title: item.text,
+        title: item.titre,
         date: item.dateAudience,
         dossier: item.dossier, // ajout de la référence du dossier
         text: item.text,
       }))
-      // console.log(data)
       setDataEvents(transformedData)
     },
     onError: (error) => {
-      console.log('Error fetching agenda:', error)
       handleErrorResponse(error, disconnect, displayError, navigate)
     },
   })
@@ -46,8 +45,9 @@ const MyCalendar = ({ isDashboard }) => {
     if (dataAgenda) {
       const transformedData = dataAgenda
         ? dataAgenda.data.map((item) => ({
+            id: item.id,
             type: item.type,
-            title: item.text,
+            title: item.titre,
             date: item.dateAudience,
             dossier: item.dossier, // ajout de la référence du dossier
             text: item.text,
@@ -60,8 +60,6 @@ const MyCalendar = ({ isDashboard }) => {
   }, [dataAgenda, queryClient])
 
   const handleDateClick2 = (info) => {
-    console.log('Événements de la journée info:', info.dateStr)
-
     const eventsOnDate = dataEvents.filter((event) => {
       return event.date.includes(info.dateStr)
     })
@@ -69,8 +67,11 @@ const MyCalendar = ({ isDashboard }) => {
   }
 
   const handleEventClick = (info) => {
-    console.log('info.event.extendedProps:', info.event.extendedProps)
-    setModalData({ dossier: info.event.extendedProps.dossier, text: info.event.extendedProps.text })
+    setModalData({
+      ...info.event.extendedProps, // Pass all extendedProps
+      title: info.event.title,
+      id: info.event.id,
+    })
     setShowModal(true)
   }
 
@@ -109,22 +110,11 @@ const MyCalendar = ({ isDashboard }) => {
         </CCardBody>
       </CCard>
 
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton></Modal.Header>
-        <Modal.Body>
-          <p>
-            <strong>Référence du dossier:</strong> {modalData.dossier}
-          </p>
-          <p>
-            <strong>Message:</strong> {modalData.text}
-          </p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Fermer
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <ModalAgendaMessage
+        showModal={showModal}
+        setShowModal={setShowModal}
+        dataMessage={modalData}
+      />
     </Suspense>
   )
 }

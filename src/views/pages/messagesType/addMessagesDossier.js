@@ -44,7 +44,7 @@ DateTimePickerWrapper.displayName = 'DateTimePickerWrapper'
 const CreateMessagesDossier = () => {
   const navigate = useNavigate()
   const { control, handleSubmit, setValue } = useForm()
-  const { disconnect } = useAuth()
+  const { disconnect, user } = useAuth()
 
   const { displaySuccess, displayError } = useMessageContext()
   const queryClient = useQueryClient()
@@ -87,7 +87,8 @@ const CreateMessagesDossier = () => {
     if (data.text === undefined) {
       data.text = ''
     }
-    console.log('Create message', data)
+    data.typeMessage = user.roles === 'ROLE_AVOCAT' ? true : false
+
     try {
       const result = await addMessage(data)
       if (files.length > 0) {
@@ -169,7 +170,7 @@ const CreateMessagesDossier = () => {
                       )}
                     />
                   </CCol>
-                  <CCol className="mb-2">
+                  {/* <CCol className="mb-2">
                     <CHeaderText> Type du message </CHeaderText>
                     <Controller
                       name="typeMessage"
@@ -186,7 +187,7 @@ const CreateMessagesDossier = () => {
                         />
                       )}
                     />
-                  </CCol>
+                  </CCol> */}
                   {!loadingDossiers && dossiers.length > 0 ? (
                     <CCol>
                       <CHeaderText> Liste des références </CHeaderText>
