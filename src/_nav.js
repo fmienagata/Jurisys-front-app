@@ -110,12 +110,12 @@ const _nav = [
     to: '/diary',
     icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: 'Abonnement',
-    to: '/abonnement',
-    icon: <CIcon icon={cilEuro} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'Abonnement',
+  //   to: '/abonnement',
+  //   icon: <CIcon icon={cilEuro} customClassName="nav-icon" />,
+  // },
 ]
 
 export default _nav

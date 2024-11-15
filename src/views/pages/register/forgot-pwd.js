@@ -23,7 +23,9 @@ const ForgotPwd = () => {
   const { control, handleSubmit } = useForm()
   const navigate = useNavigate()
 
-  const handleRegistre = (data) => {}
+  const handleRegistre = (data) => {
+    console.log('data --> ', data)
+  }
 
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">

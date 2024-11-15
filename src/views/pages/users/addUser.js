@@ -99,7 +99,7 @@ const AddUser = () => {
                   {/* <h1>{labels.registre.titleHeader}</h1> */}
                   <p className="text-body-secondary">Ajouter un utilisateur</p>
 
-                  <CInputGroup className="mb-3">
+                  <CInputGroup className="mb-0">
                     <CCol>
                       <CHeaderText>
                         <b> Nom</b>{' '}
@@ -126,7 +126,7 @@ const AddUser = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  <CInputGroup className="mb-3">
+                  <CInputGroup className="mb-0">
                     <CCol>
                       <CHeaderText>
                         {' '}
@@ -150,7 +150,7 @@ const AddUser = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  <CInputGroup className="mb-3">
+                  <CInputGroup className="mb-0">
                     <CCol>
                       <CHeaderText>
                         {' '}
@@ -174,7 +174,7 @@ const AddUser = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  <CInputGroup className="mb-3">
+                  <CInputGroup className="mb-0">
                     <CCol>
                       <CHeaderText>
                         {' '}
@@ -200,7 +200,7 @@ const AddUser = () => {
                   </CInputGroup>
 
                   {!isLoading && usersTypes.length > 0 ? (
-                    <CInputGroup className="mb-3">
+                    <CInputGroup className="mb-0">
                       <CCol>
                         <CHeaderText>
                           {' '}
@@ -225,7 +225,7 @@ const AddUser = () => {
                   ) : (
                     isLoading && <CSpinner color="primary" variant="grow" />
                   )}
-                  <CInputGroup className="mb-3">
+                  <CInputGroup className="mb-0">
                     <CCol>
                       <CHeaderText>
                         {' '}
@@ -249,7 +249,7 @@ const AddUser = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  <CInputGroup className="mb-3">
+                  <CInputGroup className="mb-0">
                     <CCol>
                       <CHeaderText>
                         {' '}
@@ -281,7 +281,7 @@ const AddUser = () => {
                       )}
                     </CCol>
                   </CInputGroup>
-                  <CInputGroup className="mb-3">
+                  <CInputGroup className="mb-0">
                     <CInputGroupText>@</CInputGroupText>
                     <Controller
                       name="email"

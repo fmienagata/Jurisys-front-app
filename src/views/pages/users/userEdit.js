@@ -100,7 +100,7 @@ const UserEdit = () => {
                 <form onSubmit={handleSubmit(handleEdit)}>
                   {/* <h1>{labels.registre.titleHeader}</h1> */}
                   <p className="text-body-secondary">Modifier un utilisateur</p>
-                  <CInputGroup className="mb-3">
+                  <CInputGroup className="mb-1">
                     <CCol>
                       <CHeaderText>
                         {' '}
@@ -127,7 +127,7 @@ const UserEdit = () => {
                     </CCol>
                   </CInputGroup>
 
-                  <CInputGroup className="mb-3">
+                  <CInputGroup className="mb-1">
                     <CCol>
                       <CHeaderText>
                         {' '}
@@ -148,7 +148,7 @@ const UserEdit = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  <CInputGroup className="mb-3">
+                  <CInputGroup className="mb-1">
                     <CCol>
                       <CHeaderText>
                         {' '}
@@ -169,7 +169,7 @@ const UserEdit = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  <CInputGroup className="mb-3">
+                  <CInputGroup className="mb-1">
                     <CCol>
                       <CHeaderText>
                         {' '}
@@ -193,7 +193,7 @@ const UserEdit = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  <CInputGroup className="mb-3">
+                  <CInputGroup className="mb-1">
                     <CCol>
                       <CHeaderText>
                         {' '}
@@ -214,7 +214,7 @@ const UserEdit = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  <CInputGroup className="mb-3">
+                  <CInputGroup className="mb-1">
                     <CCol>
                       <CHeaderText>
                         {' '}
@@ -236,7 +236,7 @@ const UserEdit = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  <CInputGroup className="mb-3">
+                  <CInputGroup className="mb-1">
                     <CCol>
                       <CHeaderText>
                         {' '}
@@ -264,7 +264,7 @@ const UserEdit = () => {
                       )}
                     </CCol>
                   </CInputGroup>
-                  <CInputGroup className="mb-3">
+                  <CInputGroup className="mb-3 mt-4">
                     <CInputGroupText>@</CInputGroupText>
                     <Controller
                       name="email"

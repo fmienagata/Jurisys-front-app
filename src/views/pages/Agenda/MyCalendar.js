@@ -13,6 +13,7 @@ import { handleErrorResponse } from 'src/utils/handleErrorResponse'
 import { useAuth } from 'src/Context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import ModalAgendaMessage from 'src/components/ModalAgenda'
+import { formatFrenchDateWithDay } from 'src/utils/utils'
 
 const MyCalendar = ({ isDashboard }) => {
   const { displayError } = useMessageContext()
@@ -67,9 +68,12 @@ const MyCalendar = ({ isDashboard }) => {
   }
 
   const handleEventClick = (info) => {
+    const startDate = info.event.start // Date complète de début
+
     setModalData({
       ...info.event.extendedProps, // Pass all extendedProps
       title: info.event.title,
+      dateAudiance: formatFrenchDateWithDay(startDate),
       id: info.event.id,
     })
     setShowModal(true)

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import {
   CButton,
@@ -24,7 +24,7 @@ import { useMessageContext } from 'src/Context/MessageContext'
 import { useAuth } from 'src/Context/AuthContext'
 
 const Login = () => {
-  const { connect } = useAuth()
+  const { connect, isLogged } = useAuth()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const { displayError } = useMessageContext()
@@ -44,6 +44,12 @@ const Login = () => {
       setIsLoading(false)
     }
   }
+
+  useEffect(() => {
+    if (isLogged) {
+      navigate('/dashboard')
+    }
+  }, [isLogged, navigate])
 
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
@@ -127,7 +133,7 @@ const Login = () => {
                     <br></br>
                     <br></br>
                     <p>{labels.description}</p>
-                    <span className="ml-6">V1.11.13</span>
+                    <span className="ml-6">V1.11.15</span>
 
                     {/* <Link to="/register">
                       <CButton color="secondary" className="mt-3" active tabIndex={-1}>

@@ -2,85 +2,128 @@ import React from 'react'
 import {
   CButton,
   CForm,
+  CCol,
   CRow,
   CHeaderText,
   CModal,
   CModalBody,
   CModalFooter,
-  CFormInput,
-  CFormTextarea,
+  CModalHeader,
+  CListGroupItem,
+  CModalTitle,
+  CListGroup,
 } from '@coreui/react'
 import { Controller, useForm } from 'react-hook-form'
+
+import { capitalizeFirstLetter } from 'src/utils/utils'
 
 const ModalAgendaMessage = (props) => {
   // eslint-disable-next-line react/prop-types
   const { showModal, setShowModal, dataMessage } = props
-  const { control, handleSubmit, reset } = useForm()
 
   const handleCloseModal = () => {
     setShowModal(false)
-    reset()
-  }
-
-  const handleUpdateMessage = async (data) => {
-    console.log('data for API ->', data)
   }
 
   return (
     <>
       <CModal
         visible={showModal}
-        onClose={() => handleCloseModal}
+        onClose={() => handleCloseModal()}
         aria-labelledby="VerticallyCenteredExample"
         alignment="center"
-        size="md"
+        size="lg"
       >
+        <CModalHeader>
+          <CModalTitle>
+            {
+              // eslint-disable-next-line react/prop-types
+              dataMessage.title || ''
+            }{' '}
+          </CModalTitle>
+        </CModalHeader>
         <CModalBody>
-          <CForm onSubmit={handleSubmit(handleUpdateMessage)}>
-            <CRow className="justify-content-center  m-3">
-              <CHeaderText> Titre </CHeaderText>
-              <Controller
-                name="titre"
-                // eslint-disable-next-line react/prop-types
-                defaultValue={dataMessage.title}
-                rules={{ required: 'Ce champs est requis' }}
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <CFormInput
-                    {...field}
-                    id="titre"
-                    placeholder="Titre du message"
-                    invalid={Boolean(error)}
-                    feedbackInvalid={error?.message}
-                  />
-                )}
-              />
-            </CRow>
-            <CRow className="justify-content-center m-3">
-              <CHeaderText> Message </CHeaderText>
-              <Controller
-                name="text"
-                control={control}
-                // eslint-disable-next-line react/prop-types
-                defaultValue={dataMessage.text}
-                render={({ field }) => (
-                  <CFormTextarea
-                    {...field}
-                    id="text"
-                    defaultValue={''}
-                    placeholder="Contenu du message à renseigner"
-                    autoComplete="text"
-                    rows={8}
-                  ></CFormTextarea>
-                )}
-              />
-            </CRow>
-            <CRow className="justify-content-center m-3">
-              <CButton type="submit" color="success">
-                Modifier
-              </CButton>
-            </CRow>
-          </CForm>
+          <CListGroup flush>
+            <CListGroupItem>
+              <CRow className="align-items-center">
+                <CCol className="text-start" xs={6}>
+                  Titre
+                </CCol>
+                <CCol className="text-start" xs={6}>
+                  <b>
+                    {
+                      // eslint-disable-next-line react/prop-types
+                      dataMessage.title || ''
+                    }{' '}
+                  </b>
+                </CCol>
+              </CRow>
+            </CListGroupItem>
+
+            <CListGroupItem>
+              <CRow className="align-items-center">
+                <CCol className="text-start" xs={6}>
+                  Date et heure d audiance :
+                </CCol>
+                <CCol className="text-start " xs={6}>
+                  <b>
+                    {
+                      // eslint-disable-next-line react/prop-types
+                      capitalizeFirstLetter(dataMessage.dateAudiance) || ''
+                    }{' '}
+                  </b>
+                </CCol>
+              </CRow>
+            </CListGroupItem>
+
+            <CListGroupItem>
+              <CRow className="align-items-center">
+                <CCol className="text-start" xs={6}>
+                  Dossier
+                </CCol>
+                <CCol className="text-start" xs={6}>
+                  <b>
+                    {
+                      // eslint-disable-next-line react/prop-types
+                      dataMessage.dossier || ''
+                    }{' '}
+                  </b>
+                </CCol>
+              </CRow>
+            </CListGroupItem>
+
+            <CListGroupItem>
+              <CRow className="align-items-center">
+                <CCol className="text-start" xs={6}>
+                  Type de message :
+                </CCol>
+                <CCol className="text-start" xs={6}>
+                  <b>
+                    {
+                      // eslint-disable-next-line react/prop-types
+                      dataMessage.type !== '' ? dataMessage.type : '-----'
+                    }{' '}
+                  </b>
+                </CCol>
+              </CRow>
+            </CListGroupItem>
+
+            <CListGroupItem>
+              <CRow className="align-items-center">
+                <CCol className="text-start" xs={6}>
+                  Message :
+                </CCol>
+                <CCol className="text-start" xs={6}>
+                  <b>
+                    {
+                      // eslint-disable-next-line react/prop-types
+                      dataMessage.text || ''
+                    }{' '}
+                  </b>
+                </CCol>
+              </CRow>
+            </CListGroupItem>
+          </CListGroup>
         </CModalBody>
         <CModalFooter>
           <CButton color="secondary" onClick={() => handleCloseModal()}>

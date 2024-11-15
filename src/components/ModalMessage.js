@@ -86,7 +86,7 @@ const ModalMessage = (props) => {
         alignment="center"
         size="lg"
       >
-        <CModalHeader>
+        <CModalHeader alignment="center" aria-labelledby="VerticallyCenteredExample">
           <CModalTitle>{capitalizeFirstLetter(dataMessage.type)} </CModalTitle>
         </CModalHeader>
         <CModalBody>

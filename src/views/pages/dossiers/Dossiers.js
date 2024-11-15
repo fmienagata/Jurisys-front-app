@@ -232,7 +232,7 @@ const Dossiers = () => {
                       fromPage={'dossiers'}
                       columns={columns}
                       data={dossiers}
-                      ischeckbox={true}
+                      ischeckbox={false}
                       currentPage={currentPage}
                       setCurrentPage={setCurrentPage}
                       onSelectedRowChange={setSelection}

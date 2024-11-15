@@ -159,7 +159,7 @@ const Users = () => {
                     ref={tableRefUsers}
                     columns={columnsUsers}
                     data={users}
-                    ischeckbox={true}
+                    ischeckbox={false}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
                     setOpenModal={setOpenModal}
