@@ -94,11 +94,25 @@ const Factures = () => {
 
   function DeleteMultiFactures() {}
 
+  // Fonction pour gérer la pagination
+  const handlePageChange = (pageIndex) => {
+    setCurrentPage(pageIndex)
+  }
+
   function handleChange(event) {
     const filter = event.target.value.trim().toLowerCase()
+    console.log(' recherche -> ', filter, initialFactures)
     const result = filtredValues(initialFactures, filter)
-    setDataFactures(filter === '' ? initialFactures : result)
+    console.log(' recherche result-> ', result)
+    setCurrentPage(0)
+
+    setDataFactures(result)
   }
+
+  useEffect(() => {
+    console.log('Données filtrées -> ', dataFactures)
+    setCurrentPage(0)
+  }, [currentPage]) // Vérifiez les données après la mise à jour
 
   return (
     <div>
@@ -145,15 +159,16 @@ const Factures = () => {
                 </CRow>
               </CCardHeader>
 
-              {!isLoading ? (
+              {!isLoading && dataFactures ? (
                 <CCardBody className="custom-card-body">
                   <Table
                     ref={tableRefFacture}
                     columns={columnsFacture}
                     data={dataFactures}
-                    ischeckbox={true}
+                    ischeckbox={false}
                     currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
+                    //setCurrentPage={setCurrentPage}
+                    setCurrentPage={handlePageChange} // Gérer le changement de page
                     setOpenModal={setOpenModal}
                     onSelectedRowChange={setSelection}
                     fromPage={'facture'}

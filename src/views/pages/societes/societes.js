@@ -157,7 +157,7 @@ const Societes = () => {
                     ref={tableRefUsers}
                     columns={columnsSocietes}
                     data={dataSocietes}
-                    ischeckbox={true}
+                    ischeckbox={false}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
                     setOpenModal={setOpenModal}

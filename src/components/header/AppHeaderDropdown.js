@@ -50,13 +50,13 @@ const AppHeaderDropdown = () => {
             42
           </CBadge> */}
         </CDropdownItem>
-        <CDropdownItem href="/#/abonnement">
+        {/* <CDropdownItem href="/#/abonnement">
           <CIcon icon={cilCreditCard} className="me-2" />
           Abonnement
-          {/* <CBadge color="secondary" className="ms-2">
+          <CBadge color="secondary" className="ms-2">
             42
-          </CBadge> */}
-        </CDropdownItem>
+          </CBadge>
+        </CDropdownItem> */}
 
         <CDropdownDivider />
         <CDropdownItem onClick={handleLogout} style={{ cursor: 'pointer' }}>
