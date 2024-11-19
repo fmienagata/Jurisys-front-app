@@ -115,7 +115,7 @@ const Societes = () => {
               <CCardHeader>
                 <CRow>
                   <CCol xs={4} className="d-flex align-items-center">
-                    <strong className="text-primary">Liste des entreprises</strong>
+                    <strong className="text-primary">Liste des clients</strong>
                   </CCol>
 
                   <CCol xs={4} className="align-self-center">

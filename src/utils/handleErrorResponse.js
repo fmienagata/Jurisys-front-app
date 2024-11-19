@@ -18,7 +18,9 @@ const handleErrorResponse = (error, disconnect, displayError, navigate) => {
   } else if (error.request) {
     // La requête a été faite, mais aucune réponse n'a été reçue
     console.error('No response received')
-    displayError('No response received')
+    displayError('Votre session a expiré', 'Votre session a expiré. Veuillez vous reconnecter')
+    disconnect()
+    navigate('/login')
   } else {
     // Une erreur s'est produite lors de la configuration de la requête
     //  console.error('Error setting up the request:', error.message)

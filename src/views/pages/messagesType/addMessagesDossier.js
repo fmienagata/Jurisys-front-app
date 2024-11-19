@@ -97,6 +97,7 @@ const CreateMessagesDossier = () => {
         displaySuccess('Ajout un message', 'Le message a bien été créé avec sucess')
         // invalidate navigate'
         queryClient.invalidateQueries(['getAllDossiers'])
+        queryClient.invalidateQueries(['getDataAgenda'])
         navigate('/messages/messaging')
       }
     } catch (error) {
@@ -114,6 +115,7 @@ const CreateMessagesDossier = () => {
       const response = await addMessageFiles(form, id)
       displaySuccess('Ajout un message', 'Le message a bien été créé avec sucess')
       queryClient.invalidateQueries(['getAllDossiers'])
+      queryClient.invalidateQueries(['getDataAgenda'])
       navigate('/messages/messaging')
 
       setFiles([])
