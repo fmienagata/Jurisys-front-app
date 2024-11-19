@@ -201,14 +201,19 @@ const EditSociete = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Fax</b>{' '}
+                        <b>B.P. (Boite Postale)</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="fax"
                         control={control}
                         defaultValue={state.data.fax ? state.data.fax : '0000'}
                         render={({ field }) => (
-                          <CFormInput {...field} id="fax" placeholder="Fax" autoComplete="Fax" />
+                          <CFormInput
+                            {...field}
+                            id="fax"
+                            placeholder="B.P. (Boite Postale)"
+                            autoComplete="B.P. (Boite Postale)"
+                          />
                         )}
                       />
                     </CCol>

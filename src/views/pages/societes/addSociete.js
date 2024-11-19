@@ -48,12 +48,12 @@ const AddSociete = () => {
               <CCardBody className="p-4">
                 <form onSubmit={handleSubmit(handleAddSociete)}>
                   {/* <h1>{labels.registre.titleHeader}</h1> */}
-                  <p className="text-body-secondary">Ajouter une entreprise</p>
+                  <p className="text-body-secondary">Ajouter un client</p>
 
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText>
-                        <b>{`Nom de l'entreprise`}</b>
+                        <b>{`Nom du client`}</b>
                       </CHeaderText>
                       <Controller
                         name="nomSociete"
@@ -64,7 +64,7 @@ const AddSociete = () => {
                           <CFormInput
                             {...field}
                             id="nomSociete"
-                            placeholder={`Nom de l'entreprise`}
+                            placeholder={`Nom du client`}
                             invalid={Boolean(error)}
                             feedbackInvalid={error?.message}
                           />
@@ -213,12 +213,12 @@ const AddSociete = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Fax</b>{' '}
+                        <b>B.P. (Boite Postale)</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="fax"
                         control={control}
-                        rules={{ required: 'Ce champs est requis' }}
+                        // rules={{ required: 'Ce champs est requis' }}
                         defaultValue=""
                         render={({ field, fieldState: { error } }) => (
                           <CFormInput
@@ -226,8 +226,8 @@ const AddSociete = () => {
                             id="fax"
                             invalid={Boolean(error)}
                             feedbackInvalid={error?.message}
-                            placeholder="Fax"
-                            autoComplete="Fax"
+                            placeholder="B.P. (Boite Postale)"
+                            autoComplete="B.P. (Boite Postale)"
                           />
                         )}
                       />

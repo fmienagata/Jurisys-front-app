@@ -64,6 +64,8 @@ const AddDossier = () => {
     // await addDossier(data)
     //queryClient.invalidateQueries(['getCountDossiersActifs'])
     try {
+      data.partieAdverse = ''
+      data.montantPrejudice = data.montantPrejudice === undefined ? 0 : data.montantPrejudice
       const result = await addDossier(data)
       if (files.length > 0) {
         handleSubmitFile(result.id)

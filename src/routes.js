@@ -152,7 +152,7 @@ const routes = [
   {
     path: '/new-societe',
     allowedRoles: [Accesses.AVOCAT],
-    name: 'Ajouter une entreprise',
+    name: 'Ajouter un client',
     element: addSociete,
     exact: true,
   },

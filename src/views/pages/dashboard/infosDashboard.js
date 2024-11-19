@@ -3,11 +3,6 @@ import { CCol, CWidgetStatsF, CSpinner } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import * as icon from '@coreui/icons'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  fetchDataCountDossiers,
-  fetchDataCountAudiences,
-  fetchDataCountBusiness,
-} from 'src/dashboardActions'
 
 import { useMessageContext } from 'src/Context/MessageContext'
 import { handleErrorResponse } from 'src/utils/handleErrorResponse'
@@ -56,6 +51,7 @@ const InfosDashboard = () => {
 
   const { data: dataUsers, isLoading: loadingUsers } = useCountUsers({
     onError: (error) => {
+      console.log('error --> ', error)
       displayError('Erreur lors de la requête dans le composant !')
     },
   })

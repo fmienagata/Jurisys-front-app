@@ -88,21 +88,26 @@ const MyCalendar = ({ isDashboard }) => {
           .fc-day {
             border: none !important;
           }
+            
         `}
       </style>
       <CCard>
         <CCardBody>
-          <div style={{}}>
+          <div>
             {!isLoading && dataEvents ? (
               <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 initialView="dayGridMonth"
                 locale={frLang}
-                headerToolbar={{
-                  left: 'prev,next today',
-                  center: 'title',
-                  right: 'dayGridMonth,timeGridWeek,timeGridDay',
-                }}
+                headerToolbar={
+                  isDashboard
+                    ? {}
+                    : {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay',
+                      }
+                }
                 events={dataEvents}
                 eventClick={handleEventClick}
                 dateClick={handleDateClick2}

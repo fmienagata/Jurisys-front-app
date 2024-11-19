@@ -29,9 +29,8 @@ const AxiosInterceptor = ({ children }) => {
   useEffect(() => {
     const errInterceptor = (error) => {
       if (error.response && error.response.status === 401) {
-        displayError('Votre session a expiré', 'Votre session a expiré, veuillez vous reconnecter') // Afficher une erreur en cas de réponse 401
-        console.log("Déconnexion de l'utilisateur en cas de réponse 401 ")
-        disconnect() // Déconnexion de l'utilisateur en cas de réponse 401
+        displayError('Votre session a expiré', 'Votre session a expiré, veuillez vous reconnecter')
+        disconnect()
         navigate('/login')
       }
       return Promise.reject(error)
