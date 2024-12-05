@@ -208,7 +208,6 @@ const Table = forwardRef(
     }
 
     function handleDisplay(row) {
-      console.log(row)
       let navigatePath = ''
       switch (fromPage) {
         case 'users':
