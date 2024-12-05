@@ -138,7 +138,7 @@ const InfosDashboard = () => {
               )
             }
             padding={false}
-            title="Nombre d'entreprises"
+            title="Nombre des clients"
             value={dataCountBusiness && dataCountBusiness.count}
           />
         </CCol>

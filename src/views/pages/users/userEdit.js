@@ -240,7 +240,7 @@ const UserEdit = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Entreprise</b>{' '}
+                        <b>Client</b>{' '}
                       </CHeaderText>
                       {!isLoadingSocietes && societes.length > 0 ? (
                         <Controller

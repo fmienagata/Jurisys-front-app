@@ -107,9 +107,11 @@ const TablePaginationActions = (props) => {
         </CPaginationItem>
         <CPaginationItem>
           <CRow>
-            <b>
-              {page + 1} sur {lastPage + 1}
-            </b>
+            <Typography>
+              <b style={{ width: 'max-content' }}>
+                {page + 1} sur {lastPage + 1}
+              </b>
+            </Typography>
           </CRow>
         </CPaginationItem>
         <CPaginationItem

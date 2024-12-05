@@ -37,15 +37,15 @@ const Factures = () => {
     },
   })
 
-  useEffect(() => {
-    if (!isLoading && dataFacturesAPI) {
-      setDataFactures(dataFacturesAPI.data)
-      setInitialFactures(dataFacturesAPI.data)
-    }
-    // else {
-    //   queryClient.invalidateQueries(['getAllFactures'])
-    // }
-  }, [isLoading, dataFacturesAPI])
+  // useEffect(() => {
+  //   if (!isLoading && dataFacturesAPI) {
+  //     setDataFactures(dataFacturesAPI.data)
+  //     setInitialFactures(dataFacturesAPI.data)
+  //   }
+  //   // else {
+  //   //   queryClient.invalidateQueries(['getAllFactures'])
+  //   // }
+  // }, [isLoading, dataFacturesAPI])
 
   const columnsFacture = [
     {
@@ -100,19 +100,31 @@ const Factures = () => {
   }
 
   function handleChange(event) {
+    setCurrentPage(0)
     const filter = event.target.value.trim().toLowerCase()
-    console.log(' recherche -> ', filter, initialFactures)
-    const result = filtredValues(initialFactures, filter)
-    console.log(' recherche result-> ', result)
+    let result = filtredValues(initialFactures, filter)
+    setDataFactures(result)
+    setCurrentPage(0)
+  }
+
+  const handleFilterChange = (filterValue) => {
+    // Appliquez votre filtre aux données
     setCurrentPage(0)
 
-    setDataFactures(result)
+    const filteredData = dataFactures.filter((item) =>
+      Object.values(item)
+        .flatMap((value) => (typeof value === 'string' ? value : []))
+        .some((prop) => prop.toLowerCase().includes(filterValue.toLowerCase())),
+    )
+    setDataFactures(filteredData)
   }
 
   useEffect(() => {
-    console.log('Données filtrées -> ', dataFactures)
-    setCurrentPage(0)
-  }, [currentPage]) // Vérifiez les données après la mise à jour
+    const totalPages = Math.ceil(dataFactures.length / 10)
+    if (currentPage >= totalPages && totalPages > 0) {
+      setCurrentPage(totalPages - 1)
+    }
+  }, [dataFactures, currentPage])
 
   return (
     <div>
@@ -167,7 +179,6 @@ const Factures = () => {
                     data={dataFactures}
                     ischeckbox={false}
                     currentPage={currentPage}
-                    //setCurrentPage={setCurrentPage}
                     setCurrentPage={handlePageChange} // Gérer le changement de page
                     setOpenModal={setOpenModal}
                     onSelectedRowChange={setSelection}

@@ -174,30 +174,6 @@ const AddUser = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  <CInputGroup className="mb-0">
-                    <CCol>
-                      <CHeaderText>
-                        {' '}
-                        <b>Username</b>{' '}
-                      </CHeaderText>
-                      <Controller
-                        name="username"
-                        control={control}
-                        // rules={{ required: 'Ce champs est requis' }} // Add rules for required field
-                        rules={{ required: 'Ce champs est requis' }} // Add rules for required field
-                        render={({ field, fieldState: { error } }) => (
-                          <CFormInput
-                            {...field}
-                            id="username"
-                            placeholder="username"
-                            autoComplete="username"
-                            invalid={Boolean(error)}
-                            feedbackInvalid={error?.message}
-                          />
-                        )}
-                      />
-                    </CCol>
-                  </CInputGroup>
 
                   {!isLoading && usersTypes.length > 0 ? (
                     <CInputGroup className="mb-0">
@@ -253,7 +229,7 @@ const AddUser = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Entreprise</b>{' '}
+                        <b>Client</b>{' '}
                       </CHeaderText>
                       {!isLoadingSocietes && societes.length > 0 ? (
                         <Controller

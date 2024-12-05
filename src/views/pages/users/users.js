@@ -35,12 +35,16 @@ const Users = () => {
       accessor: 'prenom',
     },
     {
+      Header: 'Email',
+      accessor: 'email',
+    },
+    {
       Header: 'fonction',
       accessor: 'fonction',
     },
     {
-      Header: 'Role',
-      accessor: 'userType.label',
+      Header: 'Client',
+      accessor: 'societe',
     },
     {
       Header: 'Actions',

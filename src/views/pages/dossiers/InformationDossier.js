@@ -19,7 +19,7 @@ const InformationDossier = ({ dataDossier, setListPJ, setOpenModalPJ, setTitleMo
       dataForDossier[key] = value
     }
 
-    if (key.includes('conseilParti')) {
+    if (key.includes('partieConseil')) {
       dataConseil[key] = value
     }
   })
@@ -30,15 +30,6 @@ const InformationDossier = ({ dataDossier, setListPJ, setOpenModalPJ, setTitleMo
         title="Information dossier"
         isPartieAdverse={true}
         dataDossier={dataForDossier}
-        setListPJ={setListPJ}
-        setTitleModal={setTitleModal}
-        setOpenModalPJ={setOpenModalPJ}
-      />
-
-      <InformationCard
-        title="Information partie adverse"
-        isPartieAdverse={false}
-        dataDossier={dataInfosAdverse}
         setListPJ={setListPJ}
         setTitleModal={setTitleModal}
         setOpenModalPJ={setOpenModalPJ}

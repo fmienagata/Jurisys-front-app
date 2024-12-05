@@ -26,9 +26,30 @@ const EditSociete = () => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { displaySuccess, displayError } = useMessageContext()
-  const { control, handleSubmit } = useForm()
+  const { control, handleSubmit, watch } = useForm({
+    defaultValues: {
+      type: state.data.type,
+    },
+  })
+
+  const selectedType = watch('type')
 
   const handleEditSociete = async (data) => {
+    console.log('data --> ', data.type === state.data.type)
+    //if true do nothing
+    //else // changer les champs :
+    if (data.type !== state.data.type) {
+      if (data.type === 'Particulier') {
+        data.denominationSociale = null
+        data.nui = null
+        data.rccm = null
+        data.capitalSocial = null
+      } else {
+        data.nationalite = null
+        data.etatCivil = null
+      }
+    }
+
     try {
       await updateSociete(state.data.id, data)
       displaySuccess('Societe', 'Societe a été bien mis à jour avec sucess')
@@ -49,24 +70,19 @@ const EditSociete = () => {
               <CCardBody className="p-4">
                 <form onSubmit={handleSubmit(handleEditSociete)}>
                   {/* <h1>{labels.registre.titleHeader}</h1> */}
-                  <p className="text-body-secondary">Modifier une entreprise</p>
+                  <p className="text-body-secondary">Modifier un client</p>
 
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText>
-                        {' '}
-                        <b>Nom de l entreprise</b>{' '}
+                        <b>Nom du client</b>
                       </CHeaderText>
                       <Controller
                         name="nomSociete"
                         control={control}
                         defaultValue={state.data.nomSociete}
                         render={({ field }) => (
-                          <CFormInput
-                            {...field}
-                            id="nomSociete"
-                            placeholder={`Nom de l'entreprise`}
-                          />
+                          <CFormInput {...field} id="nomSociete" placeholder={`Nom du client`} />
                         )}
                       />
                     </CCol>
@@ -74,17 +90,8 @@ const EditSociete = () => {
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText>
-                        {' '}
-                        <b>Type d&apos;entreprise</b>{' '}
+                        <b>Type de client</b>
                       </CHeaderText>
-                      {/* <Controller
-                        name="type"
-                        control={control}
-                        defaultValue={state.data.type ? state.data.type : 'type'}
-                        render={({ field }) => (
-                          <CFormInput {...field} id="type" placeholder={`type`} />
-                        )}
-                      /> */}
                       <Controller
                         name="type"
                         control={control}
@@ -101,6 +108,182 @@ const EditSociete = () => {
                             <option value="Société">Société</option>
                             <option value="Particulier">Particulier</option>
                           </CFormSelect>
+                        )}
+                      />
+                    </CCol>
+                  </CInputGroup>
+
+                  {selectedType === 'Société' && (
+                    <>
+                      <CInputGroup className="mb-3">
+                        <CCol>
+                          <CHeaderText>
+                            <b>Dénomination sociale</b>
+                          </CHeaderText>
+                          <Controller
+                            name="denominationSociale"
+                            control={control}
+                            rules={{ required: 'Ce champs est requis' }}
+                            defaultValue={state.data.denominationSociale}
+                            render={({ field, fieldState: { error } }) => (
+                              <CFormInput
+                                {...field}
+                                id="denominationSociale"
+                                placeholder="Dénomination sociale"
+                                autoComplete="Dénomination sociale"
+                                invalid={Boolean(error)}
+                                feedbackInvalid={error?.message}
+                              />
+                            )}
+                          />
+                        </CCol>
+                      </CInputGroup>
+
+                      <CInputGroup className="mb-3">
+                        <CCol>
+                          <CHeaderText>
+                            <b>Capital social</b>
+                          </CHeaderText>
+                          <Controller
+                            name="capitalSocial"
+                            control={control}
+                            rules={{ required: 'Ce champs est requis' }}
+                            defaultValue={state.data.capitalSocial}
+                            render={({ field, fieldState: { error } }) => (
+                              <CFormInput
+                                {...field}
+                                id="capitalSocial"
+                                placeholder="Capital social"
+                                autoComplete="Capital social"
+                                invalid={Boolean(error)}
+                                feedbackInvalid={error?.message}
+                              />
+                            )}
+                          />
+                        </CCol>
+                      </CInputGroup>
+
+                      <CInputGroup className="mb-3">
+                        <CCol>
+                          <CHeaderText>
+                            <b>Crédit Mobilier (RCCM)</b>
+                          </CHeaderText>
+                          <Controller
+                            name="rccm"
+                            control={control}
+                            rules={{ required: 'Ce champs est requis' }}
+                            defaultValue={state.data.rccm}
+                            render={({ field, fieldState: { error } }) => (
+                              <CFormInput
+                                {...field}
+                                id="rccm"
+                                placeholder="Crédit Mobilier (RCCM)"
+                                autoComplete="Crédit Mobilier (RCCM)"
+                                invalid={Boolean(error)}
+                                feedbackInvalid={error?.message}
+                              />
+                            )}
+                          />
+                        </CCol>
+                      </CInputGroup>
+
+                      <CInputGroup className="mb-3">
+                        <CCol>
+                          <CHeaderText>
+                            <b>{`Numéro d'identification unique (NIU)`}</b>
+                          </CHeaderText>
+                          <Controller
+                            name="nui"
+                            control={control}
+                            rules={{ required: 'Ce champs est requis' }}
+                            defaultValue={state.data.nui}
+                            render={({ field, fieldState: { error } }) => (
+                              <CFormInput
+                                {...field}
+                                id="nui"
+                                placeholder="Numéro d'identification unique (NIU)"
+                                autoComplete="Numéro d'identification unique (NIU)"
+                                invalid={Boolean(error)}
+                                feedbackInvalid={error?.message}
+                              />
+                            )}
+                          />
+                        </CCol>
+                      </CInputGroup>
+                    </>
+                  )}
+                  {selectedType === 'Particulier' && (
+                    <>
+                      <CInputGroup className="mb-3">
+                        <CCol>
+                          <CHeaderText>
+                            <b>Nationalité</b>
+                          </CHeaderText>
+                          <Controller
+                            name="nationalite"
+                            control={control}
+                            rules={{ required: 'Ce champs est requis' }}
+                            defaultValue={state.data.nationalite}
+                            render={({ field, fieldState: { error } }) => (
+                              <CFormInput
+                                {...field}
+                                id="nationalite"
+                                placeholder="Nationalité"
+                                autoComplete="Nationalité"
+                                invalid={Boolean(error)}
+                                feedbackInvalid={error?.message}
+                              />
+                            )}
+                          />
+                        </CCol>
+                      </CInputGroup>
+                      <CInputGroup className="mb-3">
+                        <CCol>
+                          <CHeaderText>
+                            <b>Etat civil</b>
+                          </CHeaderText>
+                          <Controller
+                            name="etatCivil"
+                            control={control}
+                            rules={{ required: 'Ce champs est requis' }}
+                            defaultValue={state.data.etatCivil}
+                            render={({ field, fieldState: { error } }) => (
+                              <CFormInput
+                                {...field}
+                                id="etatCivil"
+                                placeholder="Etat civil"
+                                autoComplete="Etat civil"
+                                invalid={Boolean(error)}
+                                feedbackInvalid={error?.message}
+                              />
+                            )}
+                          />
+                        </CCol>
+                      </CInputGroup>
+                    </>
+                  )}
+
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText>
+                        <b>Téléphone</b>
+                      </CHeaderText>
+                      <Controller
+                        name="telephone"
+                        control={control}
+                        defaultValue={state.data.telephone}
+                        rules={{
+                          required: selectedType === 'Particulier' ? 'Ce champs est requis' : false, // Règle conditionnelle
+                        }}
+                        render={({ field, fieldState: { error } }) => (
+                          <CFormInput
+                            {...field}
+                            id="telephone"
+                            placeholder="Téléphone"
+                            autoComplete="Téléphone"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
+                          />
                         )}
                       />
                     </CCol>
@@ -124,8 +307,7 @@ const EditSociete = () => {
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText>
-                        {' '}
-                        <b>Ville</b>{' '}
+                        <b>Ville</b>
                       </CHeaderText>
                       <Controller
                         name="ville"
@@ -145,8 +327,7 @@ const EditSociete = () => {
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText>
-                        {' '}
-                        <b>Adresse</b>{' '}
+                        <b>Adresse</b>
                       </CHeaderText>
                       <Controller
                         name="adresse"
@@ -163,45 +344,11 @@ const EditSociete = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  {/* <CInputGroup className="mb-3">
-                    <CCol>
-                      <CHeaderText> Code Postal </CHeaderText>
-                      <Controller
-                        name="password"
-                        control={control}
-                        render={({ field }) => (
-                          <CFormInput {...field} id="code" placeholder="Code Postal" />
-                        )}
-                      />
-                    </CCol>
-                  </CInputGroup> */}
 
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText>
-                        {' '}
-                        <b>Téléphone</b>{' '}
-                      </CHeaderText>
-                      <Controller
-                        name="telephone"
-                        control={control}
-                        defaultValue={state.data.telephone}
-                        render={({ field }) => (
-                          <CFormInput
-                            {...field}
-                            id="telephone"
-                            placeholder="telephone"
-                            autoComplete="telephone"
-                          />
-                        )}
-                      />
-                    </CCol>
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <CCol>
-                      <CHeaderText>
-                        {' '}
-                        <b>B.P. (Boite Postale)</b>{' '}
+                        <b>B.P. (Boite Postale)</b>
                       </CHeaderText>
                       <Controller
                         name="fax"

@@ -31,7 +31,6 @@ const InformationCard = ({
 
   const classNameMap = {
     'Information dossier': 'text-center',
-    'Information partie adverse': 'text-center grey-info-Card-adverse',
     'Information partie conseil': 'text-center blue-info-Card-conseil',
   }
 
@@ -61,52 +60,28 @@ const InformationCard = ({
       case 'montantPrejudice':
         result = 'Montant de prejudice'
         break
-      case 'partieAdverseNom':
-        result = 'Nom'
-        break
-      case 'partieAdverse':
-        result = 'Partie adverse'
-        break
-      case 'partieAdversePrenom':
-        result = 'prenom'
-        break
-      case 'partieAdverseEmail':
-        result = 'Email'
-        break
-      case 'partieAdverseAdresse':
-        result = 'adresse'
-        break
-      case 'partieAdverseVille':
-        result = 'ville'
-        break
-      case 'partieAdversePays':
-        result = 'pays'
-        break
-      case 'partieAdverseTelephone':
-        result = 'Téléphone'
-        break
       case 'prenom':
         result = 'Prénom'
         break
-      case 'conseilPartieAdverseNom':
+      case 'partieConseilNom':
         result = 'Nom'
         break
-      case 'conseilPartieAdversePrenom':
+      case 'partieConseilPrenom':
         result = 'Prénom'
         break
-      case 'conseilPartieAdverseTelephone':
+      case 'partieConseilTelephone':
         result = 'Téléphone'
         break
-      case 'conseilPartieAdverseEmail':
+      case 'partieConseilEmail':
         result = 'E-Mail'
         break
-      case 'conseilPartieAdverseAdresse':
+      case 'partieConseilAdresse':
         result = 'Adresse'
         break
-      case 'conseilPartieAdverseVille':
+      case 'partieConseilVille':
         result = 'Ville'
         break
-      case 'conseilPartieAdversePays':
+      case 'partieConseilPays':
         result = 'Pays'
         break
       default:
