@@ -35,6 +35,30 @@ const ModalSociete = (props) => {
       case 'user':
         result = 'Utilisateur'
         break
+      case 'nationalite':
+        result = 'Nationalité'
+        break
+      case 'etatCivil':
+        result = 'Etat civil'
+        break
+      case 'denominationSociale':
+        result = 'Dénomination sociale'
+        break
+      case 'telephone':
+        result = 'Téléphone'
+        break
+      case 'nui':
+        result = `Numéro d'identification unique (NIU)`
+        break
+      case 'rccm':
+        result = 'Crédit Mobilier (RCCM)'
+        break
+      case 'capitalSocial':
+        result = 'Capital social'
+        break
+      case 'nomSociete':
+        result = 'Nom de la societé'
+        break
       default:
         result = key
     }

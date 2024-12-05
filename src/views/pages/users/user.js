@@ -38,6 +38,9 @@ const User = () => {
       case 'userType':
         result = `Rôle`
         break
+      case 'prenom':
+        result = `Prénom`
+        break
       default:
         result = key
     }

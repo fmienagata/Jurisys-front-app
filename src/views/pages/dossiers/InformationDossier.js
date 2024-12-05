@@ -10,12 +10,7 @@ const InformationDossier = ({ dataDossier, setListPJ, setOpenModalPJ, setTitleMo
   const dataForDossier = {}
 
   Object.entries(dataDossier).forEach(([key, value]) => {
-    if (key.includes('artieAdverse')) {
-      dataNoDossier[key] = value
-      if (!key.includes('conseilParti')) {
-        dataInfosAdverse[key] = value
-      }
-    } else {
+    if (!key.includes('partieConseil')) {
       dataForDossier[key] = value
     }
 
