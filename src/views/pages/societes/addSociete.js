@@ -22,14 +22,19 @@ import { useQueryClient } from 'react-query'
 
 const AddSociete = () => {
   const navigate = useNavigate()
-  const { control, handleSubmit } = useForm()
+  const { control, handleSubmit, watch } = useForm({
+    defaultValues: {
+      type: 'Particulier',
+    },
+  })
   const { displaySuccess, displayError } = useMessageContext()
   const queryClient = useQueryClient()
+  const selectedType = watch('type')
 
   const handleAddSociete = async (data) => {
     try {
       await addSociete(data)
-      displaySuccess("Ajout d'une entreprise", "L'entreprise a bien été créé avec sucess")
+      displaySuccess("Ajout d'un client", 'Le client a bien été créé avec sucess')
       queryClient.invalidateQueries(['getAllSocietes'])
       queryClient.invalidateQueries(['getCountNBRBusiness'])
       navigate('/societes')
@@ -76,12 +81,12 @@ const AddSociete = () => {
                     <CCol>
                       <CHeaderText>
                         {' '}
-                        <b>Type d&apos;entreprise</b>{' '}
+                        <b>Type de client</b>{' '}
                       </CHeaderText>
                       <Controller
                         name="type"
                         control={control}
-                        defaultValue="Société"
+                        defaultValue="Particulier"
                         render={({ field, fieldState: { error } }) => (
                           <CFormSelect
                             id="floatingSelect"
@@ -96,24 +101,216 @@ const AddSociete = () => {
                           </CFormSelect>
                         )}
                       />
-                      {/* <Controller
-                        name="type"
+                    </CCol>
+                  </CInputGroup>
+                  {selectedType === 'Société' && (
+                    <>
+                      <CInputGroup className="mb-3">
+                        <CCol>
+                          <CHeaderText>
+                            {' '}
+                            <b>Dénomination sociale</b>{' '}
+                          </CHeaderText>
+                          <Controller
+                            name="denominationSociale"
+                            control={control}
+                            rules={{ required: 'Ce champs est requis' }}
+                            defaultValue=""
+                            render={({ field, fieldState: { error } }) => (
+                              <CFormInput
+                                {...field}
+                                id="denominationSociale"
+                                placeholder="Dénomination sociale"
+                                autoComplete="Dénomination sociale"
+                                invalid={Boolean(error)}
+                                feedbackInvalid={error?.message}
+                              />
+                            )}
+                          />
+                        </CCol>
+                      </CInputGroup>
+
+                      <CInputGroup className="mb-3">
+                        <CCol>
+                          <CHeaderText>
+                            {' '}
+                            <b>Capital social</b>{' '}
+                          </CHeaderText>
+                          <Controller
+                            name="capitalSocial"
+                            control={control}
+                            rules={{ required: 'Ce champs est requis' }}
+                            defaultValue=""
+                            render={({ field, fieldState: { error } }) => (
+                              <CFormInput
+                                {...field}
+                                id="capitalSocial"
+                                placeholder="Capital social"
+                                autoComplete="Capital social"
+                                invalid={Boolean(error)}
+                                feedbackInvalid={error?.message}
+                              />
+                            )}
+                          />
+                        </CCol>
+                      </CInputGroup>
+                      {/* 
+                      <CInputGroup className="mb-3">
+                        <CCol>
+                          <CHeaderText>
+                            {' '}
+                            <b>Registre de Commerce</b>{' '}
+                          </CHeaderText>
+                          <Controller
+                            name="registrecommerce"
+                            control={control}
+                            rules={{ required: 'Ce champs est requis' }}
+                            defaultValue=""
+                            render={({ field, fieldState: { error } }) => (
+                              <CFormInput
+                                {...field}
+                                id="registrecommerce"
+                                placeholder="Registre de Commerce"
+                                autoComplete="Registre de Commerce"
+                                invalid={Boolean(error)}
+                                feedbackInvalid={error?.message}
+                              />
+                            )}
+                          />
+                        </CCol>
+                      </CInputGroup> */}
+
+                      <CInputGroup className="mb-3">
+                        <CCol>
+                          <CHeaderText>
+                            {' '}
+                            <b>Crédit Mobilier (RCCM)</b>{' '}
+                          </CHeaderText>
+                          <Controller
+                            name="rccm"
+                            control={control}
+                            rules={{ required: 'Ce champs est requis' }}
+                            defaultValue=""
+                            render={({ field, fieldState: { error } }) => (
+                              <CFormInput
+                                {...field}
+                                id="rccm"
+                                placeholder="Crédit Mobilier (RCCM)"
+                                autoComplete="Crédit Mobilier (RCCM)"
+                                invalid={Boolean(error)}
+                                feedbackInvalid={error?.message}
+                              />
+                            )}
+                          />
+                        </CCol>
+                      </CInputGroup>
+
+                      <CInputGroup className="mb-3">
+                        <CCol>
+                          <CHeaderText>
+                            {' '}
+                            <b>{`Numéro d'identification unique (NIU)`}</b>{' '}
+                          </CHeaderText>
+                          <Controller
+                            name="nui"
+                            control={control}
+                            rules={{ required: 'Ce champs est requis' }}
+                            defaultValue=""
+                            render={({ field, fieldState: { error } }) => (
+                              <CFormInput
+                                {...field}
+                                id="nui"
+                                placeholder="Numéro d'identification unique (NIU)"
+                                autoComplete="Numéro d'identification unique (NIU)"
+                                invalid={Boolean(error)}
+                                feedbackInvalid={error?.message}
+                              />
+                            )}
+                          />
+                        </CCol>
+                      </CInputGroup>
+                    </>
+                  )}
+                  {selectedType === 'Particulier' && (
+                    <>
+                      <CInputGroup className="mb-3">
+                        <CCol>
+                          <CHeaderText>
+                            {' '}
+                            <b>Nationalité</b>{' '}
+                          </CHeaderText>
+                          <Controller
+                            name="nationalite"
+                            control={control}
+                            rules={{ required: 'Ce champs est requis' }}
+                            defaultValue=""
+                            render={({ field, fieldState: { error } }) => (
+                              <CFormInput
+                                {...field}
+                                id="nationalite"
+                                placeholder="Nationalité"
+                                autoComplete="Nationalité"
+                                invalid={Boolean(error)}
+                                feedbackInvalid={error?.message}
+                              />
+                            )}
+                          />
+                        </CCol>
+                      </CInputGroup>
+                      <CInputGroup className="mb-3">
+                        <CCol>
+                          <CHeaderText>
+                            {' '}
+                            <b>Etat civil</b>{' '}
+                          </CHeaderText>
+                          <Controller
+                            name="etatCivil"
+                            control={control}
+                            rules={{ required: 'Ce champs est requis' }}
+                            defaultValue=""
+                            render={({ field, fieldState: { error } }) => (
+                              <CFormInput
+                                {...field}
+                                id="etatCivil"
+                                placeholder="Etat civil"
+                                autoComplete="Etat civil"
+                                invalid={Boolean(error)}
+                                feedbackInvalid={error?.message}
+                              />
+                            )}
+                          />
+                        </CCol>
+                      </CInputGroup>
+                    </>
+                  )}
+
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText>
+                        {' '}
+                        <b>Téléphone</b>{' '}
+                      </CHeaderText>
+                      <Controller
+                        name="telephone"
                         control={control}
-                        rules={{ required: 'Ce champs est requis' }}
                         defaultValue=""
+                        rules={{
+                          required: selectedType === 'Particulier' ? 'Ce champs est requis' : false, // Règle conditionnelle
+                        }}
                         render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
-                            id="type"
+                            id="telephone"
+                            placeholder="Téléphone"
+                            autoComplete="Téléphone"
                             invalid={Boolean(error)}
                             feedbackInvalid={error?.message}
-                            placeholder="type"
-                            autoComplete="type"
                           />
                         )}
-                      /> */}
+                      />
                     </CCol>
                   </CInputGroup>
+
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText>
@@ -123,7 +320,6 @@ const AddSociete = () => {
                       <Controller
                         name="ville"
                         control={control}
-                        rules={{ required: 'Ce champs est requis' }}
                         defaultValue=""
                         render={({ field, fieldState: { error } }) => (
                           <CFormInput
@@ -147,7 +343,6 @@ const AddSociete = () => {
                       <Controller
                         name="pays"
                         control={control}
-                        rules={{ required: 'Ce champs est requis' }}
                         render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
@@ -170,7 +365,6 @@ const AddSociete = () => {
                         name="adresse"
                         control={control}
                         defaultValue=""
-                        rules={{ required: 'Ce champs est requis' }}
                         render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
@@ -185,30 +379,6 @@ const AddSociete = () => {
                     </CCol>
                   </CInputGroup>
 
-                  <CInputGroup className="mb-3">
-                    <CCol>
-                      <CHeaderText>
-                        {' '}
-                        <b>Téléphone</b>{' '}
-                      </CHeaderText>
-                      <Controller
-                        name="telephone"
-                        control={control}
-                        defaultValue=""
-                        rules={{ required: 'Ce champs est requis' }}
-                        render={({ field, fieldState: { error } }) => (
-                          <CFormInput
-                            {...field}
-                            id="telephone"
-                            placeholder="Téléphone"
-                            autoComplete="Téléphone"
-                            invalid={Boolean(error)}
-                            feedbackInvalid={error?.message}
-                          />
-                        )}
-                      />
-                    </CCol>
-                  </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText>

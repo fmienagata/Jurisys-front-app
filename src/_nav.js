@@ -21,7 +21,6 @@ const _nav = [
     name: 'Tableau de bord',
     to: '/dashboard',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-    // access: Accesses.USER,
     // access: [Accesses.DOCUMENT, Accesses.DOCUMENT_READ],
   },
   {
@@ -30,7 +29,7 @@ const _nav = [
     to: '/users',
     isDisabled: true,
     icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
-    access: 'ROLE_ADMIN',
+    access: 'ROLE_USER',
   },
   {
     component: CNavItem,

@@ -17,7 +17,7 @@ const addSociete = async (data) => {
 }
 
 const updateSociete = async (id, data) => {
-  const response = await Axios.put(`/api/societes/${id}`, removeEmptyAttributes(data))
+  const response = await Axios.put(`/api/societes/${id}`, data)
   return response.data
 }
 

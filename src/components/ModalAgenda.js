@@ -63,7 +63,7 @@ const ModalAgendaMessage = (props) => {
             <CListGroupItem>
               <CRow className="align-items-center">
                 <CCol className="text-start" xs={6}>
-                  Date et heure d audiance :
+                  {`Date et heure d'audience :`}
                 </CCol>
                 <CCol className="text-start " xs={6}>
                   <b>
@@ -86,22 +86,6 @@ const ModalAgendaMessage = (props) => {
                     {
                       // eslint-disable-next-line react/prop-types
                       dataMessage.dossier || ''
-                    }{' '}
-                  </b>
-                </CCol>
-              </CRow>
-            </CListGroupItem>
-
-            <CListGroupItem>
-              <CRow className="align-items-center">
-                <CCol className="text-start" xs={6}>
-                  Type de message :
-                </CCol>
-                <CCol className="text-start" xs={6}>
-                  <b>
-                    {
-                      // eslint-disable-next-line react/prop-types
-                      dataMessage.type !== '' ? dataMessage.type : '-----'
                     }{' '}
                   </b>
                 </CCol>

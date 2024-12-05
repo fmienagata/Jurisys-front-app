@@ -25,8 +25,6 @@ import {
   CTableHeaderCell,
   CBadge,
   CRow,
-  CFormSwitch,
-  CPagination,
   CFormInput,
   CCol,
 } from '@coreui/react'

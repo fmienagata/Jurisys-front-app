@@ -4,10 +4,9 @@ import React from 'react'
 //users
 
 const Accesses = {
+  USER: 'ROLE_USER',
   ADMIN: 'ROLE_ADMIN',
   AVOCAT: 'ROLE_AVOCAT',
-  PATRON: 'ROLE_PATRON',
-  USER: 'ROLE_USER',
 }
 
 const users = React.lazy(() => import('./views/pages/users/users'))
@@ -65,7 +64,7 @@ const routes = [
   {
     path: '/users',
     name: 'Utilisateurs',
-    allowedRoles: [Accesses.ADMIN, Accesses.AVOCAT],
+    allowedRoles: [Accesses.AVOCAT, Accesses.ADMIN],
     element: users,
     exact: true,
   },
@@ -133,7 +132,7 @@ const routes = [
   },
   {
     path: '/dashboard',
-    name: 'Dashboard',
+    name: 'Tableau de bord',
     element: dashboard,
     exact: true,
   },
@@ -158,14 +157,14 @@ const routes = [
   },
   {
     path: '/societes',
-    name: 'Liste des entreprises',
+    name: 'Liste des clients',
     allowedRoles: [Accesses.AVOCAT],
     element: societes,
     exact: true,
   },
   {
     path: '/societe-edit/:id',
-    name: 'Modifier une societe',
+    name: 'Modifier un client',
     allowedRoles: [Accesses.AVOCAT],
     element: editSocietes,
     exact: true,

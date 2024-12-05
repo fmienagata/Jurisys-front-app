@@ -22,8 +22,8 @@ const AppSidebar = () => {
   const { user } = useAuth()
 
   const allowedRoles = {
-    ROLE_USER: ['Dashboard', 'Dossiers', 'Recherche', 'Agenda'],
-    ROLE_ADMIN: ['Dashboard', 'Dossiers', 'Recherche', 'Agenda', 'Utilisateurs'],
+    ROLE_USER: ['Tableau de bord', 'Dossiers', 'Recherche', 'Agenda'],
+    ROLE_ADMIN: ['Tableau de bord', 'Dossiers', 'Recherche', 'Agenda', 'Utilisateurs'],
   }
 
   useEffect(() => {
