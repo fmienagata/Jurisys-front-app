@@ -46,7 +46,7 @@ const MessageriesTransmis = () => {
     mutate: fetchDossier,
     dossiers: messagesDossier,
     isLoading: loadingMessags,
-  } = useGetDossierMessages(clickedDossier, {
+  } = useGetDossierMessages(clickedDossier, 'utilisateur', {
     // onSuccess: (dataDossier) => {
     //   // setMessagesSelected(messagesDossier.messages)
     //   // setMessagesDetails(messagesDossier.messages[0])
@@ -79,8 +79,8 @@ const MessageriesTransmis = () => {
 
   useEffect(() => {
     if (messagesDossier) {
-      const messagesFiltered = messagesDossier && filterMessages(messagesDossier, 'all')
-      setMessagesSelected(messagesFiltered)
+      //const messagesFiltered = messagesDossier && filterMessages(messagesDossier, 'all')
+      setMessagesSelected(messagesDossier)
     }
   }, [clickedDossier, messagesDossier])
 
@@ -115,6 +115,7 @@ const MessageriesTransmis = () => {
                   activeNavLink={activeNavLink}
                   setClickedDossier={setClickedDossier}
                   fetchDossier={fetchDossier}
+                  typeMessage={'utilisateur'}
                 />
               )}
             </CCol>

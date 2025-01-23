@@ -157,6 +157,8 @@ const Users = () => {
                 </CRow>
               </CCardHeader>
 
+              {console.log('user -> ', user)}
+
               {users && Array.isArray(users) ? (
                 <CCardBody className="custom-card-body">
                   <Table
@@ -169,7 +171,7 @@ const Users = () => {
                     setOpenModal={setOpenModal}
                     onSelectedRowChange={setSelection}
                     fromPage={'users'}
-                    userConnected={user.username}
+                    userConnected={user}
                     onDelete={handleDeleteUser}
                   />
                 </CCardBody>

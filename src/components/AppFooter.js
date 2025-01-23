@@ -5,7 +5,7 @@ const AppFooter = () => {
   return (
     <CFooter className="px-4">
       <div>
-        <span className="ms-1">&copy; jurisys-soft 2024 .</span> V1.12.05
+        <span className="ms-1">&copy; jurisys-soft 2024 .</span> V1.01.23
       </div>
 
       <div className="ms-auto">

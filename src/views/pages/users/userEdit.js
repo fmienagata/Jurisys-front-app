@@ -214,7 +214,7 @@ const UserEdit = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  <CInputGroup className="mb-1">
+                  {/* <CInputGroup className="mb-1">
                     <CCol>
                       <CHeaderText>
                         {' '}
@@ -235,7 +235,7 @@ const UserEdit = () => {
                         )}
                       />
                     </CCol>
-                  </CInputGroup>
+                  </CInputGroup> */}
                   <CInputGroup className="mb-1">
                     <CCol>
                       <CHeaderText>
