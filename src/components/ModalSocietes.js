@@ -57,7 +57,7 @@ const ModalSociete = (props) => {
         result = 'Capital social'
         break
       case 'nomSociete':
-        result = 'Nom de la societé'
+        result = 'Nom du client'
         break
       default:
         result = key

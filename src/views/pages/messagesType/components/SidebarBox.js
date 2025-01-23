@@ -10,6 +10,7 @@ const SidebarBox = ({
   activeNavLink,
   setClickedDossier,
   fetchDossier,
+  typeMessage,
 }) => {
   return (
     <>
@@ -23,7 +24,7 @@ const SidebarBox = ({
                 key={key}
                 as="button"
                 onClick={() => {
-                  fetchDossier(item.id)
+                  fetchDossier({ id: item.id, typeMessage: typeMessage })
                   setActiveNavLink(key)
                   // setMessagesSelected(item.messages)
                   setClickedDossier(item.id)

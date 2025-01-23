@@ -50,7 +50,7 @@ const Messageries = () => {
     mutate: fetchDossier,
     dossiers: messagesDossier,
     isLoading: loadingMessags,
-  } = useGetDossierMessages(clickedDossier, {
+  } = useGetDossierMessages(clickedDossier, 'avocat', {
     // onSuccess: (dataDossier) => {
     //   // setMessagesSelected(messagesDossier.messages)
     //   // setMessagesDetails(messagesDossier.messages[0])
@@ -83,8 +83,8 @@ const Messageries = () => {
 
   useEffect(() => {
     if (messagesDossier) {
-      const messagesFiltered = messagesDossier && filterMessages(messagesDossier, 'avocat')
-      setMessagesSelected(messagesFiltered)
+      //const messagesFiltered = messagesDossier && filterMessages(messagesDossier, 'all')
+      setMessagesSelected(messagesDossier)
     }
   }, [clickedDossier, messagesDossier])
 
@@ -119,6 +119,7 @@ const Messageries = () => {
                   activeNavLink={activeNavLink}
                   setClickedDossier={setClickedDossier}
                   fetchDossier={fetchDossier}
+                  typeMessage={'avocat'}
                 />
               )}
             </CCol>

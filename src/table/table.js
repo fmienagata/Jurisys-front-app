@@ -283,15 +283,17 @@ const Table = forwardRef(
                             >
                               <CIcon icon={icon.cilFolderOpen} size="sm" />
                             </CButton>
-                            <CButton
-                              color="primary"
-                              variant="ghost"
-                              title="Modifier"
-                              size="sm"
-                              onClick={() => handleEdit(row)}
-                            >
-                              <CIcon icon={icon.cilPen} size="sm" />
-                            </CButton>
+                            {userConnected.roles === 'ROLE_USER' && (
+                              <CButton
+                                color="primary"
+                                variant="ghost"
+                                title="Modifier"
+                                size="sm"
+                                onClick={() => handleEdit(row)}
+                              >
+                                <CIcon icon={icon.cilPen} size="sm" />
+                              </CButton>
+                            )}
 
                             {fromPage === 'dossiers' ? (
                               <label className="switch">
@@ -311,7 +313,8 @@ const Table = forwardRef(
                                 </div>
                               </label>
                             ) : (
-                              (fromPage !== 'users' || userConnected !== row.original.username) && (
+                              (fromPage !== 'users' ||
+                                userConnected.username !== row.original.email) && (
                                 <CButton
                                   title={title}
                                   color={colorIcon}

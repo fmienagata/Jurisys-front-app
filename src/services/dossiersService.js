@@ -62,10 +62,12 @@ function deleteDossier(id) {
   })
 }
 
-function getMessagesDossier(id) {
-  return Axios.get(`/api/messages?criteria=dossier:${id}`).then(async (response) => {
-    return response.data
-  })
+function getMessagesDossier(id, typeMessage) {
+  return Axios.get(`/api/messages?criteria=dossier:${id},typeMessage:${typeMessage}`).then(
+    async (response) => {
+      return response.data
+    },
+  )
 }
 
 function getRechercheDossiers(data) {
@@ -121,7 +123,7 @@ const useGetOneDossier = (id, config = {}) => {
 }
 
 const useGetDossierMessages = (config = {}) => {
-  const mutateDossier = useMutation((id) => getMessagesDossier(id), {
+  const mutateDossier = useMutation(({ id, typeMessage }) => getMessagesDossier(id, typeMessage), {
     ...config,
     staleTime: Infinity,
   })

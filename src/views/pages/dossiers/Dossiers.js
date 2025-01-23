@@ -24,7 +24,7 @@ import { useQueryClient } from 'react-query'
 
 const Dossiers = () => {
   const navigate = useNavigate()
-  const { disconnect } = useAuth()
+  const { disconnect, user } = useAuth()
   const queryClient = useQueryClient()
 
   const location = useLocation()
@@ -213,15 +213,17 @@ const Dossiers = () => {
                           <CIcon icon={icon.cilLibraryAdd} size="sm" /> Supprimer
                         </CButton>
                       )}
-                      <CButton
-                        className="align-middle ml-2"
-                        color="success"
-                        variant="outline"
-                        shape="rounded-pill"
-                        onClick={() => navigate('/dossier-add')}
-                      >
-                        <CIcon icon={icon.cilLibraryAdd} size="sm" /> Ajouter
-                      </CButton>
+                      {user.roles !== 'ROLE_USER' && (
+                        <CButton
+                          className="align-middle ml-2"
+                          color="success"
+                          variant="outline"
+                          shape="rounded-pill"
+                          onClick={() => navigate('/dossier-add')}
+                        >
+                          <CIcon icon={icon.cilLibraryAdd} size="sm" /> Ajouter
+                        </CButton>
+                      )}
                     </CCol>
                   </CRow>
                 </CCardHeader>
