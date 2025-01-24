@@ -265,6 +265,7 @@ const Table = forwardRef(
                 </CTableRow>
               ))}
             </CTableHead>
+            {console.log('userConnected -> ', userConnected)}
             <CTableBody {...getTableBodyProps()} class="table-group-divider align-middle">
               {page.map((row, i) => {
                 prepareRow(row)
@@ -283,17 +284,15 @@ const Table = forwardRef(
                             >
                               <CIcon icon={icon.cilFolderOpen} size="sm" />
                             </CButton>
-                            {userConnected.roles === 'ROLE_USER' && (
-                              <CButton
-                                color="primary"
-                                variant="ghost"
-                                title="Modifier"
-                                size="sm"
-                                onClick={() => handleEdit(row)}
-                              >
-                                <CIcon icon={icon.cilPen} size="sm" />
-                              </CButton>
-                            )}
+                            <CButton
+                              color="primary"
+                              variant="ghost"
+                              title="Modifier"
+                              size="sm"
+                              onClick={() => handleEdit(row)}
+                            >
+                              <CIcon icon={icon.cilPen} size="sm" />
+                            </CButton>
 
                             {fromPage === 'dossiers' ? (
                               <label className="switch">
