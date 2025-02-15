@@ -30,18 +30,23 @@ function addDossier(dossier) {
 }
 
 const addDossierFiles = async (file, id) => {
-  const response = await Axios.post(`/api/dossiers/${id}/dossier_files`, file, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  })
-  //return response.data
+  try {
+    const response = await Axios.post(`/api/dossiers/${id}/dossier_files`, file, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    return response.data
+  } catch (error) {}
 }
 
-function updateDossier(id, dossier) {
-  return Axios.put(`api/dossiers/${id}`, dossier).then(async (response) => {
-    return response.data
-  })
+async function updateDossier(id, dossier) {
+  try {
+    const response = await Axios.put(`api/dossiers/${id}`, dossier)
+    return response
+  } catch (error) {
+    throw error
+  }
 }
 
 function getDossiers() {

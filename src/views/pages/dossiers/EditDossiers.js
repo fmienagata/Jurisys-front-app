@@ -60,7 +60,7 @@ const EditDossier = () => {
   }
   const handleEdit = async (data) => {
     try {
-      await updateDossier(state.data.id, prepareDataUpdate(data))
+      await updateDossier(state.data.id, data)
       queryClient.invalidateQueries(['getAllDossiers'])
       navigate('/dossiers/actifs')
     } catch (error) {

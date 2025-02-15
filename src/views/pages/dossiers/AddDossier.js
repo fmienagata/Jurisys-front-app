@@ -90,7 +90,7 @@ const AddDossier = () => {
       formData.append(`file${index}`, file)
     })
     try {
-      const response = await addDossierFiles(formData, id)
+      await addDossierFiles(formData, id)
       queryClient.invalidateQueries(['getCountDossiersActifs'])
       queryClient.invalidateQueries(['getAllDossiers'])
       navigate('/dossiers/actifs')
