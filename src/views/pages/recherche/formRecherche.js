@@ -103,7 +103,7 @@ const FormRecherche = ({ setDossiers, setIsActif }) => {
                           </CInputGroup>
                         </CCol>
 
-                        <CCol className="text-start" xs={4}>
+                        {/* <CCol className="text-start" xs={4}>
                           <CInputGroup>
                             <Controller
                               name="partieAdverseNom"
@@ -122,7 +122,7 @@ const FormRecherche = ({ setDossiers, setIsActif }) => {
                               )}
                             />
                           </CInputGroup>
-                        </CCol>
+                        </CCol> */}
                       </CRow>
                       <CRow className="align-items-center mb-2" size="sm">
                         <CCol size="sm" className="text-center" xs={4}>

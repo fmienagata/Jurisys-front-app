@@ -89,18 +89,18 @@ const Dossiers = () => {
     //   accessor: 'pays',
     // },
 
-    {
-      Header: 'Objet',
-      accessor: 'objet',
-    },
-    {
-      Header: 'Partie adverse/Nom',
-      accessor: 'partieAdverseNom',
-    },
-    {
-      Header: 'Partie adverse/Prénom',
-      accessor: 'partieAdversePrenom',
-    },
+    // {
+    //   Header: 'Objet',
+    //   accessor: 'objet',
+    // },
+    // {
+    //   Header: 'Partie adverse/Nom',
+    //   accessor: 'partieAdverseNom',
+    // },
+    // {
+    //   Header: 'Partie adverse/Prénom',
+    //   accessor: 'partieAdversePrenom',
+    // },
     {
       Header: 'Juridiction',
       accessor: 'juridiction',
@@ -123,18 +123,22 @@ const Dossiers = () => {
     if (!loadingDossiers && dossiersData) {
       try {
         if (Array.isArray(dossiersData)) {
+          // Filtrer les dossiers selon le statut
           const filteredData = dossiersData.filter((item) => item.statut === isActif)
-          setDossiers(filteredData)
-          setDossiersInitial(filteredData)
+          // Trier du plus récent au plus ancien en utilisant createdAt
+          const sortedData = [...filteredData].sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+          )
+          setDossiers(sortedData)
+          setDossiersInitial(sortedData)
           setColumns(columnsDossiers)
         } else {
           displayError(
-            'Erreur : Impossible de récupérer les données ou données malformé . Veuillez réessayer plus tard.',
+            'Erreur : Impossible de récupérer les données ou données malformées. Veuillez réessayer plus tard.',
           )
         }
       } catch (error) {
         handleErrorResponse(error, disconnect, displayError, navigate)
-      } finally {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

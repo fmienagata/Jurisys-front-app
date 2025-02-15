@@ -688,6 +688,7 @@ const AddDossier = () => {
                   <CRow>
                     <CCol>
                       <CButton
+                        className="mb-4"
                         type="button"
                         color="success"
                         variant="outline"

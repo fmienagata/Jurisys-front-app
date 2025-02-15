@@ -35,7 +35,6 @@ const EditSociete = () => {
   const selectedType = watch('type')
 
   const handleEditSociete = async (data) => {
-    console.log('data --> ', data.type === state.data.type)
     //if true do nothing
     //else // changer les champs :
     if (data.type !== state.data.type) {
