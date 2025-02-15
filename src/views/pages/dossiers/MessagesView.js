@@ -63,6 +63,7 @@ const MessagesView = ({
       displaySuccess('Supprimer un  message', 'Le message est supprimé avec  sucess')
       queryClient.invalidateQueries(['getOneDossier'])
     } catch (error) {
+      console.log(error)
       displayError('Supprimer un message', error.messages)
     }
   }
