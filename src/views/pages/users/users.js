@@ -77,8 +77,9 @@ const Users = () => {
 
   useEffect(() => {
     if (!isLoading && dataUsers) {
-      setInitialUsers(dataUsers.data)
-      setUsers(dataUsers.data)
+      const filteredUsers = dataUsers.data.filter((user) => !user.isDeleted)
+      setInitialUsers(filteredUsers)
+      setUsers(filteredUsers)
     }
   }, [isLoading, dataUsers])
 
@@ -108,6 +109,7 @@ const Users = () => {
     const result = filtredValues(initialUsers, filter)
     setUsers(filter === '' ? initialUsers : result)
   }
+
   return (
     <div>
       <Styles>
@@ -156,8 +158,6 @@ const Users = () => {
                   </CCol>
                 </CRow>
               </CCardHeader>
-
-              {console.log('user -> ', user)}
 
               {users && Array.isArray(users) ? (
                 <CCardBody className="custom-card-body">
