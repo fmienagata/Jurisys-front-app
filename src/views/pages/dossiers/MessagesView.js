@@ -51,7 +51,6 @@ const MessagesView = ({
     setIDDelete(id)
     setOpenModalDelete(true)
   }
-
   function sortByUpdatedAtDesc(data) {
     return data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
   }

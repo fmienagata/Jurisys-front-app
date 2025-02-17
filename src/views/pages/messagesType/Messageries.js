@@ -23,20 +23,24 @@ import './components/style.scss'
 import { useAuth } from 'src/Context/AuthContext'
 import { formatFrenchDate, filterMessages } from 'src/utils/utils'
 import { handleErrorResponse } from '../../../utils/handleErrorResponse'
+import { deleteMessage } from 'src/services/messagesService'
+import ModalAction from 'src/components/ModalAction'
 
 const Messageries = () => {
   const queryClient = useQueryClient()
-  const { displayError } = useMessageContext()
   const { disconnect } = useAuth()
 
   const navigate = useNavigate()
 
   const [dataDossiers, setDataDossiers] = useState([])
+  const { displaySuccess, displayError } = useMessageContext()
 
   const [messagesSelected, setMessagesSelected] = useState([])
   const [messagesDetails, setMessagesDetails] = useState([])
   const [activeInboxIndex, setActiveInboxIndex] = useState(0)
   const [activeNavLink, setActiveNavLink] = useState(0)
+  const [IDDelete, setIDDelete] = useState('')
+  const [openModalDelete, setOpenModalDelete] = useState(false)
 
   const [clickedDossier, setClickedDossier] = useState(null)
 
@@ -45,7 +49,32 @@ const Messageries = () => {
       handleErrorResponse(error, disconnect, displayError, navigate)
     },
   })
+  function deleteMessageID(id) {
+    setIDDelete(id)
+    setOpenModalDelete(true)
+  }
 
+  const deleteMessageAction = async () => {
+    setOpenModalDelete(false)
+    try {
+      await deleteMessage(IDDelete)
+      displaySuccess('Supprimer un  message', 'Le message est supprimé avec succès')
+
+      // ✅ Mettre à jour la liste des messages localement après suppression
+      setMessagesSelected((prevMessages) => prevMessages.filter((msg) => msg.id !== IDDelete))
+
+      // Rafraîchir les données de l'API
+      queryClient.invalidateQueries(['getOneDossier'])
+    } catch (error) {
+      displayError('Supprimer un message', error.messages)
+    }
+  }
+
+  const filteredDossiers = dossiers
+    ? dossiers
+        .filter((dossier) => dossier.messages.length > 0) // ✅ Exclut les dossiers sans messages
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // ✅ Trie du plus récent au plus ancien
+    : []
   const {
     mutate: fetchDossier,
     dossiers: messagesDossier,
@@ -67,10 +96,20 @@ const Messageries = () => {
     //   handleErrorResponse(error, disconnect, displayError, navigate)
     // },
   })
-
   const handleSetActiveInboxIndex = (index) => {
     setActiveInboxIndex(0)
   }
+  const filteredMessagesDossier = messagesDossier
+    ? messagesDossier
+        .map((message) => ({
+          ...message,
+          dossierId: clickedDossier, // Ajoute l'ID du dossier sélectionné à chaque message
+        }))
+        .filter(
+          (message) =>
+            message.user.userType.label === 'ADMIN_USER' || message.user.userType.label === 'USER',
+        )
+    : []
 
   useEffect(() => {
     if (dossiers) {
@@ -80,13 +119,18 @@ const Messageries = () => {
       // setMessagesDetails(dossiers[0].messages.length > 0 ? dossiers[0].messages[0] : [])
     }
   }, [dossiers])
-
   useEffect(() => {
     if (messagesDossier) {
-      //const messagesFiltered = messagesDossier && filterMessages(messagesDossier, 'all')
-      setMessagesSelected(messagesDossier)
+      setMessagesSelected(filteredMessagesDossier) // Utilisation du nouveau filtre
     }
   }, [clickedDossier, messagesDossier])
+  function handleDisplay(dossierId) {
+    if (dossierId) {
+      navigate('/dossier/' + dossierId, {
+        state: { dossierId },
+      })
+    }
+  }
 
   return (
     <>
@@ -110,9 +154,9 @@ const Messageries = () => {
                 paddingBottom: 0,
               }}
             >
-              {!isLoading && dossiers && (
+              {!isLoading && filteredDossiers && (
                 <SidebarBox
-                  dataDossiers={dossiers}
+                  dataDossiers={filteredDossiers}
                   // setMessagesSelected={setMessagesSelected}
                   setActiveNavLink={setActiveNavLink}
                   setActiveInboxIndex={handleSetActiveInboxIndex}
@@ -133,12 +177,12 @@ const Messageries = () => {
               }}
             >
               {!loadingMessags ? (
-                messagesSelected.length > 0 && (
+                filteredMessagesDossier.length > 0 && (
                   <Inbox
-                    messagesSelected={messagesSelected}
+                    messagesSelected={filteredMessagesDossier}
                     setMessagesDetails={setMessagesDetails}
                     setActiveInboxIndex={setActiveInboxIndex}
-                    activeInboxIndex={activeInboxIndex} // Passer l'index actif
+                    activeInboxIndex={activeInboxIndex}
                   />
                 )
               ) : (
@@ -165,14 +209,21 @@ const Messageries = () => {
                         </CCol>
                         {true && (
                           <CCol className="text-end" xs={4}>
-                            <CButton color="success" variant="ghost" size="sm">
+                            <CButton
+                              color="success"
+                              variant="ghost"
+                              title="Consulter"
+                              size="sm"
+                              onClick={() => handleDisplay(messagesDetails.dossierId)} // Passer l'ID du dossier
+                            >
                               <CIcon icon={icon.cilFolderOpen} size="sm" />
                             </CButton>
+
                             <CButton
                               color="success"
                               variant="ghost"
                               size="sm"
-                              onClick={() => console.log('delete -> ', messagesDetails.id)}
+                              onClick={() => deleteMessageID(messagesDetails.id)}
                             >
                               <CIcon icon={icon.cilTrash} size="sm" />
                             </CButton>
@@ -195,6 +246,17 @@ const Messageries = () => {
             </CCol>
           </CRow>
         </CCard>
+        <ModalAction
+          openModal={openModalDelete}
+          setOpenModal={setOpenModalDelete}
+          titleModal={'Supprimer un  message'}
+          messageModal={'Voulez vous vraiment le supprimer ?'}
+          action={
+            <CButton color="danger" onClick={() => deleteMessageAction()}>
+              Supprimer
+            </CButton>
+          }
+        />
       </CContainer>
     </>
   )
