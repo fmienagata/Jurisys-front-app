@@ -688,7 +688,10 @@ const AddDossier = () => {
                   <CRow>
                     <CCol>
                       <CButton
+<<<<<<< HEAD
+=======
                         className="mb-4"
+>>>>>>> features/fixbug
                         type="button"
                         color="success"
                         variant="outline"

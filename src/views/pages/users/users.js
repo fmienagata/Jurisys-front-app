@@ -109,7 +109,6 @@ const Users = () => {
     const result = filtredValues(initialUsers, filter)
     setUsers(filter === '' ? initialUsers : result)
   }
-
   return (
     <div>
       <Styles>
