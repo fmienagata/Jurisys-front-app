@@ -21,13 +21,17 @@ const addUser = async (data) => {
 }
 
 const editUser = async (idUser, data) => {
-  const response = await Axios.put(`/api/users/${idUser}`, data)
-  return response.data
+  try {
+    const response = await Axios.put(`/api/users/${idUser}`, data)
+    return response.data
+  } catch (error) {}
 }
 
 const deleteUser = async (idUser) => {
-  const response = await Axios.delete(`/api/users/${idUser}`)
-  return response.data
+  try {
+    const response = await Axios.delete(`/api/users/${idUser}`)
+    return response.data
+  } catch (error) {}
 }
 
 const useGetAllUsers = (config = {}) => {
@@ -38,7 +42,6 @@ const useGetAllUsers = (config = {}) => {
       ...config,
     },
   )
-
   return {
     data,
     isLoading,
