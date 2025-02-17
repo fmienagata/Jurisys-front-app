@@ -77,11 +77,6 @@ const Table = forwardRef(
     const [openSociete, setOpenSociete] = useState(false)
     const [societe, setSociete] = useState(false)
 
-<<<<<<< HEAD
-    console.log('setCurrentPage ->', currentPage)
-
-=======
->>>>>>> features/fixbug
     const title =
       isActif === undefined ? 'Désactiver / Supprimer' : isActif ? 'Archiver' : 'Activer'
     const titleIcon =
