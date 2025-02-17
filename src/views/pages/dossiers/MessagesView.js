@@ -118,7 +118,7 @@ const MessagesView = ({
                     </CCol>
                     {!isDashboard && (
                       <CCol className="text-end" xs={4}>
-                        {messages[key].messageFiles.length > 0 && (
+                        {messages[key]?.messageFiles.length > 0 && (
                           <CButton
                             color="success"
                             variant="ghost"
@@ -128,7 +128,7 @@ const MessagesView = ({
                               setKeyForModal(key)
                               //setOpenMessage(true)
                               setTitleModal('Listes des piéces jointes du message' + item.type)
-                              setListPJ(messages[key].messageFiles)
+                              setListPJ(messages[key]?.messageFiles)
                               setOpenModalPJ(true)
                             }}
                           >
