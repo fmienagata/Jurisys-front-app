@@ -102,7 +102,6 @@ const FormRecherche = ({ setDossiers, setIsActif }) => {
                             />
                           </CInputGroup>
                         </CCol>
-
                         {/* <CCol className="text-start" xs={4}>
                           <CInputGroup>
                             <Controller
