@@ -19,7 +19,6 @@ const ModalSociete = (props) => {
   // eslint-disable-next-line react/prop-types
   const { openSociete, setOpenSociete, action, dataSocietes } = props
   const { id, ...newData } = dataSocietes
-
   function getKeyName(key) {
     let result = ''
     switch (key) {
@@ -100,22 +99,24 @@ const ModalSociete = (props) => {
         <CModalBody>
           <CListGroup flush>
             {dataSocietes &&
-              Object.entries(newData).map(([key, value]) => (
-                <CListGroupItem key={key}>
-                  <CRow className="align-items-center">
-                    <CCol className="text-start" xs={6}>
-                      {getKeyName(key)}
-                    </CCol>
-                    <CCol className="text-start" xs={6}>
-                      {getKeyName(key) === 'Statut' ? (
-                        <CBadge color={value === 'Payer' ? 'dark' : 'danger'}>{value}</CBadge>
-                      ) : (
-                        <b>{value === null ? '---' : getValue(key, value)}</b>
-                      )}
-                    </CCol>
-                  </CRow>
-                </CListGroupItem>
-              ))}
+              Object.entries(newData)
+                .filter(([key]) => key !== 'deleted' && key !== 'isDeleted')
+                .map(([key, value]) => (
+                  <CListGroupItem key={key}>
+                    <CRow className="align-items-center">
+                      <CCol className="text-start" xs={6}>
+                        {getKeyName(key)}
+                      </CCol>
+                      <CCol className="text-start" xs={6}>
+                        {getKeyName(key) === 'Statut' ? (
+                          <CBadge color={value === 'Payer' ? 'dark' : 'danger'}>{value}</CBadge>
+                        ) : (
+                          <b>{value === null ? '---' : getValue(key, value)}</b>
+                        )}
+                      </CCol>
+                    </CRow>
+                  </CListGroupItem>
+                ))}
           </CListGroup>
         </CModalBody>
         <CModalFooter>

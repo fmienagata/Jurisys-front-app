@@ -20,11 +20,15 @@ import Inbox from './components/Inbox'
 import SidebarBox from './components/SidebarBox'
 import './components/style.scss'
 import { useAuth } from 'src/Context/AuthContext'
-import { formatFrenchDate, filterMessages } from 'src/utils/utils'
+import { formatFrenchDate } from 'src/utils/utils'
 import { handleErrorResponse } from '../../../utils/handleErrorResponse'
+import { deleteMessage } from 'src/services/messagesService'
+import ModalAction from 'src/components/ModalAction'
+import { useQueryClient } from 'react-query'
 
 const MessageriesTransmis = () => {
-  const { displayError } = useMessageContext()
+  const queryClient = useQueryClient()
+  const { displayError, displaySuccess } = useMessageContext()
   const { disconnect } = useAuth()
 
   const navigate = useNavigate()
@@ -36,54 +40,77 @@ const MessageriesTransmis = () => {
 
   const [clickedDossier, setClickedDossier] = useState(null)
 
+  // États pour la suppression
+  const [IDDelete, setIDDelete] = useState('')
+  const [openModalDelete, setOpenModalDelete] = useState(false)
+
   const { dossiers, isLoading } = useGetAllDossiers({
     onError: (error) => {
       handleErrorResponse(error, disconnect, displayError, navigate)
     },
   })
 
+  const filteredDossiers = dossiers
+    ? dossiers
+        .filter((dossier) => dossier.messages.length > 0) // ✅ Exclut les dossiers sans messages
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // ✅ Trie du plus récent au plus ancien
+    : []
   const {
     mutate: fetchDossier,
     dossiers: messagesDossier,
     isLoading: loadingMessags,
-  } = useGetDossierMessages(clickedDossier, 'utilisateur', {
-    // onSuccess: (dataDossier) => {
-    //   // setMessagesSelected(messagesDossier.messages)
-    //   // setMessagesDetails(messagesDossier.messages[0])
-    //   console.log('dataDossier - fetch', dataDossier)
-    //   setMessagesSelected(dataDossier)
-    //   setMessagesSelected(messagesDossier.messages.length > 0 ? messagesDossier[0].messages : [])
-    //   setMessagesDetails(
-    //     messagesDossier[0].messages.length > 0 ? messagesDossier[0].messages[0] : {},
-    //   )
-    //   setActiveInboxIndex(0)
-    // },
-    // onError: (error) => {
-    //   console.log('dataDossier - fetch')
-    //   handleErrorResponse(error, disconnect, displayError, navigate)
-    // },
-  })
+  } = useGetDossierMessages(clickedDossier, 'utilisateur', {})
 
   const handleSetActiveInboxIndex = (index) => {
     setActiveInboxIndex(0)
   }
 
-  useEffect(() => {
-    if (dossiers) {
-      //setDataDossiers(dossiers)
-      // setClickedDossier(dossiers[0].id)
-      // setMessagesSelected(dossiers[0].messages.length > 0 ? dossiers[0].messages : [])
-      // setMessagesDetails(dossiers[0].messages.length > 0 ? dossiers[0].messages[0] : [])
-    }
-  }, [dossiers])
-
+  // Filtrage des messages pour n'afficher que ceux envoyés par "AVOCAT"
+  // Filtrage des messages pour inclure l'ID du dossier
+  const filteredMessagesDossier = messagesDossier
+    ? messagesDossier
+        .map((message) => ({
+          ...message,
+          dossierId: clickedDossier, // Ajoute l'ID du dossier sélectionné à chaque message
+        }))
+        .filter((message) => message.user.userType.label === 'AVOCAT')
+    : []
+  // Mettre à jour les messages sélectionnés après le chargement
   useEffect(() => {
     if (messagesDossier) {
-      //const messagesFiltered = messagesDossier && filterMessages(messagesDossier, 'all')
-      setMessagesSelected(messagesDossier)
+      setMessagesSelected(filteredMessagesDossier)
     }
   }, [clickedDossier, messagesDossier])
 
+  // Fonction pour ouvrir le modal de confirmation de suppression
+  function deleteMessageID(id) {
+    setIDDelete(id)
+    setOpenModalDelete(true)
+  }
+
+  // Fonction pour supprimer un message
+  const deleteMessageAction = async () => {
+    setOpenModalDelete(false)
+    try {
+      await deleteMessage(IDDelete)
+      displaySuccess('Suppression réussie', 'Le message a été supprimé avec succès')
+
+      // Mise à jour locale de l'affichage après suppression
+      setMessagesSelected((prevMessages) => prevMessages.filter((msg) => msg.id !== IDDelete))
+
+      // Rafraîchir les données du dossier concerné
+      queryClient.invalidateQueries(['getOneDossier'])
+    } catch (error) {
+      displayError('Erreur lors de la suppression', error.messages)
+    }
+  }
+  function handleDisplay(dossierId) {
+    if (dossierId) {
+      navigate('/dossier/' + dossierId, {
+        state: { dossierId },
+      })
+    }
+  }
   return (
     <>
       <CContainer
@@ -97,6 +124,7 @@ const MessageriesTransmis = () => {
       >
         <CCard>
           <CRow>
+            {/* Colonne Sidebar */}
             <CCol
               xs={3}
               style={{
@@ -106,10 +134,9 @@ const MessageriesTransmis = () => {
                 paddingBottom: 0,
               }}
             >
-              {!isLoading && dossiers && (
+              {!isLoading && filteredDossiers && (
                 <SidebarBox
-                  dataDossiers={dossiers}
-                  // setMessagesSelected={setMessagesSelected}
+                  dataDossiers={filteredDossiers}
                   setActiveNavLink={setActiveNavLink}
                   setActiveInboxIndex={handleSetActiveInboxIndex}
                   activeNavLink={activeNavLink}
@@ -119,6 +146,8 @@ const MessageriesTransmis = () => {
                 />
               )}
             </CCol>
+
+            {/* Colonne Inbox */}
             <CCol
               xs={3}
               style={{
@@ -134,63 +163,80 @@ const MessageriesTransmis = () => {
                     messagesSelected={messagesSelected}
                     setMessagesDetails={setMessagesDetails}
                     setActiveInboxIndex={setActiveInboxIndex}
-                    activeInboxIndex={activeInboxIndex} // Passer l'index actif
+                    activeInboxIndex={activeInboxIndex}
                   />
                 )
               ) : (
                 <CSpinner color="primary" />
               )}
             </CCol>
+
+            {/* Colonne Détails Message */}
             <CCol xs={6}>
               {messagesSelected.length !== 0 && messagesDetails && (
                 <CListGroup>
-                  <>
-                    <CCardHeader className="text-center">
-                      <CRow className="align-items-center">
-                        <CCol className="text-start" xs={4}>
-                          <CRow>
-                            <small className="text-medium-emphasis">
-                              {formatFrenchDate(messagesDetails.createdAt)}
-                            </small>
-                          </CRow>
-                        </CCol>
-                        <CCol className="text-start" xs={4}>
-                          <CCardTitle>
-                            <small>{messagesDetails.type}</small>
-                          </CCardTitle>
-                        </CCol>
-                        {true && (
-                          <CCol className="text-end" xs={4}>
-                            <CButton color="success" variant="ghost" size="sm">
-                              <CIcon icon={icon.cilFolderOpen} size="sm" />
-                            </CButton>
-                            <CButton
-                              color="success"
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => console.log('delete -> ', messagesDetails.id)}
-                            >
-                              <CIcon icon={icon.cilTrash} size="sm" />
-                            </CButton>
-                          </CCol>
-                        )}
-                      </CRow>
-                    </CCardHeader>
-                    <CListGroup flush>
-                      <CListGroupItem>
-                        <CRow className="align-items-center">
-                          <CCol className="text-start" xs={12}>
-                            <>{messagesDetails.text}</>
-                          </CCol>
+                  <CCardHeader className="text-center">
+                    <CRow className="align-items-center">
+                      <CCol className="text-start" xs={4}>
+                        <CRow>
+                          <small className="text-medium-emphasis">
+                            {formatFrenchDate(messagesDetails.createdAt)}
+                          </small>
                         </CRow>
-                      </CListGroupItem>
-                    </CListGroup>
-                  </>
+                      </CCol>
+                      <CCol className="text-start" xs={4}>
+                        <CCardTitle>
+                          <small>{messagesDetails.type}</small>
+                        </CCardTitle>
+                      </CCol>
+                      <CCol className="text-end" xs={4}>
+                        <CButton
+                          color="success"
+                          variant="ghost"
+                          title="Consulter"
+                          size="sm"
+                          onClick={() => handleDisplay(messagesDetails.dossierId)} // Passer l'ID du dossier
+                        >
+                          <CIcon icon={icon.cilFolderOpen} size="sm" />
+                        </CButton>
+                        <CButton
+                          color="danger"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => deleteMessageID(messagesDetails.id)}
+                        >
+                          <CIcon icon={icon.cilTrash} size="sm" />
+                        </CButton>
+                      </CCol>
+                    </CRow>
+                  </CCardHeader>
+                  <CListGroup flush>
+                    <CListGroupItem>
+                      <CRow className="align-items-center">
+                        <CCol className="text-start" xs={12}>
+                          <>{messagesDetails.text}</>
+                        </CCol>
+                      </CRow>
+                    </CListGroupItem>
+                  </CListGroup>
                 </CListGroup>
               )}
             </CCol>
           </CRow>
         </CCard>
+
+        {/* Modal de confirmation de suppression */}
+        <ModalAction
+          openModal={openModalDelete}
+          setOpenModal={setOpenModalDelete}
+          titleModal="Supprimer un message"
+          messageModal="Voulez-vous vraiment supprimer ce message ?"
+          action={
+            <CButton color="danger" onClick={deleteMessageAction}>
+              Supprimer
+            </CButton>
+          }
+        />
       </CContainer>
     </>
   )

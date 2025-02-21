@@ -99,7 +99,7 @@ function prepareDataUpdate(frm) {
       selectedObject[key] = finalvalue
     }
   })
-
+  console.log(selectedObject)
   return selectedObject
 }
 
