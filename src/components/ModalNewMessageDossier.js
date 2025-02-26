@@ -56,6 +56,16 @@ const ModalNewMessageDossier = (props) => {
 
   const handleFileChange = (e) => {
     const newFiles = Array.from(e.target.files)
+    const totalSize =
+      newFiles.reduce((acc, file) => acc + file.size, 0) +
+      files.reduce((acc, file) => acc + file.size, 0)
+
+    if (totalSize > 1 * 1024 * 1024) {
+      // 1 Mo en octets
+      displayError('La taille totale des fichiers doit être inférieure à 1 Mo.')
+      return
+    }
+
     setFiles([...files, ...newFiles])
     setFilesLen(files.length)
   }
