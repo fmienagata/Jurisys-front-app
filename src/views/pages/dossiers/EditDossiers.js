@@ -22,6 +22,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useMessageContext } from 'src/Context/MessageContext'
 import { useGetAllSocietes } from 'src/services/societeService'
 import { prepareDataUpdate } from 'src/utils/utils'
+import { Typeahead } from 'react-bootstrap-typeahead'
+import 'react-bootstrap-typeahead/css/Typeahead.css'
 
 const EditDossier = () => {
   const location = useLocation()
@@ -251,42 +253,6 @@ const EditDossier = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  {/* <CCol>
-                    <div>
-                      <CInputGroup className="mb-2"></CInputGroup>
-                      <h6>Importer des fichiers</h6>
-
-                      <CFormInput
-                        type="file"
-                        ref={fileInputRef}
-                        onChange={handleFileChange}
-                        multiple
-                      />
-
-                      <CHeaderText>
-                        {files.length} fichier{files.length !== 1 ? 's' : ''} sélectionné
-                        {files.length !== 1 ? 's' : ''}
-                      </CHeaderText>
-
-                      <div>
-                        <ul>
-                          {files.map((file, index) => (
-                            <li key={index}>
-                              {file.name} -{' '}
-                              <CButton
-                                onClick={(e) => handleRemoveFile(index, e)}
-                                variant="outline"
-                                color="danger"
-                                size="sm"
-                              >
-                                <CIcon icon={icon.cilTrash} size="sm" /> Supprimer
-                              </CButton>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </CCol> */}
                 </CCol>
                 <CCol sm="3">
                   {' '}
@@ -336,22 +302,6 @@ const EditDossier = () => {
                       />{' '}
                     </CCol>
                   </CInputGroup>
-                  {/* <CInputGroup className="mb-3">
-                    <CCol>
-                      <CHeaderText> Dossier </CHeaderText>
-                      <Controller
-                        name="statut"
-                        control={control}
-                        defaultValue={Boolean(state.data.statut)}
-                        render={({ field }) => (
-                          <CFormSelect id="statut" {...field}>
-                            <option value={Boolean(true)}>Dossier actif</option>
-                            <option value={Boolean(false)}>Dossier archivé</option>
-                          </CFormSelect>
-                        )}
-                      />{' '}
-                    </CCol>
-                  </CInputGroup> */}
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText>
@@ -377,7 +327,7 @@ const EditDossier = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  <CInputGroup className="mb-3">
+                  {/* <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText>
                         {' '}
@@ -406,6 +356,47 @@ const EditDossier = () => {
                             />
                           )
                         : isLoadingSocietes && <CSpinner color="primary" variant="grow" />}
+                    </CCol>
+                  </CInputGroup> */}
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText>
+                        <b>Client</b>
+                      </CHeaderText>
+                      {!isLoadingSocietes ? (
+                        dataSocietes && dataSocietes.data.length > 0 ? (
+                          <Controller
+                            name="societe"
+                            control={control}
+                            defaultValue={state.data?.societe || ''} // Assurez-vous qu'une valeur par défaut est toujours définie
+                            render={({ field }) => {
+                              const selectedSociete =
+                                dataSocietes.data.find(
+                                  (societe) =>
+                                    societe.id === field.value ||
+                                    societe.nomSociete === field.value,
+                                ) || null
+                              return (
+                                <Typeahead
+                                  {...field}
+                                  id="societe-autocomplete"
+                                  labelKey="nomSociete"
+                                  options={dataSocietes.data}
+                                  selected={selectedSociete ? [selectedSociete] : []}
+                                  onChange={(selected) => {
+                                    field.onChange(selected.length > 0 ? selected[0].id : '')
+                                  }}
+                                  placeholder="Choisir ou rechercher une société"
+                                />
+                              )
+                            }}
+                          />
+                        ) : (
+                          <p>Aucune société disponible</p>
+                        )
+                      ) : (
+                        <CSpinner color="primary" variant="grow" />
+                      )}
                     </CCol>
                   </CInputGroup>
                   <CInputGroup className="mb-3">

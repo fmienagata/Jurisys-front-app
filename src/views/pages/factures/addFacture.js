@@ -21,6 +21,7 @@ import { useGetAllUsers } from '../../../services/usersService'
 import { useGetAllDossiers } from '../../../services/dossiersService'
 import { useQueryClient } from 'react-query'
 import { handleErrorResponse } from '../../../utils/handleErrorResponse'
+import { Typeahead } from 'react-bootstrap-typeahead'
 
 const AddFacture = () => {
   const navigate = useNavigate()
@@ -72,60 +73,72 @@ const AddFacture = () => {
                   {/* <h1>{labels.registre.titleHeader}</h1> */}
                   <p className="text-body-secondary">Ajouter une facture</p>
 
-                  {!isLoading && dataUsers.data.length > 0 ? (
-                    <CInputGroup className="mb-3">
-                      <CCol>
-                        <CHeaderText>
-                          {' '}
-                          <b>Nom de l&apos;utilisateur</b>{' '}
-                        </CHeaderText>
+                  <CRow>
+                    <CCol>
+                      {!isLoading && dataUsers.data.length > 0 ? (
                         <Controller
                           name="user"
                           control={control}
-                          rules={{ required: 'Ce champs est requis' }}
-                          defaultValue={users.length > 0 ? users[0].id : ''}
-                          render={({ field, fieldState: { error } }) => (
-                            <CFormSelect id="user" {...field}>
-                              {dataUsers.data.map((item, key) => (
-                                <option value={item.id} key={key}>
-                                  {item.nom}
-                                </option>
-                              ))}
-                            </CFormSelect>
-                          )}
-                        />
-                      </CCol>
-                    </CInputGroup>
-                  ) : (
-                    isLoading && <CSpinner color="primary" variant="grow" />
-                  )}
+                          rules={{ required: 'Ce champ est requis' }}
+                          render={({ field, fieldState: { error } }) => {
+                            // Trouver l'utilisateur correspondant à l'ID sélectionné
+                            const selectedUser =
+                              dataUsers.data.find((user) => user.id === field.value) || null
 
-                  {!isLoadingDossiers && dossiers.length > 0 ? (
-                    <CInputGroup className="mb-3">
-                      <CCol>
-                        <CHeaderText>
-                          {' '}
-                          <b>Référence du dossier</b>{' '}
-                        </CHeaderText>
+                            return (
+                              <>
+                                <Typeahead
+                                  {...field}
+                                  id="user-autocomplete"
+                                  labelKey="nom"
+                                  options={dataUsers.data} // Liste des utilisateurs
+                                  selected={selectedUser ? [selectedUser] : []} // Affichage du bon utilisateur
+                                  onChange={(selected) => {
+                                    field.onChange(selected.length > 0 ? selected[0].id : '')
+                                  }}
+                                  placeholder="Choisir ou rechercher un utilisateur"
+                                />
+                                {error && <p className="text-danger">{error.message}</p>}
+                              </>
+                            )
+                          }}
+                        />
+                      ) : (
+                        isLoading && <CSpinner color="primary" variant="grow" />
+                      )}
+                    </CCol>
+                  </CRow>
+
+                  {/* Ajout d'un espace entre les champs */}
+                  <div style={{ marginBottom: '16px' }}></div>
+
+                  <CRow>
+                    <CCol>
+                      {!isLoadingDossiers && dossiers.length > 0 ? (
                         <Controller
                           name="dossier"
                           control={control}
-                          defaultValue={dossiers.length > 0 ? dossiers[0].id : ''}
-                          render={({ field }) => (
-                            <CFormSelect id="dossier" {...field}>
-                              {dossiers.map((item, key) => (
-                                <option value={item.id} key={key}>
-                                  {item.reference}
-                                </option>
-                              ))}
-                            </CFormSelect>
+                          rules={{ required: 'Ce champ est requis' }}
+                          render={({ field, fieldState }) => (
+                            <Typeahead
+                              {...field}
+                              id="dossier-autocomplete"
+                              labelKey="reference"
+                              options={dossiers}
+                              selected={dossiers.filter((dossier) => dossier.id === field.value)}
+                              onChange={(selected) => {
+                                field.onChange(selected.length > 0 ? selected[0].id : '')
+                              }}
+                              placeholder="Choisir ou rechercher une référence"
+                              isInvalid={!!fieldState.error}
+                            />
                           )}
                         />
-                      </CCol>
-                    </CInputGroup>
-                  ) : (
-                    isLoadingDossiers && <CSpinner color="primary" variant="grow" />
-                  )}
+                      ) : (
+                        isLoadingDossiers && <CSpinner color="primary" variant="grow" />
+                      )}
+                    </CCol>
+                  </CRow>
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText>

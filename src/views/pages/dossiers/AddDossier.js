@@ -25,6 +25,8 @@ import { useGetAllSocietes } from 'src/services/societeService'
 import { useMessageContext } from 'src/Context/MessageContext'
 import { useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
+import { Typeahead } from 'react-bootstrap-typeahead'
+import 'react-bootstrap-typeahead/css/Typeahead.css'
 
 const AddDossier = () => {
   const navigate = useNavigate()
@@ -430,7 +432,7 @@ const AddDossier = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  <CInputGroup className="mb-3">
+                  {/* <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText>
                         {' '}
@@ -449,6 +451,36 @@ const AddDossier = () => {
                                 </option>
                               ))}
                             </CFormSelect>
+                          )}
+                        />
+                      ) : (
+                        isLoadingSocietes && <CSpinner color="primary" variant="grow" />
+                      )}
+                    </CCol>
+                  </CInputGroup> */}
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText>
+                        <b>Client</b>
+                      </CHeaderText>
+                      {!isLoadingSocietes && societes.length > 0 ? (
+                        <Controller
+                          name="societe"
+                          control={control}
+                          rules={{ required: 'Ce champ est requis' }}
+                          render={({ field, fieldState }) => (
+                            <Typeahead
+                              {...field}
+                              id="societe-autocomplete"
+                              labelKey="nomSociete"
+                              options={societes}
+                              selected={societes.filter((societe) => societe.id === field.value)}
+                              onChange={(selected) => {
+                                field.onChange(selected.length > 0 ? selected[0].id : '')
+                              }}
+                              placeholder="Choisir  un client"
+                              isInvalid={!!fieldState.error}
+                            />
                           )}
                         />
                       ) : (
