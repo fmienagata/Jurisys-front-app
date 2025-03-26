@@ -22,6 +22,7 @@ import { addUser, useGetUsersTypes } from 'src/services/usersService'
 import { useGetAllSocietes } from 'src/services/societeService'
 import { useMessageContext } from 'src/Context/MessageContext'
 import { useQueryClient } from 'react-query'
+import { Typeahead } from 'react-bootstrap-typeahead'
 
 const AddUser = () => {
   const navigate = useNavigate()
@@ -225,31 +226,29 @@ const AddUser = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  <CInputGroup className="mb-0">
+                  <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText>
-                        {' '}
-                        <b>Client</b>{' '}
+                        <b>Client</b>
                       </CHeaderText>
                       {!isLoadingSocietes && societes.length > 0 ? (
                         <Controller
                           name="societe"
                           control={control}
-                          rules={{ required: 'Ce champs est requis' }}
-                          defaultValue={societes.length > 0 ? societes[0].id : ''}
-                          render={({ field, fieldState: { error } }) => (
-                            <CFormSelect
-                              id="societe"
+                          rules={{ required: 'Ce champ est requis' }}
+                          render={({ field, fieldState }) => (
+                            <Typeahead
                               {...field}
-                              invalid={Boolean(error)}
-                              feedbackInvalid={error?.message}
-                            >
-                              {societes.map((item, key) => (
-                                <option value={item.id} key={key}>
-                                  {item.nomSociete}
-                                </option>
-                              ))}
-                            </CFormSelect>
+                              id="societe-autocomplete"
+                              labelKey="nomSociete"
+                              options={societes}
+                              selected={societes.filter((societe) => societe.id === field.value)}
+                              onChange={(selected) => {
+                                field.onChange(selected.length > 0 ? selected[0].id : '')
+                              }}
+                              placeholder="Choisir  un client"
+                              isInvalid={!!fieldState.error}
+                            />
                           )}
                         />
                       ) : (

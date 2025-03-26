@@ -21,6 +21,10 @@ import ModalAction from 'src/components/ModalAction'
 import ModalNewMessageDossier from 'src/components/ModalNewMessageDossier'
 
 import moment from 'moment'
+import { handleErrorResponse } from 'src/utils/handleErrorResponse'
+import { useGetAllDossiers } from 'src/services/dossiersService'
+import { useAuth } from 'src/Context/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 const MessagesView = ({
   dataDossier,
@@ -40,13 +44,17 @@ const MessagesView = ({
   const [openModalDelete, setOpenModalDelete] = useState(false)
 
   //  const [openModalNewMSG, setOpenModalNewMSG] = useState(false)
-
+  const { disconnect, user } = useAuth()
+  const navigate = useNavigate()
   const [sortedMsgs, setSortedMsgs] = useState(sortByUpdatedAtDesc(messages))
-
   const [IDDelete, setIDDelete] = useState('')
   const [keyForModal, setKeyForModal] = useState(0)
   const title = isDashboard ? 'Derniers messages' : 'Listes des messages'
-
+  const { dossiers: dossiersData } = useGetAllDossiers({
+    onError: (error) => {
+      handleErrorResponse(error, disconnect, displayError, navigate)
+    },
+  })
   function deleteMessageID(id) {
     setIDDelete(id)
     setOpenModalDelete(true)
@@ -54,7 +62,6 @@ const MessagesView = ({
   function sortByUpdatedAtDesc(data) {
     return data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
   }
-
   const deleteMessageAction = async () => {
     setOpenModalDelete(false)
     try {
@@ -63,6 +70,19 @@ const MessagesView = ({
       queryClient.invalidateQueries(['getOneDossier'])
     } catch (error) {
       displayError('Supprimer un message', error.messages)
+    }
+  }
+  const handleRowClick = (dossierReference) => {
+    // Chercher le dossier correspondant dans dossiersData
+    const foundDossier = dossiersData.find((dossier) => dossier.reference === dossierReference)
+
+    if (foundDossier) {
+      const dossierId = foundDossier.id
+      if (dossierId) {
+        navigate('/dossier/' + dossierId, {
+          state: { dossierId }, // Passer l'id dans l'état de la navigation
+        })
+      }
     }
   }
 
@@ -100,7 +120,11 @@ const MessagesView = ({
             sortedMsgs.map((item, key) => (
               <CListGroupItem key={key} style={{ borderBottom: '1px solid gray' }}>
                 <CCardHeader className="text-center">
-                  <CRow className="align-items-center">
+                  <CRow
+                    className="align-items-center"
+                    style={isDashboard ? { cursor: 'pointer' } : {}}
+                    onClick={() => handleRowClick(item.dossier)}
+                  >
                     <CCol className="text-start" xs={4}>
                       <CRow>
                         <small className="text-medium-emphasis">
@@ -110,6 +134,7 @@ const MessagesView = ({
                         </small>
                       </CRow>
                     </CCol>
+
                     <CCol className="text-start" xs={4}>
                       <CCardTitle>
                         <small>{item.type}</small>

@@ -29,6 +29,8 @@ import { handleErrorResponse } from '../../../utils/handleErrorResponse'
 import { useAuth } from 'src/Context/AuthContext'
 import dayjs from 'dayjs'
 import 'dayjs/locale/fr'
+import { Typeahead } from 'react-bootstrap-typeahead'
+import 'react-bootstrap-typeahead/css/Typeahead.css'
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -139,6 +141,16 @@ const CreateMessagesDossier = () => {
 
   const handleFileChange = (e) => {
     const newFiles = Array.from(e.target.files)
+    const totalSize =
+      newFiles.reduce((acc, file) => acc + file.size, 0) +
+      files.reduce((acc, file) => acc + file.size, 0)
+
+    if (totalSize > 1 * 1024 * 1024) {
+      // 1 Mo en octets
+      displayError('La taille totale des fichiers doit être inférieure à 1 Mo.')
+      return
+    }
+
     setFiles([...files, ...newFiles])
     setFilesLen(files.length)
   }
@@ -172,53 +184,54 @@ const CreateMessagesDossier = () => {
                       )}
                     />
                   </CCol>
-                  {/* <CCol className="mb-2">
-                    <CHeaderText> Type du message </CHeaderText>
+                  {!loadingDossiers && dossiers.length > 0 ? (
+                    // <CCol>
+                    //   <CHeaderText> Liste des références </CHeaderText>
+                    //   <Controller
+                    //     name="dossier"
+                    //     control={control}
+                    //     rules={{ required: 'Ce champs est requis' }}
+                    //     defaultValue={dossiers.length > 0 ? dossiers[0].id : ''}
+                    //     render={({ field, fieldState: { error } }) => (
+                    //       <CFormSelect
+                    //         id="dossier"
+                    //         {...field}
+                    //         invalid={Boolean(error)}
+                    //         feedbackInvalid={error?.message}
+                    //       >
+                    //         {!loadingDossiers ? (
+                    //           dossiers &&
+                    //           dossiers.map((item, key) => (
+                    //             <option value={item.id} key={key}>
+                    //               {item.reference}
+                    //             </option>
+                    //           ))
+                    //         ) : (
+                    //           <CSpinner color="primary" variant="grow" />
+                    //         )}
+                    //       </CFormSelect>
+                    //     )}
+                    //   />
+                    // </CCol>
                     <Controller
-                      name="typeMessage"
-                      defaultValue=""
-                      rules={{ required: 'Ce champs est requis' }}
+                      name="dossier"
                       control={control}
-                      render={({ field, fieldState: { error } }) => (
-                        <CFormInput
+                      rules={{ required: 'Ce champ est requis' }}
+                      render={({ field, fieldState }) => (
+                        <Typeahead
                           {...field}
-                          id="typeMessage"
-                          placeholder="Type du message"
-                          invalid={Boolean(error)}
-                          feedbackInvalid={error?.message}
+                          id="dossier-autocomplete"
+                          labelKey="reference"
+                          options={dossiers}
+                          selected={dossiers.filter((dossier) => dossier.id === field.value)}
+                          onChange={(selected) => {
+                            field.onChange(selected.length > 0 ? selected[0].id : '')
+                          }}
+                          placeholder="Choisir ou rechercher une référence"
+                          isInvalid={!!fieldState.error}
                         />
                       )}
                     />
-                  </CCol> */}
-                  {!loadingDossiers && dossiers.length > 0 ? (
-                    <CCol>
-                      <CHeaderText> Liste des références </CHeaderText>
-                      <Controller
-                        name="dossier"
-                        control={control}
-                        rules={{ required: 'Ce champs est requis' }}
-                        defaultValue={dossiers.length > 0 ? dossiers[0].id : ''}
-                        render={({ field, fieldState: { error } }) => (
-                          <CFormSelect
-                            id="dossier"
-                            {...field}
-                            invalid={Boolean(error)}
-                            feedbackInvalid={error?.message}
-                          >
-                            {!loadingDossiers ? (
-                              dossiers &&
-                              dossiers.map((item, key) => (
-                                <option value={item.id} key={key}>
-                                  {item.reference}
-                                </option>
-                              ))
-                            ) : (
-                              <CSpinner color="primary" variant="grow" />
-                            )}
-                          </CFormSelect>
-                        )}
-                      />
-                    </CCol>
                   ) : (
                     <CSpinner color="primary" variant="grow" />
                   )}

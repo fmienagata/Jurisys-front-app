@@ -24,6 +24,7 @@ import { useGetAllSocietes } from 'src/services/societeService'
 import { useGetUsersTypes } from 'src/services/usersService'
 
 import { useQueryClient } from 'react-query'
+import { Typeahead } from 'react-bootstrap-typeahead'
 
 const UserEdit = () => {
   const location = useLocation()
@@ -45,7 +46,6 @@ const UserEdit = () => {
       )
     },
   })
-
   const { data: dataSocietes, isLoading: isLoadingSocietes } = useGetAllSocietes({
     onSuccess: (dataSocietes) => {
       setSocietes(dataSocietes.data)
@@ -193,27 +193,6 @@ const UserEdit = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  {/* <CInputGroup className="mb-1">
-                    <CCol>
-                      <CHeaderText>
-                        {' '}
-                        <b>Username</b>{' '}
-                      </CHeaderText>
-                      <Controller
-                        name="username"
-                        control={control}
-                        defaultValue={state.data.username}
-                        render={({ field }) => (
-                          <CFormInput
-                            {...field}
-                            id="username"
-                            placeholder="username"
-                            autoComplete="username"
-                          />
-                        )}
-                      />
-                    </CCol>
-                  </CInputGroup> */}
                   <CInputGroup className="mb-1">
                     <CCol>
                       <CHeaderText>
@@ -236,7 +215,7 @@ const UserEdit = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  <CInputGroup className="mb-1">
+                  {/* <CInputGroup className="mb-1">
                     <CCol>
                       <CHeaderText>
                         {' '}
@@ -263,7 +242,52 @@ const UserEdit = () => {
                         isLoadingSocietes && <CSpinner color="primary" variant="grow" />
                       )}
                     </CCol>
+                  </CInputGroup> */}
+                  <CInputGroup className="mb-3">
+                    <CCol>
+                      <CHeaderText>
+                        <b>Client</b>
+                      </CHeaderText>
+                      {!isLoadingSocietes ? (
+                        societes && societes.length > 0 ? (
+                          <Controller
+                            name="societe"
+                            control={control}
+                            // Initialisation avec l'ID ou le nom si disponible
+                            defaultValue={state.data?.societe || ''}
+                            render={({ field }) => {
+                              // Recherche de la société par son ID
+                              const selectedSociete = societes.find(
+                                (societe) => societe.id === field.value, // Chercher par ID maintenant
+                              )
+
+                              return (
+                                <Typeahead
+                                  {...field}
+                                  id="societe-autocomplete"
+                                  labelKey="nomSociete" // Utilise le nom de la société pour l'affichage
+                                  options={societes}
+                                  selected={selectedSociete ? [selectedSociete] : []} // Sélectionne la société par son ID
+                                  onChange={(selected) => {
+                                    // Met à jour avec l'ID de la société sélectionnée
+                                    field.onChange(
+                                      selected.length > 0 ? selected[0].id : '', // Envoie l'ID de la société
+                                    )
+                                  }}
+                                  placeholder="Choisir ou rechercher une société"
+                                />
+                              )
+                            }}
+                          />
+                        ) : (
+                          <p>Aucune société disponible</p>
+                        )
+                      ) : (
+                        <CSpinner color="primary" variant="grow" />
+                      )}
+                    </CCol>
                   </CInputGroup>
+
                   <CInputGroup className="mb-3 mt-4">
                     <CInputGroupText>@</CInputGroupText>
                     <Controller

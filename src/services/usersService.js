@@ -57,7 +57,6 @@ const useGetUsersTypes = (config = {}) => {
       ...config,
     },
   )
-
   return {
     data,
     isLoading,
