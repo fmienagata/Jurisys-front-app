@@ -69,7 +69,6 @@ const Users = () => {
     //   handleErrorResponse(error, disconnect, displayError, navigate)
     // },
   })
-
   const handleDeleteUser = (userId) => {
     setOpenModal(true)
     setUserIDDelete(userId)

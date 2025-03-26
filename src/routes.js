@@ -1,4 +1,5 @@
 import React from 'react'
+import Profile from './views/pages/users/Profile'
 
 //
 //users
@@ -188,6 +189,12 @@ const routes = [
     name: 'Modifier une facture',
     allowedRoles: [Accesses.AVOCAT],
     element: editfacture,
+    exact: true,
+  },
+  {
+    path: '/profile',
+    name: 'Profil utilisateur',
+    element: Profile,
     exact: true,
   },
   {

@@ -22,7 +22,6 @@ const addUser = async (data) => {
 
 const editUser = async (idUser, data) => {
   try {
-    console.log(data)
     const response = await Axios.put(`/api/users/${idUser}`, data)
     return response.data
   } catch (error) {}
@@ -58,7 +57,6 @@ const useGetUsersTypes = (config = {}) => {
       ...config,
     },
   )
-
   return {
     data,
     isLoading,
