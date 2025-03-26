@@ -84,7 +84,6 @@ const { data: dataSocietes } = useGetAllSocietes({
           <CCard className="mx-4">
             <CCardBody className="p-4">
               <form onSubmit={handleSubmit(handleEdit)}>
-                <p className="text-body-secondary">Modifier un utilisateur</p>
 
                 {/* Nom */}
                 <CInputGroup className="mb-1">
