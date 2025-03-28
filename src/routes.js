@@ -6,7 +6,7 @@ import Profile from './views/pages/users/Profile'
 
 const Accesses = {
   USER: 'ROLE_USER',
-  ADMIN: 'ROLE_ADMIN',
+  ADMIN: 'ROLE_PATRON',
   AVOCAT: 'ROLE_AVOCAT',
 }
 
@@ -107,14 +107,14 @@ const routes = [
   {
     path: '/messages/messaging',
     name: 'Messages reçus',
-    allowedRoles: [Accesses.AVOCAT],
+    allowedRoles: [Accesses.AVOCAT, Accesses.ADMIN],
     element: messageries,
     exact: true,
   },
   {
     path: '/messages/send',
     name: 'Messages envoyés',
-    allowedRoles: [Accesses.AVOCAT],
+    allowedRoles: [Accesses.AVOCAT, Accesses.ADMIN],
     element: MessageriesTransmis,
     exact: true,
   },

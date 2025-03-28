@@ -69,7 +69,6 @@ const Messageries = () => {
       displayError('Supprimer un message', error.messages)
     }
   }
-
   const filteredDossiers = dossiers
     ? dossiers
         .filter((dossier) => dossier.messages.length > 0) // ✅ Exclut les dossiers sans messages

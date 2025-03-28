@@ -56,7 +56,7 @@ const Login = () => {
       <CContainer>
         <CRow className="justify-content-center">
           <CCard className=" py-4 mb-1" style={{ width: '65%' }}>
-            <img src={`${process.env.PUBLIC_URL}/images/logo_2.png`} alt="Logo" />
+            <img src={`${process.env.PUBLIC_URL}/images/logo.png`} alt="Logo" />
           </CCard>
           <CCol md={8}>
             <CCardGroup>

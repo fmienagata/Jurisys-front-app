@@ -82,7 +82,6 @@ const AddUser = () => {
       displayError(error.messages)
     }
   }
-
   return (
     <div>
       <CContainer>
