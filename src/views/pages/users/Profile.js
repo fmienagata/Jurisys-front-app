@@ -37,7 +37,7 @@ const Profile = () => {
 const { data: dataSocietes } = useGetAllSocietes({
   enabled: !!currentUser,
   onSuccess: (dataSocietes) => {
-    const societe = dataSocietes.data.find(
+    const societe = dataSocietes?.data?.find(
       (item) => item.nomSociete.toLowerCase() === currentUser?.societe?.toLowerCase(),
     )
     setSelectedSociete(societe)

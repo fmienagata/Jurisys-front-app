@@ -109,7 +109,7 @@ const AddSociete = () => {
                         <CCol>
                           <CHeaderText>
                             {' '}
-                            <b>Dénomination sociale</b>{' '}
+                            <b>Forme juridique</b>{' '}
                           </CHeaderText>
                           <Controller
                             name="denominationSociale"
@@ -120,8 +120,7 @@ const AddSociete = () => {
                               <CFormInput
                                 {...field}
                                 id="denominationSociale"
-                                placeholder="Dénomination sociale"
-                                autoComplete="Dénomination sociale"
+                                placeholder="Forme juridique"
                                 invalid={Boolean(error)}
                                 feedbackInvalid={error?.message}
                               />

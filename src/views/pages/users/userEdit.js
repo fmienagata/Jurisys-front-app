@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-
 import {
   CButton,
   CCard,
@@ -17,14 +16,13 @@ import {
 } from '@coreui/react'
 import { useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
-
-import { editUser } from 'src/services/usersService'
+import { editUser, useGetAllUsers } from 'src/services/usersService'
 import { useMessageContext } from 'src/Context/MessageContext'
 import { useGetAllSocietes } from 'src/services/societeService'
 import { useGetUsersTypes } from 'src/services/usersService'
-
 import { useQueryClient } from 'react-query'
 import { Typeahead } from 'react-bootstrap-typeahead'
+import { jwtDecode } from 'jwt-decode'
 
 const UserEdit = () => {
   const location = useLocation()
@@ -34,10 +32,10 @@ const UserEdit = () => {
 
   const { displaySuccess, displayError } = useMessageContext()
   const [societes, setSocietes] = useState([])
-  const [selectedSociete, setSelectedSociete] = useState('')
-
   const [usersTypes, setUsersTypes] = useState([])
-  const [selectedUsersTypes, setSelectedUsersTypes] = useState('')
+  const token = localStorage.getItem('token')
+  const decodedToken = jwtDecode(token)
+  const { control, handleSubmit, setValue } = useForm()
 
   const { data: dataUsers, isLoading } = useGetUsersTypes({
     onError: (error) => {
@@ -46,10 +44,10 @@ const UserEdit = () => {
       )
     },
   })
+
   const { data: dataSocietes, isLoading: isLoadingSocietes } = useGetAllSocietes({
     onSuccess: (dataSocietes) => {
       setSocietes(dataSocietes.data)
-      setSelectedSociete(dataSocietes.data.find((item) => item.nomSociete === state.data.societe))
     },
     onError: (error) => {
       displayError(
@@ -58,37 +56,43 @@ const UserEdit = () => {
     },
   })
 
-  const { control, handleSubmit } = useForm()
+  const { data: dataAllUsers, isLoading: isLoadingUsers } = useGetAllUsers({})
+
+  const user = dataAllUsers?.data?.find((user) => user.email === decodedToken.username)
+  useEffect(() => {
+    if (user && (user.userType?.label === 'ADMIN_USER' || user.userType?.label === 'USER')) {
+      const userSociete = user.societe // Récupérer la société de l'utilisateur
+      // Remplir le champ avec l'ID de la société et afficher le nom
+      const societe = societes.find((soc) => soc.id === userSociete.id)
+      if (societe) {
+        setValue('societe', societe.id) // Remplir avec l'ID de la société
+      }
+    }
+  }, [user, societes, decodedToken, setValue])
 
   const handleEdit = async (data) => {
     try {
       await editUser(state.data.id, data)
-      displaySuccess('Modifié avec sucess', "L'utilisateur a bien été modifié avec sucess")
+      displaySuccess('Modifié avec succès', "L'utilisateur a bien été modifié avec succès")
       navigate('/users')
       queryClient.invalidateQueries(['getAllUsers'])
     } catch (error) {
-      displayError("error est survenue lors de la modification d'un utilisateur")
+      displayError("Une erreur est survenue lors de la modification de l'utilisateur")
       navigate('/users')
     }
   }
 
   useEffect(() => {
-    if (!isLoadingSocietes && dataSocietes) {
-      setSocietes(dataSocietes.data)
-      setSelectedSociete(dataSocietes.data.find((item) => item.nomSociete === state.data.societe))
-    } else {
-      queryClient.invalidateQueries(['getAllSocietes'])
-    }
-  }, [queryClient, isLoadingSocietes, dataSocietes, state.data.societe])
-
-  useEffect(() => {
-    if (!isLoading && dataUsers.data) {
+    if (!isLoading && dataUsers) {
       setUsersTypes(dataUsers.data)
-      setSelectedUsersTypes(dataUsers.data.find((item) => item.label === state.data.userType.label))
-    } else {
-      //queryClient.invalidateQueries(['getUsersTypes'])
     }
-  }, [isLoading, dataUsers, queryClient, state.data.userType.label])
+  }, [isLoading, dataUsers])
+
+  // Filtrage des rôles : Exclure 'AVOCAT' si l'utilisateur est 'ADMIN_USER' ou 'USER'
+  const filteredUserTypes =
+    user && (user.userType?.label === 'ADMIN_USER' || user.userType?.label === 'USER')
+      ? usersTypes.filter((type) => type?.label !== 'AVOCAT')
+      : usersTypes
 
   return (
     <div>
@@ -98,22 +102,22 @@ const UserEdit = () => {
             <CCard className="mx-4">
               <CCardBody className="p-4">
                 <form onSubmit={handleSubmit(handleEdit)}>
-                  {/* <h1>{labels.registre.titleHeader}</h1> */}
                   <p className="text-body-secondary">Modifier un utilisateur</p>
+
+                  {/* Type d'utilisateur */}
                   <CInputGroup className="mb-1">
                     <CCol>
                       <CHeaderText>
-                        {' '}
-                        <b>Type d&apos;utilisateur</b>{' '}
+                        <b>Type d&apos;utilisateur</b>
                       </CHeaderText>
-                      {!isLoading && usersTypes.length > 0 ? (
+                      {!isLoading && usersTypes?.length > 0 ? (
                         <Controller
                           name="userType"
                           control={control}
-                          defaultValue={selectedUsersTypes.id}
+                          defaultValue={state?.data?.userType?.id}
                           render={({ field }) => (
                             <CFormSelect id="userType" {...field}>
-                              {usersTypes.map((item, key) => (
+                              {filteredUserTypes?.map((item, key) => (
                                 <option value={item.id} key={key}>
                                   {item.label}
                                 </option>
@@ -127,11 +131,11 @@ const UserEdit = () => {
                     </CCol>
                   </CInputGroup>
 
+                  {/* Nom */}
                   <CInputGroup className="mb-1">
                     <CCol>
                       <CHeaderText>
-                        {' '}
-                        <b>Nom</b>{' '}
+                        <b>Nom</b>
                       </CHeaderText>
                       <Controller
                         name="nom"
@@ -148,11 +152,12 @@ const UserEdit = () => {
                       />
                     </CCol>
                   </CInputGroup>
+
+                  {/* Prénom */}
                   <CInputGroup className="mb-1">
                     <CCol>
                       <CHeaderText>
-                        {' '}
-                        <b>Prénom</b>{' '}
+                        <b>Prénom</b>
                       </CHeaderText>
                       <Controller
                         name="prenom"
@@ -169,16 +174,16 @@ const UserEdit = () => {
                       />
                     </CCol>
                   </CInputGroup>
+
+                  {/* Fonction */}
                   <CInputGroup className="mb-1">
                     <CCol>
                       <CHeaderText>
-                        {' '}
-                        <b>Fonction</b>{' '}
+                        <b>Fonction</b>
                       </CHeaderText>
                       <Controller
                         name="fonction"
                         control={control}
-                        rules={{ required: 'Ce champs est requis' }}
                         defaultValue={state.data.fonction ?? ''}
                         render={({ field, fieldState: { error } }) => (
                           <CFormInput
@@ -193,15 +198,15 @@ const UserEdit = () => {
                       />
                     </CCol>
                   </CInputGroup>
+
+                  {/* Mot de passe */}
                   <CInputGroup className="mb-1">
                     <CCol>
                       <CHeaderText>
-                        {' '}
-                        <b>Mot de passe</b>{' '}
+                        <b>Mot de passe</b>
                       </CHeaderText>
                       <Controller
                         name="password"
-                        defaultValue={state.data.password}
                         control={control}
                         render={({ field }) => (
                           <CFormInput
@@ -215,79 +220,57 @@ const UserEdit = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  {/* <CInputGroup className="mb-1">
-                    <CCol>
-                      <CHeaderText>
-                        {' '}
-                        <b>Client</b>{' '}
-                      </CHeaderText>
-                      {!isLoadingSocietes && societes.length > 0 ? (
-                        <Controller
-                          name="societe"
-                          control={control}
-                          defaultValue={
-                            selectedSociete?.id || (societes.length > 0 ? societes[0].id : '')
-                          }
-                          render={({ field }) => (
-                            <CFormSelect id="societe" {...field}>
-                              {societes.map((item, key) => (
-                                <option value={item.id} key={key}>
-                                  {item.nomSociete}
-                                </option>
-                              ))}
-                            </CFormSelect>
-                          )}
-                        />
-                      ) : (
-                        isLoadingSocietes && <CSpinner color="primary" variant="grow" />
-                      )}
-                    </CCol>
-                  </CInputGroup> */}
-                  <CInputGroup className="mb-3">
-                    <CCol>
-                      <CHeaderText>
-                        <b>Client</b>
-                      </CHeaderText>
-                      {!isLoadingSocietes ? (
-                        societes && societes.length > 0 ? (
-                          <Controller
-                            name="societe"
-                            control={control}
-                            // Initialisation avec l'ID ou le nom si disponible
-                            defaultValue={state.data?.societe || ''}
-                            render={({ field }) => {
-                              // Recherche de la société par son ID
-                              const selectedSociete = societes.find(
-                                (societe) => societe.id === field.value, // Chercher par ID maintenant
-                              )
 
-                              return (
-                                <Typeahead
-                                  {...field}
-                                  id="societe-autocomplete"
-                                  labelKey="nomSociete" // Utilise le nom de la société pour l'affichage
-                                  options={societes}
-                                  selected={selectedSociete ? [selectedSociete] : []} // Sélectionne la société par son ID
-                                  onChange={(selected) => {
-                                    // Met à jour avec l'ID de la société sélectionnée
-                                    field.onChange(
-                                      selected.length > 0 ? selected[0].id : '', // Envoie l'ID de la société
-                                    )
-                                  }}
-                                  placeholder="Choisir ou rechercher une société"
-                                />
-                              )
-                            }}
-                          />
+                  {/* Client */}
+                  {/* Client */}
+                  {!(
+                    user?.userType?.label === 'ADMIN_USER' || user?.userType?.label === 'USER'
+                  ) && (
+                    <CInputGroup className="mb-3">
+                      <CCol>
+                        <CHeaderText>
+                          <b>Client</b>
+                        </CHeaderText>
+                        {!isLoadingSocietes ? (
+                          societes && societes.length > 0 ? (
+                            <Controller
+                              name="societe"
+                              control={control}
+                              defaultValue={state.data.societe?.id || ''}
+                              render={({ field }) => {
+                                const selectedSociete = societes.find(
+                                  (societe) => societe.id === field.value,
+                                )
+                                return (
+                                  <Typeahead
+                                    {...field}
+                                    id="societe-autocomplete"
+                                    labelKey="nomSociete"
+                                    options={societes}
+                                    selected={selectedSociete ? [selectedSociete] : []}
+                                    onChange={(selected) => {
+                                      field.onChange(selected.length > 0 ? selected[0].id : '')
+                                    }}
+                                    placeholder="Choisir ou rechercher une société"
+                                    disabled={
+                                      user?.userType?.label === 'ADMIN_USER' ||
+                                      user?.userType?.label === 'USER'
+                                    }
+                                  />
+                                )
+                              }}
+                            />
+                          ) : (
+                            <p>Aucune société disponible</p>
+                          )
                         ) : (
-                          <p>Aucune société disponible</p>
-                        )
-                      ) : (
-                        <CSpinner color="primary" variant="grow" />
-                      )}
-                    </CCol>
-                  </CInputGroup>
+                          <CSpinner color="primary" variant="grow" />
+                        )}
+                      </CCol>
+                    </CInputGroup>
+                  )}
 
+                  {/* Email */}
                   <CInputGroup className="mb-3 mt-4">
                     <CInputGroupText>@</CInputGroupText>
                     <Controller

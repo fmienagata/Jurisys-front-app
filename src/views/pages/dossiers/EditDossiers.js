@@ -1,5 +1,6 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable react/react-in-jsx-scope */
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import {
   CButton,
@@ -24,6 +25,8 @@ import { useGetAllSocietes } from 'src/services/societeService'
 import { prepareDataUpdate } from 'src/utils/utils'
 import { Typeahead } from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.css'
+import { jwtDecode } from 'jwt-decode'
+import { useGetAllUsers } from 'src/services/usersService'
 
 const EditDossier = () => {
   const location = useLocation()
@@ -37,8 +40,11 @@ const EditDossier = () => {
   const [filesLen, setFilesLen] = useState(0)
   const fileInputRef = useRef(null)
   const [societes, setSocietes] = useState([])
+  const token = localStorage.getItem('token')
+  const decodedToken = jwtDecode(token)
+  const { control, handleSubmit, setValue } = useForm()
 
-  const { control, handleSubmit } = useForm()
+  const { data: dataUsers, isLoading } = useGetAllUsers({})
 
   const { dataSocietesAPI: dataSocietes, isLoading: isLoadingSocietes } = useGetAllSocietes({
     onError: (error) => {
@@ -47,7 +53,7 @@ const EditDossier = () => {
       )
     },
   })
-
+  const user = dataUsers?.data?.find((user) => user.email === decodedToken.username)
   const handleFileChange = (e) => {
     const newFiles = Array.from(e.target.files)
     setFiles([...files, ...newFiles])
@@ -66,6 +72,7 @@ const EditDossier = () => {
       queryClient.invalidateQueries(['getAllDossiers'])
       navigate('/dossiers/actifs')
     } catch (error) {
+      console.log(error)
       displayError(error.message)
     } finally {
       setLoading(false)
@@ -327,37 +334,6 @@ const EditDossier = () => {
                       />
                     </CCol>
                   </CInputGroup>
-                  {/* <CInputGroup className="mb-3">
-                    <CCol>
-                      <CHeaderText>
-                        {' '}
-                        <b>Client</b>{' '}
-                      </CHeaderText>
-                      {!isLoadingSocietes
-                        ? dataSocietes &&
-                          dataSocietes.data.length > 0 && (
-                            <Controller
-                              name="societe"
-                              control={control}
-                              //defaultValue={state.data.id}
-                              render={({ field }) => (
-                                <CFormSelect id="societe" {...field}>
-                                  {dataSocietes.data.map((item, key) => (
-                                    <option
-                                      value={item.id}
-                                      key={key}
-                                      selected={state.data.societe === item.nomSociete}
-                                    >
-                                      {item.nomSociete}
-                                    </option>
-                                  ))}
-                                </CFormSelect>
-                              )}
-                            />
-                          )
-                        : isLoadingSocietes && <CSpinner color="primary" variant="grow" />}
-                    </CCol>
-                  </CInputGroup> */}
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText>
@@ -365,32 +341,51 @@ const EditDossier = () => {
                       </CHeaderText>
                       {!isLoadingSocietes ? (
                         dataSocietes && dataSocietes.data.length > 0 ? (
-                          <Controller
-                            name="societe"
-                            control={control}
-                            defaultValue={state.data?.societe || ''} // Assurez-vous qu'une valeur par défaut est toujours définie
-                            render={({ field }) => {
-                              const selectedSociete =
-                                dataSocietes.data.find(
-                                  (societe) =>
-                                    societe.id === field.value ||
-                                    societe.nomSociete === field.value,
-                                ) || null
-                              return (
+                          user?.userType?.label === 'ADMIN_USER' ||
+                          user?.userType?.label === 'USER' ? (
+                            <Controller
+                              name="societe"
+                              control={control}
+                              defaultValue={state.data?.societe?.id || user.societe?.id} // Utilise l'id de la société dans le user pour ADMIN_USER ou USER
+                              render={({ field }) => {
+                                const selectedSociete =
+                                  dataSocietes.data.find(
+                                    (societe) =>
+                                      societe.id === field.value ||
+                                      societe.nomSociete === field.value,
+                                  ) || null
+                                return (
+                                  <CFormInput
+                                    {...field} // Inclut "field" correctement ici
+                                    id="societe"
+                                    value={selectedSociete ? selectedSociete.nomSociete : ''}
+                                    disabled
+                                    placeholder="Client (non modifiable)"
+                                  />
+                                )
+                              }}
+                            />
+                          ) : (
+                            <Controller
+                              name="societe"
+                              control={control}
+                              render={({ field }) => (
                                 <Typeahead
-                                  {...field}
+                                  {...field} // Utilisez ici field correctement
                                   id="societe-autocomplete"
                                   labelKey="nomSociete"
                                   options={dataSocietes.data}
-                                  selected={selectedSociete ? [selectedSociete] : []}
-                                  onChange={(selected) => {
+                                  selected={dataSocietes.data.filter(
+                                    (societe) => societe.id === field.value,
+                                  )}
+                                  onChange={(selected) =>
                                     field.onChange(selected.length > 0 ? selected[0].id : '')
-                                  }}
+                                  }
                                   placeholder="Choisir ou rechercher une société"
                                 />
-                              )
-                            }}
-                          />
+                              )}
+                            />
+                          )
                         ) : (
                           <p>Aucune société disponible</p>
                         )

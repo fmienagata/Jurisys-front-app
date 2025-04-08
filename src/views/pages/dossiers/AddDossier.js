@@ -27,11 +27,13 @@ import { useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { Typeahead } from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.css'
+import { useGetAllUsers } from 'src/services/usersService'
+import { jwtDecode } from 'jwt-decode'
 
 const AddDossier = () => {
   const navigate = useNavigate()
 
-  const { control, handleSubmit, reset } = useForm()
+  const { control, handleSubmit, reset, setValue } = useForm()
   const queryClient = useQueryClient()
   const { displaySuccess, displayError } = useMessageContext()
 
@@ -39,6 +41,10 @@ const AddDossier = () => {
   const [files, setFiles] = useState([])
   const [filesLen, setFilesLen] = useState(0)
   const fileInputRef = useRef(null)
+  const token = localStorage.getItem('token')
+  const decodedToken = jwtDecode(token)
+
+  const { data: dataUsers, isLoading } = useGetAllUsers({})
 
   const { data: dataSocietes, isLoading: isLoadingSocietes } = useGetAllSocietes({
     onSuccess: (dataSocietes) => {
@@ -50,7 +56,17 @@ const AddDossier = () => {
       )
     },
   })
-
+  const user = dataUsers?.data?.find((user) => user.email === decodedToken.username)
+  useEffect(() => {
+    if (user && (user.userType?.label === 'ADMIN_USER' || user.userType?.label === 'USER')) {
+      const userSociete = user.societe // Récupérer la société de l'utilisateur
+      // Remplir le champ avec l'ID de la société et afficher le nom
+      const societe = societes.find((soc) => soc.id === userSociete.id)
+      if (societe) {
+        setValue('societe', societe.id) // Remplir avec l'ID de la société
+      }
+    }
+  }, [user, societes, decodedToken, setValue])
   useEffect(() => {
     if (!isLoadingSocietes && dataSocietes) {
       setSocietes(dataSocietes.data)
@@ -464,25 +480,53 @@ const AddDossier = () => {
                         <b>Client</b>
                       </CHeaderText>
                       {!isLoadingSocietes && societes.length > 0 ? (
-                        <Controller
-                          name="societe"
-                          control={control}
-                          rules={{ required: 'Ce champ est requis' }}
-                          render={({ field, fieldState }) => (
-                            <Typeahead
-                              {...field}
-                              id="societe-autocomplete"
-                              labelKey="nomSociete"
-                              options={societes}
-                              selected={societes.filter((societe) => societe.id === field.value)}
-                              onChange={(selected) => {
-                                field.onChange(selected.length > 0 ? selected[0].id : '')
-                              }}
-                              placeholder="Choisir  un client"
-                              isInvalid={!!fieldState.error}
-                            />
-                          )}
-                        />
+                        // Si l'utilisateur est "ADMIN_USER" ou "USER", désactiver le champ
+                        user &&
+                        (user.userType?.label === 'ADMIN_USER' ||
+                          user.userType?.label === 'USER') ? (
+                          <Controller
+                            name="societe"
+                            control={control}
+                            rules={{ required: 'Ce champ est requis' }}
+                            render={({ field, fieldState }) => {
+                              const selectedSociete = societes.find(
+                                (societe) => societe.id === field.value,
+                              )
+                              return (
+                                <CFormInput
+                                  {...field}
+                                  id="societe"
+                                  value={selectedSociete ? selectedSociete.nomSociete : ''}
+                                  placeholder="Choisir un client"
+                                  disabled={true} // Désactiver le champ pour "ADMIN_USER" et "USER"
+                                  invalid={Boolean(fieldState?.error)}
+                                  feedbackInvalid={fieldState?.error?.message}
+                                />
+                              )
+                            }}
+                          />
+                        ) : (
+                          // Si l'utilisateur n'est pas "ADMIN_USER" ou "USER", afficher Typeahead
+                          <Controller
+                            name="societe"
+                            control={control}
+                            rules={{ required: 'Ce champ est requis' }}
+                            render={({ field, fieldState }) => (
+                              <Typeahead
+                                {...field}
+                                id="societe-autocomplete"
+                                labelKey="nomSociete"
+                                options={societes}
+                                selected={societes.filter((societe) => societe.id === field.value)}
+                                onChange={(selected) => {
+                                  field.onChange(selected.length > 0 ? selected[0].id : '')
+                                }}
+                                placeholder="Choisir  un client"
+                                isInvalid={!!fieldState.error}
+                              />
+                            )}
+                          />
+                        )
                       ) : (
                         isLoadingSocietes && <CSpinner color="primary" variant="grow" />
                       )}

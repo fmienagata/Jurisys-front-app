@@ -44,7 +44,7 @@ const Users = () => {
     },
     {
       Header: 'Client',
-      accessor: 'societe',
+      accessor: (row) => (row.societe ? row.societe.nomSociete : ''),
     },
     {
       Header: 'Actions',
@@ -73,7 +73,6 @@ const Users = () => {
     setOpenModal(true)
     setUserIDDelete(userId)
   }
-
   useEffect(() => {
     if (!isLoading && dataUsers) {
       const filteredUsers = dataUsers.data.filter((user) => !user.isDeleted)

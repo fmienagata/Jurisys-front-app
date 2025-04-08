@@ -18,19 +18,22 @@ import {
 } from '@coreui/react'
 import { useNavigate } from 'react-router-dom'
 
-import { addUser, useGetUsersTypes } from 'src/services/usersService'
+import { addUser, useGetAllUsers, useGetUsersTypes } from 'src/services/usersService'
 import { useGetAllSocietes } from 'src/services/societeService'
 import { useMessageContext } from 'src/Context/MessageContext'
 import { useQueryClient } from 'react-query'
 import { Typeahead } from 'react-bootstrap-typeahead'
+import { jwtDecode } from 'jwt-decode'
 
 const AddUser = () => {
   const navigate = useNavigate()
-  const { control, handleSubmit } = useForm()
+  const { control, handleSubmit, setValue } = useForm()
   const { displaySuccess, displayError } = useMessageContext()
   const queryClient = useQueryClient()
   const [usersTypes, setUsersTypes] = useState([])
   const [societes, setSocietes] = useState([])
+  const token = localStorage.getItem('token')
+  const decodedToken = jwtDecode(token)
   //const [validated, setValidated] = useState(false)
 
   const { data, isLoading } = useGetUsersTypes({
@@ -43,6 +46,7 @@ const AddUser = () => {
       )
     },
   })
+  const { data: dataUsers } = useGetAllUsers({})
 
   const { data: dataSocietes, isLoading: isLoadingSocietes } = useGetAllSocietes({
     onSuccess: (dataSocietes) => {
@@ -71,6 +75,18 @@ const AddUser = () => {
     }
   }, [queryClient, isLoadingSocietes, dataSocietes])
 
+  const user = dataUsers?.data?.find((user) => user.email === decodedToken.username)
+  useEffect(() => {
+    if (user && (user.userType?.label === 'ADMIN_USER' || user.userType?.label === 'USER')) {
+      const userSociete = user.societe // Récupérer la société de l'utilisateur
+      // Remplir le champ avec l'ID de la société et afficher le nom
+      const societe = societes.find((soc) => soc.id === userSociete.id)
+      if (societe) {
+        setValue('societe', societe.id) // Remplir avec l'ID de la société
+      }
+    }
+  }, [user, societes, decodedToken, setValue])
+
   const handleAddUser = async (data) => {
     try {
       await addUser(data)
@@ -82,6 +98,11 @@ const AddUser = () => {
       displayError(error.messages)
     }
   }
+  // Filtrer les usersTypes pour exclure 'AVOCAT' si l'utilisateur est 'ADMIN_USER' ou 'USER'
+  const filteredUserTypes =
+    user?.userType?.label === 'ADMIN_USER' || user?.userType?.label === 'USER'
+      ? usersTypes.filter((type) => type.label !== 'AVOCAT')
+      : usersTypes
   return (
     <div>
       <CContainer>
@@ -175,20 +196,19 @@ const AddUser = () => {
                     </CCol>
                   </CInputGroup>
 
-                  {!isLoading && usersTypes.length > 0 ? (
+                  {!isLoading && filteredUserTypes.length > 0 ? (
                     <CInputGroup className="mb-0">
                       <CCol>
                         <CHeaderText>
-                          {' '}
                           <b>Type d&apos;utilisateur</b>{' '}
                         </CHeaderText>
                         <Controller
                           name="userType"
                           control={control}
-                          defaultValue={usersTypes.length > 0 ? usersTypes[0].id : ''}
+                          defaultValue={filteredUserTypes.length > 0 ? filteredUserTypes[0].id : ''}
                           render={({ field }) => (
                             <CFormSelect id="userType" {...field}>
-                              {usersTypes.map((item, key) => (
+                              {filteredUserTypes.map((item, key) => (
                                 <option value={item.id} key={key}>
                                   {item.label}
                                 </option>
@@ -217,7 +237,6 @@ const AddUser = () => {
                             id="password"
                             type="password"
                             placeholder="Mot de passe"
-                            autoComplete="current-password"
                             invalid={Boolean(error)}
                             feedbackInvalid={error?.message}
                           />
@@ -231,25 +250,53 @@ const AddUser = () => {
                         <b>Client</b>
                       </CHeaderText>
                       {!isLoadingSocietes && societes.length > 0 ? (
-                        <Controller
-                          name="societe"
-                          control={control}
-                          rules={{ required: 'Ce champ est requis' }}
-                          render={({ field, fieldState }) => (
-                            <Typeahead
-                              {...field}
-                              id="societe-autocomplete"
-                              labelKey="nomSociete"
-                              options={societes}
-                              selected={societes.filter((societe) => societe.id === field.value)}
-                              onChange={(selected) => {
-                                field.onChange(selected.length > 0 ? selected[0].id : '')
-                              }}
-                              placeholder="Choisir  un client"
-                              isInvalid={!!fieldState.error}
-                            />
-                          )}
-                        />
+                        // Si l'utilisateur est "ADMIN_USER" ou "USER", désactiver le champ
+                        user &&
+                        (user.userType?.label === 'ADMIN_USER' ||
+                          user.userType?.label === 'USER') ? (
+                          <Controller
+                            name="societe"
+                            control={control}
+                            rules={{ required: 'Ce champ est requis' }}
+                            render={({ field, fieldState }) => {
+                              const selectedSociete = societes.find(
+                                (societe) => societe.id === field.value,
+                              )
+                              return (
+                                <CFormInput
+                                  {...field}
+                                  id="societe"
+                                  value={selectedSociete ? selectedSociete.nomSociete : ''}
+                                  placeholder="Choisir un client"
+                                  disabled={true} // Désactiver le champ pour "ADMIN_USER" et "USER"
+                                  invalid={Boolean(fieldState?.error)}
+                                  feedbackInvalid={fieldState?.error?.message}
+                                />
+                              )
+                            }}
+                          />
+                        ) : (
+                          // Si l'utilisateur n'est pas "ADMIN_USER" ou "USER", afficher Typeahead
+                          <Controller
+                            name="societe"
+                            control={control}
+                            rules={{ required: 'Ce champ est requis' }}
+                            render={({ field, fieldState }) => (
+                              <Typeahead
+                                {...field}
+                                id="societe-autocomplete"
+                                labelKey="nomSociete"
+                                options={societes}
+                                selected={societes.filter((societe) => societe.id === field.value)}
+                                onChange={(selected) => {
+                                  field.onChange(selected.length > 0 ? selected[0].id : '')
+                                }}
+                                placeholder="Choisir  un client"
+                                isInvalid={!!fieldState.error}
+                              />
+                            )}
+                          />
+                        )
                       ) : (
                         isLoadingSocietes && <CSpinner color="primary" variant="grow" />
                       )}
@@ -267,7 +314,7 @@ const AddUser = () => {
                           {...field}
                           id="email"
                           placeholder="Email"
-                          autoComplete="email"
+                          autoComplete="off"
                           invalid={Boolean(error)}
                           feedbackInvalid={error?.message}
                         />
