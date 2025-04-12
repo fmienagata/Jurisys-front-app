@@ -38,8 +38,16 @@ const Societes = () => {
 
   useEffect(() => {
     if (!isLoading && dataSocietesAPI) {
-      setDataSocietes(dataSocietesAPI.data)
-      setInitialSocietes(dataSocietesAPI.data)
+      // Sort the societes from most recent to oldest.
+      // If a 'createdAt' field exists, sort by it; otherwise, fallback to sorting by id (assuming they are incremental).
+      const sortedData = dataSocietesAPI.data.slice().sort((a, b) => {
+        if (a.createdAt && b.createdAt) {
+          return new Date(b.createdAt) - new Date(a.createdAt)
+        }
+        return b.id - a.id
+      })
+      setDataSocietes(sortedData)
+      setInitialSocietes(sortedData)
     } else {
       queryClient.invalidateQueries(['getAllSocietes'])
     }

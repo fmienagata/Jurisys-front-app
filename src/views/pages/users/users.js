@@ -75,9 +75,18 @@ const Users = () => {
   }
   useEffect(() => {
     if (!isLoading && dataUsers) {
+      // Filtrer les utilisateurs non supprimés
       const filteredUsers = dataUsers.data.filter((user) => !user.isDeleted)
-      setInitialUsers(filteredUsers)
-      setUsers(filteredUsers)
+      // Tri du plus récent au plus ancien :
+      // Si 'createdAt' existe, trier par date ; sinon, utiliser l'id en supposant une séquence croissante.
+      const sortedUsers = filteredUsers.slice().sort((a, b) => {
+        if (a.createdAt && b.createdAt) {
+          return new Date(b.createdAt) - new Date(a.createdAt)
+        }
+        return b.id - a.id
+      })
+      setInitialUsers(sortedUsers)
+      setUsers(sortedUsers)
     }
   }, [isLoading, dataUsers])
 

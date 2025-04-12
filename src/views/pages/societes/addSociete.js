@@ -39,6 +39,7 @@ const AddSociete = () => {
       queryClient.invalidateQueries(['getCountNBRBusiness'])
       navigate('/societes')
     } catch (error) {
+      console.log(error)
       displayError(error.messages)
       navigate('/societes')
     }
@@ -241,7 +242,6 @@ const AddSociete = () => {
                           <Controller
                             name="nationalite"
                             control={control}
-                            rules={{ required: 'Ce champs est requis' }}
                             defaultValue=""
                             render={({ field, fieldState: { error } }) => (
                               <CFormInput
@@ -265,7 +265,6 @@ const AddSociete = () => {
                           <Controller
                             name="etatCivil"
                             control={control}
-                            rules={{ required: 'Ce champs est requis' }}
                             defaultValue=""
                             render={({ field, fieldState: { error } }) => (
                               <CFormInput
@@ -294,7 +293,7 @@ const AddSociete = () => {
                         control={control}
                         defaultValue=""
                         rules={{
-                          required: selectedType === 'Particulier' ? 'Ce champs est requis' : false, // Règle conditionnelle
+                          required: 'Ce champs est requis',
                         }}
                         render={({ field, fieldState: { error } }) => (
                           <CFormInput
@@ -320,6 +319,9 @@ const AddSociete = () => {
                         name="ville"
                         control={control}
                         defaultValue=""
+                        rules={{
+                          required: 'Ce champs est requis',
+                        }}
                         render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
@@ -342,6 +344,9 @@ const AddSociete = () => {
                       <Controller
                         name="pays"
                         control={control}
+                        rules={{
+                          required: 'Ce champs est requis',
+                        }}
                         render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}
@@ -364,6 +369,9 @@ const AddSociete = () => {
                         name="adresse"
                         control={control}
                         defaultValue=""
+                        rules={{
+                          required: 'Ce champs est requis',
+                        }}
                         render={({ field, fieldState: { error } }) => (
                           <CFormInput
                             {...field}

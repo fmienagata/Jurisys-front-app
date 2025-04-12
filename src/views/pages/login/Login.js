@@ -40,6 +40,7 @@ const Login = () => {
       setIsLoading(false)
       navigate('/dashboard')
     } catch (error) {
+      console.log(error)
       displayError('Votre Identifiant et/ou mot de passe est incorrect')
       setIsLoading(false)
     }
@@ -109,7 +110,7 @@ const Login = () => {
                           {isLoading ? labels.login.action.loading : labels.login.action.login}
                         </CButton>
                       </CCol>
-                      <CCol xs={6} className="text-right">
+                      {/* <CCol xs={6} className="text-right">
                         <CButton
                           color="link"
                           className="px-0"
@@ -117,7 +118,7 @@ const Login = () => {
                         >
                           {labels.login.action.forgotPassword}
                         </CButton>
-                      </CCol>
+                      </CCol> */}
                     </CRow>
                   </form>
                 </CCardBody>
@@ -133,7 +134,7 @@ const Login = () => {
                     <br></br>
                     <br></br>
                     <p>{labels.description}</p>
-                    <span className="ml-6">V1.13.12</span>
+                    <span className="ml-6">V1.13.13</span>
 
                     {/* <Link to="/register">
                       <CButton color="secondary" className="mt-3" active tabIndex={-1}>

@@ -24,6 +24,9 @@ import { useMessageContext } from 'src/Context/MessageContext'
 import { useQueryClient } from 'react-query'
 import { Typeahead } from 'react-bootstrap-typeahead'
 import { jwtDecode } from 'jwt-decode'
+import CIcon from '@coreui/icons-react'
+import * as icon from '@coreui/icons'
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
 const AddUser = () => {
   const navigate = useNavigate()
@@ -34,7 +37,8 @@ const AddUser = () => {
   const [societes, setSocietes] = useState([])
   const token = localStorage.getItem('token')
   const decodedToken = jwtDecode(token)
-  //const [validated, setValidated] = useState(false)
+  // State for toggling password visibility
+  const [showPassword, setShowPassword] = useState(false)
 
   const { data, isLoading } = useGetUsersTypes({
     onSuccess: (dataUsers) => {
@@ -42,7 +46,7 @@ const AddUser = () => {
     },
     onError: (error) => {
       displayError(
-        'Erreur : Impossible de récupérer les données ou données malformé . Veuillez réessayer plus tard.',
+        'Erreur : Impossible de récupérer les données ou données malformé. Veuillez réessayer plus tard.',
       )
     },
   })
@@ -54,7 +58,7 @@ const AddUser = () => {
     },
     onError: (error) => {
       displayError(
-        'Erreur : Impossible de récupérer les données ou données malformé . Veuillez réessayer plus tard.',
+        'Erreur : Impossible de récupérer les données ou données malformé. Veuillez réessayer plus tard.',
       )
     },
   })
@@ -90,7 +94,7 @@ const AddUser = () => {
   const handleAddUser = async (data) => {
     try {
       await addUser(data)
-      displaySuccess('Ajout un utilisateur', "L'utilisateur a bien été créé avec sucess")
+      displaySuccess('Ajout un utilisateur', "L'utilisateur a bien été créé avec succès")
       queryClient.invalidateQueries(['getAllUsers'])
       queryClient.invalidateQueries(['getCountUsers'])
       navigate('/users')
@@ -98,11 +102,13 @@ const AddUser = () => {
       displayError(error.messages)
     }
   }
+
   // Filtrer les usersTypes pour exclure 'AVOCAT' si l'utilisateur est 'ADMIN_USER' ou 'USER'
   const filteredUserTypes =
     user?.userType?.label === 'ADMIN_USER' || user?.userType?.label === 'USER'
       ? usersTypes.filter((type) => type.label !== 'AVOCAT')
       : usersTypes
+
   return (
     <div>
       <CContainer>
@@ -112,46 +118,39 @@ const AddUser = () => {
               <CCardBody className="p-4">
                 <CForm
                   onSubmit={handleSubmit(handleAddUser)}
-                  //onSubmit={handleSubmitForm}
-                  // validated={errors || errors == undefined}
                   noValidate
                   className="row g-3 needs-validation"
                 >
-                  {/* <h1>{labels.registre.titleHeader}</h1> */}
                   <p className="text-body-secondary">Ajouter un utilisateur</p>
 
                   <CInputGroup className="mb-0">
                     <CCol>
                       <CHeaderText>
-                        <b> Nom</b>{' '}
+                        <b> Nom</b>
                       </CHeaderText>
-
                       <Controller
                         name="nom"
                         control={control}
                         rules={{ required: 'Ce champs est requis' }}
                         defaultValue=""
                         render={({ field, fieldState: { error } }) => (
-                          <div>
-                            <CFormInput
-                              {...field}
-                              id="nom"
-                              placeholder="Nom"
-                              autoComplete="nom"
-                              invalid={Boolean(error)}
-                              feedbackInvalid={error?.message}
-                            />
-                            {/* {errors.nom && <p className="text-danger">{errors.nom.message}</p>} */}
-                          </div>
+                          <CFormInput
+                            {...field}
+                            id="nom"
+                            placeholder="Nom"
+                            autoComplete="nom"
+                            invalid={Boolean(error)}
+                            feedbackInvalid={error?.message}
+                          />
                         )}
                       />
                     </CCol>
                   </CInputGroup>
+
                   <CInputGroup className="mb-0">
                     <CCol>
                       <CHeaderText>
-                        {' '}
-                        <b>Prénom</b>{' '}
+                        <b>Prénom</b>
                       </CHeaderText>
                       <Controller
                         name="prenom"
@@ -171,11 +170,11 @@ const AddUser = () => {
                       />
                     </CCol>
                   </CInputGroup>
+
                   <CInputGroup className="mb-0">
                     <CCol>
                       <CHeaderText>
-                        {' '}
-                        <b>Fonction</b>{' '}
+                        <b>Fonction</b>
                       </CHeaderText>
                       <Controller
                         name="fonction"
@@ -200,7 +199,7 @@ const AddUser = () => {
                     <CInputGroup className="mb-0">
                       <CCol>
                         <CHeaderText>
-                          <b>Type d&apos;utilisateur</b>{' '}
+                          <b>Type d&apos;utilisateur</b>
                         </CHeaderText>
                         <Controller
                           name="userType"
@@ -221,36 +220,58 @@ const AddUser = () => {
                   ) : (
                     isLoading && <CSpinner color="primary" variant="grow" />
                   )}
+
                   <CInputGroup className="mb-0">
                     <CCol>
                       <CHeaderText>
-                        {' '}
-                        <b>Mot de passe</b>{' '}
+                        <b>Mot de passe</b>
                       </CHeaderText>
                       <Controller
                         name="password"
                         control={control}
-                        rules={{ required: 'Ce champs est requis' }} // Add rules for required field
+                        rules={{
+                          required: 'Ce champs est requis',
+                          pattern: {
+                            value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&_*]).{8,}$/,
+                            message:
+                              'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un caractère spécial.',
+                          },
+                        }}
                         render={({ field, fieldState: { error } }) => (
-                          <CFormInput
-                            {...field}
-                            id="password"
-                            type="password"
-                            placeholder="Mot de passe"
-                            invalid={Boolean(error)}
-                            feedbackInvalid={error?.message}
-                          />
+                          <div>
+                            <CInputGroup>
+                              <CFormInput
+                                {...field}
+                                id="password"
+                                type={showPassword ? 'text' : 'password'}
+                                placeholder="Mot de passe"
+                                invalid={Boolean(error)}
+                                feedbackInvalid={error?.message}
+                              />
+                              <CInputGroupText
+                                onClick={() => setShowPassword(!showPassword)}
+                                style={{ cursor: 'pointer' }}
+                              >
+                                {showPassword ? <FaEye /> : <FaEyeSlash />}
+                              </CInputGroupText>
+                            </CInputGroup>
+                            <small className="text-muted">
+                              Le mot de passe doit contenir au moins 8 caractères, au moins une
+                              majuscule, une minuscule et l’un des caractères spéciaux suivants: ! @
+                              # $ % ^ & _ *
+                            </small>
+                          </div>
                         )}
                       />
                     </CCol>
                   </CInputGroup>
+
                   <CInputGroup className="mb-3">
                     <CCol>
                       <CHeaderText>
                         <b>Client</b>
                       </CHeaderText>
                       {!isLoadingSocietes && societes.length > 0 ? (
-                        // Si l'utilisateur est "ADMIN_USER" ou "USER", désactiver le champ
                         user &&
                         (user.userType?.label === 'ADMIN_USER' ||
                           user.userType?.label === 'USER') ? (
@@ -268,7 +289,7 @@ const AddUser = () => {
                                   id="societe"
                                   value={selectedSociete ? selectedSociete.nomSociete : ''}
                                   placeholder="Choisir un client"
-                                  disabled={true} // Désactiver le champ pour "ADMIN_USER" et "USER"
+                                  disabled={true}
                                   invalid={Boolean(fieldState?.error)}
                                   feedbackInvalid={fieldState?.error?.message}
                                 />
@@ -276,7 +297,6 @@ const AddUser = () => {
                             }}
                           />
                         ) : (
-                          // Si l'utilisateur n'est pas "ADMIN_USER" ou "USER", afficher Typeahead
                           <Controller
                             name="societe"
                             control={control}
@@ -302,12 +322,13 @@ const AddUser = () => {
                       )}
                     </CCol>
                   </CInputGroup>
+
                   <CInputGroup className="mb-0">
                     <CInputGroupText>@</CInputGroupText>
                     <Controller
                       name="email"
                       control={control}
-                      rules={{ required: 'Ce champs est requis' }} // Add rules for required field
+                      rules={{ required: 'Ce champs est requis' }}
                       defaultValue=""
                       render={({ field, fieldState: { error } }) => (
                         <CFormInput

@@ -12,6 +12,7 @@ import { useMessageContext } from 'src/Context/MessageContext'
 import Styles from './../../../table/TableStyles'
 import { useGetAllFactures, deleteFacture } from 'src/services/factureService'
 import { useQueryClient } from 'react-query'
+import ModalPiecesJointes from '../dossiers/ModalPiecesJointes'
 
 const Factures = () => {
   const tableRefFacture = useRef(typeof useRowSelect)
@@ -27,25 +28,34 @@ const Factures = () => {
   //const [IDDelete, setIDDelete] = useState('')
   const queryClient = useQueryClient()
 
+  // États pour le modal d'affichage des fichiers de la facture
+  const [filesForModal, setFilesForModal] = useState([])
+  const [modalTitle, setModalTitle] = useState('')
+  const [openModalPJ, setOpenModalPJ] = useState(false)
+
   const { dataFactures: dataFacturesAPI, isLoading } = useGetAllFactures({
     onSuccess: (data) => {
-      setDataFactures(data.data)
-      setInitialFactures(data.data)
+      // Tri par date décroissante (du plus récent au plus ancien)
+      // En supposant que la propriété `createdAt` contient la date de création
+      const sortedData = [...data.data].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+      )
+      setDataFactures(sortedData)
+      setInitialFactures(sortedData)
     },
     onError: (error) => {
       displayError('Erreur lors de la requête dans le composant !')
     },
   })
-
-  // useEffect(() => {
-  //   if (!isLoading && dataFacturesAPI) {
-  //     setDataFactures(dataFacturesAPI.data)
-  //     setInitialFactures(dataFacturesAPI.data)
-  //   }
-  //   // else {
-  //   //   queryClient.invalidateQueries(['getAllFactures'])
-  //   // }
-  // }, [isLoading, dataFacturesAPI])
+  useEffect(() => {
+    if (!isLoading && dataFacturesAPI) {
+      const sortedData = [...dataFacturesAPI.data].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+      )
+      setDataFactures(sortedData)
+      setInitialFactures(sortedData)
+    }
+  }, [isLoading, dataFacturesAPI])
 
   const columnsFacture = [
     {
@@ -55,6 +65,27 @@ const Factures = () => {
     {
       Header: 'Dossier',
       accessor: 'dossier',
+    },
+    {
+      Header: 'Fichiers',
+      accessor: 'factureFiles',
+      // eslint-disable-next-line react/prop-types
+      Cell: ({ value, row }) => {
+        // eslint-disable-next-line react/prop-types
+        if (value && Array.isArray(value) && value.length > 0) {
+          return (
+            <CButton
+              color="primary"
+              variant="outline"
+              size="sm"
+              // eslint-disable-next-line react/prop-types
+              onClick={() => handleOpenFiles(row.original)}
+            >
+              Voir
+            </CButton>
+          )
+        }
+      },
     },
     {
       Header: 'Statut',
@@ -105,6 +136,19 @@ const Factures = () => {
     let result = filtredValues(initialFactures, filter)
     setDataFactures(result)
     setCurrentPage(0)
+  }
+
+  // Fonction pour ouvrir le modal d'affichage des fichiers d'une facture
+  const handleOpenFiles = (facture) => {
+    if (
+      facture.factureFiles &&
+      Array.isArray(facture.factureFiles) &&
+      facture.factureFiles.length > 0
+    ) {
+      setFilesForModal(facture.factureFiles)
+      setModalTitle(`Fichiers de la facture ${facture.id}`)
+      setOpenModalPJ(true)
+    }
   }
 
   const handleFilterChange = (filterValue) => {
@@ -201,6 +245,12 @@ const Factures = () => {
             />
           </CCol>
         </CRow>
+        <ModalPiecesJointes
+          openModal={openModalPJ}
+          setOpenModalPJ={setOpenModalPJ}
+          listPJ={filesForModal}
+          titleModal={modalTitle}
+        />
       </Styles>
     </div>
   )

@@ -22,11 +22,13 @@ import { useMessageContext } from 'src/Context/MessageContext'
 import { useQueryClient } from 'react-query'
 import { jwtDecode } from 'jwt-decode'
 import { useGetAllSocietes } from 'src/services/societeService'
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
 const Profile = () => {
   const { control, handleSubmit, setValue } = useForm()
   const { displaySuccess, displayError } = useMessageContext()
   const [selectedSociete, setSelectedSociete] = useState('')
+  const [showPassword, setShowPassword] = useState(false) // État pour basculer l'affichage du mot de passe
 
   const { data: dataUsers } = useGetAllUsers({})
 
@@ -34,28 +36,29 @@ const Profile = () => {
   const decodedToken = jwtDecode(token)
   // Trouver l'utilisateur connecté
   const currentUser = dataUsers?.data?.find((user) => user.email === decodedToken.username)
-const { data: dataSocietes } = useGetAllSocietes({
-  enabled: !!currentUser,
-  onSuccess: (dataSocietes) => {
-    const societe = dataSocietes?.data?.find(
-      (item) => item.nomSociete.toLowerCase() === currentUser?.societe?.toLowerCase(),
-    )
-    setSelectedSociete(societe)
-  },
-})
 
+  const { data: dataSocietes } = useGetAllSocietes({
+    enabled: !!currentUser,
+    onSuccess: (dataSocietes) => {
+      const societe = dataSocietes?.data?.find(
+        (item) => item?.nomSociete?.toLowerCase() === currentUser?.societe?.nomSociete?.toLowerCase(),
+      )
+      setSelectedSociete(societe)
+    },
+  })
  
-  // Pré-remplir le formulaire avec les données de l'utilisateur
+  // Pré-remplissage du formulaire avec les données de l'utilisateur
   useEffect(() => {
     if (currentUser) {
-      setValue('nom', currentUser.nom)
-      setValue('prenom', currentUser.prenom)
-      setValue('fonction', currentUser.fonction || '')
-      setValue('email', currentUser.email)
-      setValue('userType', currentUser.userType?.id || '')
-      setValue('societe', currentUser.societe || '') // Pré-remplissage du client
+      setValue('nom', currentUser?.nom)
+      setValue('prenom', currentUser?.prenom)
+      setValue('fonction', currentUser?.fonction || '')
+      setValue('email', currentUser?.email)
+      setValue('userType', currentUser?.userType?.id || '')
+      setValue('societe', currentUser?.societe || '') // Pré-remplissage du client
     }
   }, [currentUser, setValue])
+
   const handleEdit = async (data) => {
     if (!currentUser) return
 
@@ -66,11 +69,10 @@ const { data: dataSocietes } = useGetAllSocietes({
         fonction: data.fonction,
         email: data.email,
         societe: selectedSociete?.id,
-        password: data.password,
-        userType: currentUser.userType.id
+        password: data.password, // Mise à jour du mot de passe selon le champ s'il a été modifié
+        userType: currentUser.userType.id,
       }
- 
-     await editUser(currentUser?.id, modifData)
+      await editUser(currentUser?.id, modifData)
       displaySuccess('Modification réussie', 'Le profile a bien été modifié')
     } catch (error) {
       displayError('Erreur lors de la modification du profile')
@@ -84,7 +86,6 @@ const { data: dataSocietes } = useGetAllSocietes({
           <CCard className="mx-4">
             <CCardBody className="p-4">
               <form onSubmit={handleSubmit(handleEdit)}>
-
                 {/* Nom */}
                 <CInputGroup className="mb-1">
                   <CCol>
@@ -100,7 +101,6 @@ const { data: dataSocietes } = useGetAllSocietes({
                     />
                   </CCol>
                 </CInputGroup>
-
                 {/* Prénom */}
                 <CInputGroup className="mb-1">
                   <CCol>
@@ -116,7 +116,6 @@ const { data: dataSocietes } = useGetAllSocietes({
                     />
                   </CCol>
                 </CInputGroup>
-
                 {/* Fonction */}
                 <CInputGroup className="mb-1">
                   <CCol>
@@ -130,8 +129,7 @@ const { data: dataSocietes } = useGetAllSocietes({
                     />
                   </CCol>
                 </CInputGroup>
-
-                {/* Mot de passe */}
+                {/* Mot de passe avec show/hide */}
                 <CInputGroup className="mb-1">
                   <CCol>
                     <CHeaderText>
@@ -140,13 +138,42 @@ const { data: dataSocietes } = useGetAllSocietes({
                     <Controller
                       name="password"
                       control={control}
-                      render={({ field }) => (
-                        <CFormInput {...field} type="password" placeholder="Mot de passe" />
+                      rules={{
+                        pattern: {
+                          // Exemple de pattern similaire au formulaire d'ajout
+                          value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*_]).{8,}$/,
+                          message:
+                            'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et au moins l’un des caractères suivants: ! @ # $ % ^ & *_',
+                        },
+                      }}
+                      render={({ field, fieldState: { error } }) => (
+                        <div>
+                          <CInputGroup>
+                            <CFormInput
+                              {...field}
+                              id="password"
+                              type={showPassword ? 'text' : 'password'}
+                              placeholder="Mot de passe"
+                              invalid={Boolean(error)}
+                              feedbackInvalid={error?.message}
+                            />
+                            <CInputGroupText
+                              onClick={() => setShowPassword(!showPassword)}
+                              style={{ cursor: 'pointer' }}
+                            >
+                              {showPassword ? <FaEye /> : <FaEyeSlash />}
+                            </CInputGroupText>
+                          </CInputGroup>
+                          <small className="text-muted">
+                            Le mot de passe doit contenir au moins 8 caractères, au moins une
+                            majuscule, une minuscule et l’un des caractères suivants: ! @ # $ % ^ &
+                            * _
+                          </small>
+                        </div>
                       )}
                     />
                   </CCol>
                 </CInputGroup>
-
                 {/* Email */}
                 <CInputGroup className="mb-3 mt-4">
                   <CInputGroupText>@</CInputGroupText>
@@ -156,7 +183,6 @@ const { data: dataSocietes } = useGetAllSocietes({
                     render={({ field }) => <CFormInput {...field} placeholder="Email" />}
                   />
                 </CInputGroup>
-
                 {/* Bouton Modifier */}
                 <div className="d-grid">
                   <CButton type="submit" color="success">

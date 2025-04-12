@@ -20,7 +20,6 @@ import { getFileDossier } from 'src/services/dossiersService'
 import { useMessageContext } from 'src/Context/MessageContext'
 
 const ModalPiecesJointes = (props) => {
-  // eslint-disable-next-line react/prop-types
   const { openModal, action, titleModal, setOpenModalPJ, listPJ } = props
   const { displaySuccess, displayError } = useMessageContext()
 
@@ -39,64 +38,67 @@ const ModalPiecesJointes = (props) => {
   }
 
   return (
-    <>
-      <CModal
-        visible={openModal}
-        onClose={() => setOpenModalPJ(false)}
-        aria-labelledby="VerticallyCenteredExample"
-        alignment="center"
-        size="lg"
-      >
-        <CModalHeader>
-          <CModalTitle className="text-end">Listes des piéces jointes</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <CListGroup flush>
-            {listPJ &&
-              // eslint-disable-next-line react/prop-types
-              listPJ.map((value, key) => (
-                <CListGroupItem key={key}>
-                  <CRow className="align-items-center">
-                    <CCol className="text-start" xs={1}>
-                      {key + 1}
-                    </CCol>
-                    <CCol className="text-start " xs={8}>
-                      <b className="fw-semibold">{value === null ? '---' : value.fileName}</b>
-                    </CCol>
-                    <CCol className="text-start" xs={3}>
-                      <CButton
-                        color="dark"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => downloadFile(value.fileName)}
-                      >
-                        <CIcon icon={icon.cilCloudDownload} size="sm" /> Télécharger
-                      </CButton>
-                    </CCol>
-                  </CRow>
-                </CListGroupItem>
-              ))}
-          </CListGroup>
-        </CModalBody>
-        <CModalFooter>
-          <CButton color="secondary" onClick={() => setOpenModalPJ(false)}>
-            Fermer
-          </CButton>
-          {action}
-        </CModalFooter>
-      </CModal>
-    </>
+    <CModal
+      visible={openModal}
+      onClose={() => setOpenModalPJ(false)}
+      aria-labelledby="VerticallyCenteredExample"
+      alignment="center"
+      size="lg"
+    >
+      <CModalHeader>
+        <CModalTitle className="text-end">Listes des piéces jointes</CModalTitle>
+      </CModalHeader>
+      <CModalBody>
+        <CListGroup flush>
+          {listPJ &&
+            listPJ.map((value, key) => (
+              <CListGroupItem key={key}>
+                <CRow className="align-items-center">
+                  <CCol className="text-start" xs={1}>
+                    {key + 1}
+                  </CCol>
+                  <CCol className="text-start " xs={8}>
+                    <b className="fw-semibold">{value === null ? '---' : value.fileName}</b>
+                  </CCol>
+                  <CCol className="text-start" xs={3}>
+                    <CButton
+                      color="dark"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => downloadFile(value.fileName)}
+                    >
+                      <CIcon icon={icon.cilCloudDownload} size="sm" /> Télécharger
+                    </CButton>
+                  </CCol>
+                </CRow>
+              </CListGroupItem>
+            ))}
+        </CListGroup>
+      </CModalBody>
+      <CModalFooter>
+        <CButton color="secondary" onClick={() => setOpenModalPJ(false)}>
+          Fermer
+        </CButton>
+        {action}
+      </CModalFooter>
+    </CModal>
   )
 }
 
 ModalPiecesJointes.propTypes = {
-  listPJ: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    filePath: PropTypes.string,
-    fileName: PropTypes.string,
-    updatedAt: PropTypes.string,
-    createdAt: PropTypes.string,
-  }),
+  listPJ: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      filePath: PropTypes.string,
+      fileName: PropTypes.string,
+      createdAt: PropTypes.string,
+      updatedAt: PropTypes.string,
+    }),
+  ).isRequired,
+  openModal: PropTypes.bool.isRequired,
+  setOpenModalPJ: PropTypes.func.isRequired,
+  titleModal: PropTypes.string.isRequired,
+  action: PropTypes.node,
 }
 
 export default ModalPiecesJointes

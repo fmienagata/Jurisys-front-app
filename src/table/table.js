@@ -218,12 +218,16 @@ const Table = forwardRef(
           navigatePath = ''
       }
       if (navigatePath !== '') {
-        navigate(navigatePath, {
-          state: { data: row.original },
-        })
+        navigate(navigatePath, { state: { data: row.original } })
       } else {
         if (fromPage === 'societes' || fromPage === 'facture') {
-          setSociete(row.original)
+          let dataToDisplay = row.original
+          // Pour une facture, on retire la clé factureFiles
+          if (fromPage === 'facture') {
+            const { factureFiles, ...filteredData } = row.original
+            dataToDisplay = filteredData
+          }
+          setSociete(dataToDisplay) // ou la fonction d'état utilisée pour afficher le modal
           setOpenSociete(true)
         } else {
           setMessage(row.original)
@@ -267,8 +271,8 @@ const Table = forwardRef(
               {page.map((row, i) => {
                 prepareRow(row)
                 return (
-                  <CTableRow {...row.getRowProps()} onClick={() => handleLineClick(row)}>
-                    {row.cells.map((cell) => {
+                  <CTableRow {...row?.getRowProps()} onClick={() => handleLineClick(row)}>
+                    {row?.cells?.map((cell) => {
                       if (cell.column.Header === 'Actions') {
                         return (
                           <CTableDataCell className="align-items-center">

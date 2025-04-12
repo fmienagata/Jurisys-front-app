@@ -14,6 +14,19 @@ const addFacture = async (data) => {
   const response = await Axios.post('/api/factures', formData)
   return response.data
 }
+export const addFactureFiles = async (formData, factureId) => {
+  try {
+    const response = await Axios.post(`/api/factures/${factureId}/facture_files`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
 
 const updateFacture = async (id, data) => {
   const response = await Axios.put(`/api/factures/${id}`, data)
