@@ -56,9 +56,14 @@ const Login = () => {
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
         <CRow className="justify-content-center">
-          <CCard className=" py-4 mb-1" style={{ width: '65%' }}>
-            <img src={`${process.env.PUBLIC_URL}/images/logo_2.png`} alt="Logo" />
+          <CCard className="py-4 mb-1" style={{ width: '65%' }}>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/logo_2.png`}
+              alt="Logo"
+              style={{ height: '100px', objectFit: 'contain' }}
+            />
           </CCard>
+
           <CCol md={8}>
             <CCardGroup>
               <CCard className="p-4">
@@ -134,7 +139,7 @@ const Login = () => {
                     <br></br>
                     <br></br>
                     <p>{labels.description}</p>
-                    <span className="ml-6">V1.13.13</span>
+                    <span className="ml-6">V1.13.14</span>
 
                     {/* <Link to="/register">
                       <CButton color="secondary" className="mt-3" active tabIndex={-1}>

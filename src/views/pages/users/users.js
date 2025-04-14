@@ -44,7 +44,7 @@ const Users = () => {
     },
     {
       Header: 'Client',
-      accessor: (row) => (row.societe ? row.societe.nomSociete : ''),
+      accessor: (row) => (row.societe ? row?.societe?.nomSociete : ''),
     },
     {
       Header: 'Actions',

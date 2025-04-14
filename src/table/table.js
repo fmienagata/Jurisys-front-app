@@ -206,6 +206,9 @@ const Table = forwardRef(
     }
 
     function handleDisplay(row) {
+      if (row.original.societe && typeof row.original.societe === 'object') {
+        row.original.societe = row.original.societe.nomSociete
+      }
       let navigatePath = ''
       switch (fromPage) {
         case 'users':
