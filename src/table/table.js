@@ -242,13 +242,13 @@ const Table = forwardRef(
     return (
       <>
         <div className="table-responsive">
-          <CTable {...getTableProps()} class="table table-striped align-middle text-center">
-            <CTableHead class="align-middle table-light">
+          <CTable {...getTableProps()} className="table table-striped align-middle text-center">
+            <CTableHead className="align-middle table-light">
               {headerGroups.map((headerGroup) => (
                 <CTableRow {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
                     <CTableHeaderCell
-                      class="align-middle"
+                      className="align-middle"
                       {...column.getHeaderProps(column.getSortByToggleProps())}
                       {...column.getHeaderProps()}
                     >
@@ -270,7 +270,7 @@ const Table = forwardRef(
                 </CTableRow>
               ))}
             </CTableHead>
-            <CTableBody {...getTableBodyProps()} class="table-group-divider align-middle">
+            <CTableBody {...getTableBodyProps()} className="table-group-divider align-middle">
               {page.map((row, i) => {
                 prepareRow(row)
                 return (

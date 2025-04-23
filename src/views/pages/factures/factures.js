@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useRef, useEffect } from 'react'
 import { useRowSelect } from 'react-table'
 import Table from 'src/table/table'
@@ -69,24 +70,24 @@ const Factures = () => {
     {
       Header: 'Fichiers',
       accessor: 'factureFiles',
-      // eslint-disable-next-line react/prop-types
-      Cell: ({ value, row }) => {
-        // eslint-disable-next-line react/prop-types
-        if (value && Array.isArray(value) && value.length > 0) {
-          return (
-            <CButton
-              color="primary"
-              variant="outline"
-              size="sm"
-              // eslint-disable-next-line react/prop-types
-              onClick={() => handleOpenFiles(row.original)}
-            >
-              Voir
-            </CButton>
-          )
-        }
-      },
+      Cell: ({ value, row }) =>
+        value?.length > 0 ? (
+          <CButton
+            color="primary"
+            variant="outline"
+            size="sm"
+            onClick={() => handleOpenFiles(row.original)}
+            style={{
+              border: '1px solid currentColor',
+              width: '50px',
+              marginLeft: '-28px',
+            }}
+          >
+            Voir
+          </CButton>
+        ) : null,
     },
+
     {
       Header: 'Statut',
       accessor: 'statut',
