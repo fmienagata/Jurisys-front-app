@@ -1,0 +1,36 @@
+/* === Sidebar général === */
+.sidebar {
+    background-color: #0a2e73 !important;
+    color: #fff !important;
+}
+
+/* === Texte === */
+.sidebar .nav-link,
+.sidebar .nav-title,
+.sidebar .nav-item {
+    color: #fff !important;
+}
+
+/* === Icônes === */
+.sidebar .nav-icon,
+.sidebar .nav-link svg {
+    color: #fff !important;
+    fill: #fff !important;
+}
+
+/* === Hover (texte + icônes en bleu clair) === */
+.sidebar .nav-link:hover,
+.sidebar .nav-link:hover .nav-icon,
+.sidebar .nav-link:hover svg {
+    color: #5AA9FF !important;
+    fill: #5AA9FF !important;
+}
+
+/* === Lien actif (optionnel) === */
+.sidebar .nav-link.active,
+.sidebar .nav-link.active .nav-icon,
+.sidebar .nav-link.active svg {
+    color: #5AA9FF !important;
+    fill: #5AA9FF !important;
+    font-weight: bold;
+}

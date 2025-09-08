@@ -23,6 +23,9 @@ import authService from 'src/services/authServices'
 import { useMessageContext } from 'src/Context/MessageContext'
 import { useAuth } from 'src/Context/AuthContext'
 
+// Import du CSS personnalisé
+import './Login.css'
+
 const Login = () => {
   const { connect, isLogged } = useAuth()
   const navigate = useNavigate()
@@ -53,26 +56,30 @@ const Login = () => {
   }, [isLogged, navigate])
 
   return (
-    <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
+    <div className="login-wrapper min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
         <CRow className="justify-content-center">
-          <CCard className="py-4 mb-1" style={{ width: '65%' }}>
+          {/* Logo */}
+          <CCard className="py-4 mb-3 shadow-sm border-0" style={{ width: '65%' }}>
             <img
-              src={`${process.env.PUBLIC_URL}/images/logo_2.png`}
+              src={`${process.env.PUBLIC_URL}/images/logojurisys.jpg`}
               alt="Logo"
-              style={{ height: '100px', objectFit: 'contain' }}
+              className="login-logo"
             />
           </CCard>
 
           <CCol md={8}>
             <CCardGroup>
-              <CCard className="p-4">
+              {/* Formulaire */}
+              <CCard className="p-4 shadow-sm border-0 login-card">
                 <CCardBody>
                   <form onSubmit={handleSubmit(handleLogin)}>
-                    <h1>{labels.login.titleHeader}</h1>
+                    <h1 className="login-title">{labels.login.titleHeader}</h1>
                     <p className="text-body-secondary">{labels.login.title}</p>
+
+                    {/* Username */}
                     <CInputGroup className="mb-3">
-                      <CInputGroupText>
+                      <CInputGroupText className="login-icon">
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
                       <Controller
@@ -89,8 +96,10 @@ const Login = () => {
                         )}
                       />
                     </CInputGroup>
+
+                    {/* Password */}
                     <CInputGroup className="mb-4">
-                      <CInputGroupText>
+                      <CInputGroupText className="login-icon">
                         <CIcon icon={cilLockLocked} />
                       </CInputGroupText>
                       <Controller
@@ -108,55 +117,44 @@ const Login = () => {
                         )}
                       />
                     </CInputGroup>
+
+                    {/* Bouton login */}
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="success" type="submit" disabled={isLoading}>
+                        <CButton
+                          color="primary"
+                          type="submit"
+                          className="login-btn"
+                          disabled={isLoading}
+                        >
                           {isLoading ? <CSpinner size="sm" className="me-2" /> : null}
                           {isLoading ? labels.login.action.loading : labels.login.action.login}
                         </CButton>
                       </CCol>
-                      {/* <CCol xs={6} className="text-right">
-                        <CButton
-                          color="link"
-                          className="px-0"
-                          onClick={() => navigate('/forgot-pwd')}
-                        >
-                          {labels.login.action.forgotPassword}
-                        </CButton>
-                      </CCol> */}
                     </CRow>
                   </form>
                 </CCardBody>
               </CCard>
-              <CCard
-                className="text-white bg-gray py-5"
-                style={{ width: '44%', backgroundColor: 'gray' }}
-              >
-                <CCardBody className="text-center fw-semibold">
-                  <div>
-                    {/* <h2>{labels.login.action.inscrire}</h2> */}
-                    <h2> </h2>
-                    <br></br>
-                    <br></br>
-                    <p>{labels.description}</p>
-                    <span className="ml-6">V1.13.15</span>
 
-                    {/* <Link to="/register">
-                      <CButton color="secondary" className="mt-3" active tabIndex={-1}>
-                        {labels.login.action.inscrire}
-                      </CButton>
-                    </Link> */}
-                  </div>
+              {/* Panneau droit */}
+              <CCard className="text-white py-5 login-right">
+                <CCardBody className="text-center fw-semibold">
+                  <h2>Bienvenue</h2>
+                  <br />
+                  <p>{labels.description}</p>
+                  <span className="login-version">V1.13.15</span>
                 </CCardBody>
               </CCard>
             </CCardGroup>
           </CCol>
         </CRow>
       </CContainer>
+
+      {/* Modal reset password */}
       <CModal visible={false} aria-labelledby="VerticallyCenteredExample" alignment="center">
-        <CCardHeader style={{ backgroundColor: '#785a38' }}>
+        <CCardHeader className="login-modal-header">
           <img
-            style={{ width: '100%' }}
+            className="login-modal-logo"
             src={`${process.env.PUBLIC_URL}/images/logo_1.png`}
             alt="Logo"
           />
@@ -164,7 +162,6 @@ const Login = () => {
         <CCardBody className="p-4">
           <form>
             <h3 className="d-flex justify-content-center">Récupération de Mot de Passe</h3>
-            <p className="text-body-secondary"> </p>
 
             <CInputGroup className="mb-3">
               <CInputGroupText>@</CInputGroupText>

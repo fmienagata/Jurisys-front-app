@@ -5,7 +5,7 @@ import { useMessageContext } from 'src/Context/MessageContext'
 import { useNavigate } from 'react-router-dom'
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://api.cabinet-bogl.com',
+  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://api.jurisys-africa.com/',
 })
 
 api.interceptors.request.use(

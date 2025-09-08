@@ -1,0 +1,67 @@
+/* Fond global */
+.login-wrapper {
+    background-color: #f4f6fa;
+}
+
+/* Logo */
+.login-logo {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+}
+
+/* Carte formulaire */
+.login-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+}
+
+/* Titre */
+.login-title {
+    color: #0a2e73;
+    font-weight: bold;
+}
+
+/* Icônes input */
+.login-icon {
+    background-color: #1e4db7;
+    color: #ffffff;
+}
+
+/* Bouton login */
+.login-btn {
+    background-color: #1e4db7 !important;
+    border-color: #1e4db7 !important;
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    background-color: #5aa9ff !important;
+    border-color: #5aa9ff !important;
+}
+
+/* Panneau droit */
+.login-right {
+    width: 44%;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #0a2e73 0%, #1e4db7 100%);
+}
+
+.login-right p {
+    color: #f4f6fa;
+}
+
+.login-version {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Modal */
+.login-modal-header {
+    background-color: #0a2e73;
+}
+
+.login-modal-logo {
+    width: 100%;
+    object-fit: contain;
+}

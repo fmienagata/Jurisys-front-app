@@ -7,6 +7,7 @@ import { AppSidebarNav } from './AppSidebarNav'
 
 import SimpleBar from 'simplebar-react'
 import 'simplebar-react/dist/simplebar.min.css'
+import './sidebar.css'
 
 // sidebar nav config
 import navigation from '../_nav'
@@ -37,7 +38,7 @@ const AppSidebar = () => {
   return (
     <CSidebar
       className="border-end"
-      colorScheme="dark"
+      style={{ backgroundColor: '#0a2e73', color: '#fff' }}
       position="fixed"
       unfoldable={unfoldable}
       visible={sidebarShow}
@@ -45,13 +46,13 @@ const AppSidebar = () => {
         dispatch({ type: 'set', sidebarShow: visible })
       }}
     >
-      <CSidebarHeader className="border-bottom">
+      <CSidebarHeader className="border-bottom justify-content-center">
         <CSidebarBrand to="/">
           <img
             className="mr-2"
-            src={`${process.env.PUBLIC_URL}/images/logo_2.png`}
+            src={`${process.env.PUBLIC_URL}/images/logojurisys.jpg`}
             alt="Logo"
-            height={80}
+            height={100}
           />
         </CSidebarBrand>
         <CCloseButton

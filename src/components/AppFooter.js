@@ -9,7 +9,7 @@ const AppFooter = () => {
       </div>
 
       <div className="ms-auto">
-        <span className="me-1">Cabinet Brudey Ondziel Gnelenga Locko</span>
+        <span className="me-1"></span>
       </div>
     </CFooter>
   )

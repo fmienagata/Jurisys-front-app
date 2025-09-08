@@ -141,18 +141,14 @@ const Users = () => {
                       <CButton
                         color="danger"
                         className="align-middle mx-3"
-                        variant="outline"
-                        shape="rounded-pill"
                         onClick={() => DeleteMultiUsers()}
                       >
                         <CIcon icon={icon.cilLibraryAdd} size="sm" /> Supprimer
                       </CButton>
                     )}
                     <CButton
-                      className="align-middle ml-2"
-                      color="success"
-                      variant="outline"
-                      shape="rounded-pill"
+                      className="align-middle ml-2 rounded-pill"
+                      color="secondary"
                       onClick={() =>
                         navigate('/user-add', {
                           state: { userTypes: 'UserTypeAbdel' },

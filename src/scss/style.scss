@@ -19,6 +19,7 @@
   border-right: 1px solid black;
 }
 
+// Badges
 .badge {
   --cui-badge-padding-x: 0.8em;
   --cui-badge-padding-y: 0.5em;
@@ -26,28 +27,20 @@
   --cui-badge-font-weight: 700;
   --cui-badge-color: #fff;
   --cui-badge-border-radius: var(--cui-border-radius);
-  display: inline-block;
-  padding: var(--cui-badge-padding-y) var(--cui-badge-padding-x);
-  font-size: var(--cui-badge-font-size);
-  font-weight: var(--cui-badge-font-weight);
-  line-height: 1;
-  color: var(--cui-badge-color);
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: baseline;
-  border-radius: var(--cui-badge-border-radius, 0);
 }
 
+
+// Tableaux harmonisés avec les couleurs du logo
 .table-primary {
-  --cui-table-color: #080a0c;
-  --cui-table-bg: #fef9ef;
-  --cui-table-border-color: #a5a5a6;
-  --cui-table-striped-bg: #c2c2c2;
-  --cui-table-striped-color: #080a0c;
-  --cui-table-active-bg: #b8b9b9;
-  --cui-table-active-color: #080a0c;
-  --cui-table-hover-bg: #bdbdbe;
-  --cui-table-hover-color: #080a0c;
+  --cui-table-color: #ffffff;
+  --cui-table-bg: #0a2e73; /* header bleu foncé */
+  --cui-table-border-color: #1e4db7; /* bordures bleu moyen */
+  --cui-table-striped-bg: #e6f0ff;
+  --cui-table-striped-color: #0a2e73;
+  --cui-table-active-bg: #dce6ff;
+  --cui-table-active-color: #0a2e73;
+  --cui-table-hover-bg: #5aa9ff;
+  --cui-table-hover-color: #ffffff;
   color: var(--cui-table-color);
   border-color: var(--cui-table-border-color);
 }
@@ -221,4 +214,55 @@ input:checked + .slider .off {
 }
 
 .css-1mrwq1p {
+}
+
+.badge-primary {
+  background-color: #0a2e73 !important;
+  color: #fff !important;
+}
+.badge-success {
+  background-color: #1e4db7 !important;
+  color: #fff !important;
+}
+.badge-danger {
+  background-color: #dc3545 !important;
+  color: #fff !important;
+}
+
+// Boutons
+.btn-primary {
+  background-color: #0a2e73 !important;
+  border-color: #0a2e73 !important;
+  color: #fff !important;
+}
+.btn-primary:hover {
+  background-color: #1e4db7 !important;
+  border-color: #1e4db7 !important;
+}
+
+.btn-success {
+  background-color: #1e4db7 !important;
+  border-color: #1e4db7 !important;
+  color: #fff !important;
+}
+.btn-success:hover {
+  background-color: #5aa9ff !important;
+  border-color: #5aa9ff !important;
+}
+
+.btn-outline-primary {
+  border-color: #0a2e73 !important;
+  color: #0a2e73 !important;
+}
+.btn-outline-primary:hover {
+  background-color: #0a2e73 !important;
+  color: #fff !important;
+}
+
+// Sidebar / Header
+.sidebar-header,
+.header > .container-fluid {
+  background-color: #0a2e73 !important;
+  color: #fff !important;
+  min-height: calc(7rem + 0px);
 }

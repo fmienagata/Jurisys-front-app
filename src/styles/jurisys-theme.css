@@ -1,0 +1,146 @@
+/* ================================
+   🎨 JURISYS-SOFT THEME
+   Bleu foncé : #0A2E73
+   Bleu moyen : #1E4DB7
+   Bleu clair (hover) : #5AA9FF
+   Blanc : #FFFFFF
+   ================================ */
+
+/* ====== TABLE ====== */
+
+/* En-tête */
+.table thead,
+.table .table-light {
+    background-color: #0a2e73 !important;
+    color: #ffffff !important;
+}
+
+/* Lignes hover */
+.table tbody tr:hover {
+    background-color: #e6f0ff !important;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* Cellules */
+.table td,
+.table th {
+    vertical-align: middle !important;
+}
+
+/* Bordures adoucies */
+.table {
+    border-color: #dce3f0 !important;
+}
+
+/* ====== BADGES ====== */
+.badge-dark {
+    background-color: #1e4db7 !important;
+    /* actif */
+}
+
+.badge-danger {
+    background-color: #d9534f !important;
+    /* inactif */
+}
+
+/* ====== BOUTONS ====== */
+
+/* Bouton Ajouter / Confirmer */
+.btn-success {
+    background-color: #1e4db7 !important;
+    border-color: #1e4db7 !important;
+    color: #ffffff !important;
+}
+
+.btn-success:hover {
+    background-color: #5aa9ff !important;
+    border-color: #5aa9ff !important;
+    color: #ffffff !important;
+}
+
+/* Bouton Modifier */
+.btn-primary {
+    background-color: #1e4db7 !important;
+    border-color: #1e4db7 !important;
+    color: #ffffff !important;
+}
+
+.btn-primary:hover {
+    background-color: #5aa9ff !important;
+    border-color: #5aa9ff !important;
+    color: #ffffff !important;
+}
+
+/* Bouton Danger */
+.btn-danger {
+    background-color: #d9534f !important;
+    border-color: #d9534f !important;
+    color: #ffffff !important;
+}
+
+.btn-danger:hover {
+    background-color: #c9302c !important;
+    border-color: #c9302c !important;
+    color: #ffffff !important;
+}
+
+/* Variante outline harmonisée */
+.btn-outline-success {
+    border-color: #1e4db7 !important;
+    color: #1e4db7 !important;
+}
+
+.btn-outline-success:hover {
+    background-color: #5aa9ff !important;
+    border-color: #5aa9ff !important;
+    color: #ffffff !important;
+}
+
+.btn-outline-primary {
+    border-color: #1e4db7 !important;
+    color: #1e4db7 !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: #5aa9ff !important;
+    border-color: #5aa9ff !important;
+    color: #ffffff !important;
+}
+
+.btn-outline-danger {
+    border-color: #d9534f !important;
+    color: #d9534f !important;
+}
+
+.btn-outline-danger:hover {
+    background-color: #d9534f !important;
+    border-color: #d9534f !important;
+    color: #ffffff !important;
+}
+
+/* ====== HEADER CARDS ====== */
+.card-header {
+    background-color: #0a2e73 !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+button.btn-jurisys {
+  all: unset; /* reset CoreUI */
+  display: inline-block;
+  cursor: pointer;
+  border: 2px solid #1e4db7 !important;
+  background-color: transparent !important;
+  color: #1e4db7 !important;
+  font-weight: 600;
+  padding: 6px 20px;
+  border-radius: 50px !important;
+  transition: all 0.3s ease-in-out;
+  text-align: center;
+}
+
+button.btn-jurisys:hover {
+  background-color: #1e4db7 !important;
+  color: #ffffff !important;
+  border-color: #1e4db7 !important;
+}

@@ -20,15 +20,17 @@ $cyan: #17a2b8 !default;
 // $light: $cyan !default;
 // $dark: $cyan !default;
 
-$primary: #000000;
-$secondary: #062b5c;
-$success: #785a38;
-$info: #fef9ef;
-$warning: #6c6b6a;
-$danger: $red !default;
-$light: #fef9ef !default;
-$dark: $cyan !default;
+// 🎨 Couleurs principales (logo Jurisys)
+$primary: #0a2e73 !default;   // bleu foncé
+$secondary: #1e4db7 !default; // bleu moyen
+$success: #5aa9ff !default;   // bleu clair
+$info: #e6f0ff !default;      // gris clair / fond info
+$warning: #ffc107 !default;   // jaune standard
+$danger: #dc3545 !default;    // rouge alerte
+$light: #ffffff !default;     // blanc
+$dark: #0a2e73 !default;      // bleu foncé
 
+// Map des couleurs disponibles dans CoreUI
 $theme-colors: () !default;
 $theme-colors: map-merge(
   (
@@ -38,15 +40,8 @@ $theme-colors: map-merge(
     'info': $info,
     'warning': $warning,
     'danger': $danger,
+    'light': $light,
     'dark': $dark,
-    'yellow': $yellow,
-    'cyan': $cyan,
-    'purple': $purple,
-    'teal': $teal,
-    'pink': $pink,
-    'green': $green,
-    'blue': $blue,
-    'orange': $orange,
   ),
   $theme-colors
 );
