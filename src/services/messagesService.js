@@ -6,8 +6,13 @@ const getAllMessages = async () => {
 }
 
 const deleteMessage = async (id) => {
-  const response = await Axios.delete('/api/messages/' + id)
-  return response.data
+  try {
+    const response = await Axios.delete(`/api/messages/${id}/message_files`)
+    return response.data
+  } catch (error) {
+    const fallbackResponse = await Axios.delete('/api/messages/' + id)
+    return fallbackResponse.data
+  }
 }
 
 const addMessage = async (message) => {
@@ -19,12 +24,18 @@ const addMessage = async (message) => {
   return response.data
 }
 
-const addMessageFiles = async (file, id) => {
-  const response = await Axios.post(`/api/messages/${id}/message_files`, file, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  })
+const addMessageFiles = async (formData, id) => {
+  try {
+    const response = await Axios.post(`/api/messages/${id}/message_files`, formData)
+    return response.data
+  } catch (error) {
+    const apiMessage =
+      error?.response?.data?.message ||
+      error?.response?.data?.error ||
+      error?.response?.data?.detail ||
+      error?.message
+    throw new Error(apiMessage || "Echec lors de l'envoi des fichiers")
+  }
 }
 
 export { getAllMessages, deleteMessage, addMessage, addMessageFiles }

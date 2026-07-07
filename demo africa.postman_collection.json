@@ -1,0 +1,1891 @@
+{
+  "info": {
+    "_postman_id": "d8834c67-27fc-4d3b-a31e-f3b1aa728b83",
+    "name": "demo africa",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "14668306"
+  },
+  "item": [
+    {
+      "name": "Login",
+      "item": [
+        {
+          "name": "login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();\r",
+                  "\r",
+                  "if (pm.response.code === 200 && json.token) {\r",
+                  "    pm.environment.set(\"africa_jwt_token_000001\", json.token);\r",
+                  "    console.log(\"Token sauvegardé ✓\");\r",
+                  "} else {\r",
+                  "    console.error(\"Login échoué :\", json);\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Client",
+                "value": "TEST01",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\":\"admin@gmail.com\",\r\n    \"password\": \"pass_1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/login",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Dossier",
+      "item": [
+        {
+          "name": "get dossier",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/dossiers?criteria=statut:0",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "dossiers"
+              ],
+              "query": [
+                {
+                  "key": "criteria",
+                  "value": "statut:0"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get dossier id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/dossiers/6a08a635769cb4a35a097326",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "dossiers",
+                "6a08a635769cb4a35a097326"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "post dossier",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "reference",
+                  "value": "reference",
+                  "type": "text"
+                },
+                {
+                  "key": "juridiction",
+                  "value": "juridiction",
+                  "type": "text"
+                },
+                {
+                  "key": "file1",
+                  "type": "file",
+                  "fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+                  "filesNotInWorkingDirectory": [
+                    "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                  ],
+                  "src": "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                },
+                {
+                  "key": "file2",
+                  "type": "file",
+                  "src": "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                },
+                {
+                  "key": "montantPrejudice",
+                  "value": "96.25",
+                  "type": "text"
+                },
+                {
+                  "key": "typeProcedure",
+                  "value": "procedure",
+                  "type": "text"
+                },
+                {
+                  "key": "reference",
+                  "value": "reference",
+                  "type": "text"
+                },
+                {
+                  "key": "nom",
+                  "value": "nom",
+                  "type": "text"
+                },
+                {
+                  "key": "prenom",
+                  "value": "prenom",
+                  "type": "text"
+                },
+                {
+                  "key": "adresse",
+                  "value": "adresse",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "email",
+                  "type": "text"
+                },
+                {
+                  "key": "telephone",
+                  "value": "telephone",
+                  "type": "text"
+                },
+                {
+                  "key": "ville",
+                  "value": "ville",
+                  "type": "text"
+                },
+                {
+                  "key": "pays",
+                  "value": "pays",
+                  "type": "text"
+                },
+                {
+                  "key": "objet",
+                  "value": "objet",
+                  "type": "text"
+                },
+                {
+                  "key": "statut",
+                  "value": "statut",
+                  "type": "text"
+                },
+                {
+                  "key": "societe",
+                  "value": "6600279909645b6d93051ab6",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/dossiers",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "dossiers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "put dossier",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"typeProcedure\": \"procedure\",\r\n    \"reference\": \"reference\",\r\n    \"nom\": \"nom\",\r\n    \"prenom\": \"prenom\",\r\n    \"adresse\": \"adresse\",\r\n    \"email\": \"email\",\r\n    \"telephone\": \"telephone\",\r\n    \"ville\": \"ville\",\r\n    \"pays\": \"pays\",\r\n    \"juridiction\": \"juridiction\",\r\n    \"objet\": \"objet\",\r\n    \"partieAdverseNom\": \"tan\",\r\n    \"partieAdversePrenom\": \"michael\",\r\n    \"partieAdverseEmail\": \"michael.tan@test.com\",\r\n    \"partieAdverseAdresse\": \"rue picpus\",\r\n    \"partieAdverseVille\": \"paris\",\r\n    \"partieAdversePays\": \"france\",\r\n    \"partieAdverseTelephone\": \"0123456789\",\r\n    \"statut\": true,\r\n    \"montantPrejudice\": 96.25,\r\n    \"societe\": \"6600279909645b6d93051ab6\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/dossiers/6607f9a6afd8e999d008213c",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "dossiers",
+                "6607f9a6afd8e999d008213c"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "post dossier file",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "ffff",
+                  "type": "file",
+                  "fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+                  "filesNotInWorkingDirectory": [
+                    "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                  ],
+                  "src": "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                },
+                {
+                  "key": "file2",
+                  "type": "file",
+                  "src": "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/dossiers/6607f9a6afd8e999d008213c/dossier_files",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "dossiers",
+                "6607f9a6afd8e999d008213c",
+                "dossier_files"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE dossier",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"typeProcedure\": \"procedure\",\r\n    \"reference\": \"reference\",\r\n    \"nom\": \"nom\",\r\n    \"prenom\": \"prenom\",\r\n    \"adresse\": \"adresse\",\r\n    \"email\": \"email\",\r\n    \"telephone\": \"telephone\",\r\n    \"ville\": \"ville\",\r\n    \"pays\": \"pays\",\r\n    \"juridiction\": \"juridiction\",\r\n    \"objet\": \"objet\",\r\n    \"partieAdverseNom\": \"tan\",\r\n    \"partieAdversePrenom\": \"michael\",\r\n    \"partieAdverseEmail\": \"michael.tan@test.com\",\r\n    \"partieAdverseAdresse\": \"rue picpus\",\r\n    \"partieAdverseVille\": \"paris\",\r\n    \"partieAdversePays\": \"france\",\r\n    \"partieAdverseTelephone\": \"0123456789\",\r\n    \"statut\": true,\r\n    \"montantPrejudice\": 96.25,\r\n    \"societe\": \"6600279909645b6d93051ab6\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/dossiers/6607f9a6afd8e999d008213c",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "dossiers",
+                "6607f9a6afd8e999d008213c"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Message",
+      "item": [
+        {
+          "name": "get messages",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "type",
+                  "value": "reference",
+                  "type": "text"
+                },
+                {
+                  "key": "text",
+                  "value": "juridiction",
+                  "type": "text"
+                },
+                {
+                  "key": "file1",
+                  "type": "file",
+                  "fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+                  "filesNotInWorkingDirectory": [
+                    "/C:/Users/hejsn/OneDrive/Images/Captures d’écran/Capture d'écran 2024-01-01 131649.png"
+                  ],
+                  "src": "/C:/Users/hejsn/OneDrive/Images/Captures d’écran/Capture d'écran 2024-01-01 131649.png"
+                },
+                {
+                  "key": "file2",
+                  "type": "file",
+                  "fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+                  "filesNotInWorkingDirectory": [
+                    "/C:/Users/hejsn/OneDrive/Images/Captures d’écran/Capture d'écran 2024-01-01 131649.png"
+                  ],
+                  "src": "/C:/Users/hejsn/OneDrive/Images/Captures d’écran/Capture d'écran 2024-01-01 131649.png"
+                },
+                {
+                  "key": "dossier",
+                  "value": "65abb06904d28169d105a451",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/messages?criteria=dossier:66707f7b496db8f63c0dc783,typeMessage:1",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "messages"
+              ],
+              "query": [
+                {
+                  "key": "criteria",
+                  "value": "dossier:66707f7b496db8f63c0dc783,typeMessage:1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get messages id",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "type",
+                  "value": "reference",
+                  "type": "text"
+                },
+                {
+                  "key": "text",
+                  "value": "juridiction",
+                  "type": "text"
+                },
+                {
+                  "key": "file1",
+                  "type": "file",
+                  "fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+                  "filesNotInWorkingDirectory": [
+                    "/C:/Users/hejsn/OneDrive/Images/Captures d’écran/Capture d'écran 2024-01-01 131649.png"
+                  ],
+                  "src": "/C:/Users/hejsn/OneDrive/Images/Captures d’écran/Capture d'écran 2024-01-01 131649.png"
+                },
+                {
+                  "key": "file2",
+                  "type": "file",
+                  "fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+                  "filesNotInWorkingDirectory": [
+                    "/C:/Users/hejsn/OneDrive/Images/Captures d’écran/Capture d'écran 2024-01-01 131649.png"
+                  ],
+                  "src": "/C:/Users/hejsn/OneDrive/Images/Captures d’écran/Capture d'écran 2024-01-01 131649.png"
+                },
+                {
+                  "key": "dossier",
+                  "value": "65abb06904d28169d105a451",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/messages/65abec1704d28169d105a458",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "messages",
+                "65abec1704d28169d105a458"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "post message",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "type",
+                  "value": "reference",
+                  "type": "text"
+                },
+                {
+                  "key": "text",
+                  "value": "juridiction",
+                  "type": "text"
+                },
+                {
+                  "key": "file1",
+                  "type": "file",
+                  "fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+                  "filesNotInWorkingDirectory": [
+                    "/C:/Users/hejsn/OneDrive/Images/Captures d’écran/Capture d'écran 2024-01-01 131649.png"
+                  ],
+                  "src": "/C:/Users/hejsn/OneDrive/Images/Captures d’écran/Capture d'écran 2024-01-01 131649.png",
+                  "disabled": true
+                },
+                {
+                  "key": "file2",
+                  "type": "file",
+                  "fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+                  "filesNotInWorkingDirectory": [
+                    "/C:/Users/hejsn/OneDrive/Images/Captures d’écran/Capture d'écran 2024-01-01 131649.png"
+                  ],
+                  "src": "/C:/Users/hejsn/OneDrive/Images/Captures d’écran/Capture d'écran 2024-01-01 131649.png"
+                },
+                {
+                  "key": "dossier",
+                  "value": "65abe5bbdaa161c7c10f32d4",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/messages",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "messages"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "put message",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"type\": \"reference\",\r\n    \"text\": \"juridiction\",\r\n    \"dateAudience\": \"2023-10-23\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/messages/65ac0a0104d28169d105a472",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "messages",
+                "65ac0a0104d28169d105a472"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "post dossier file",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "ffff",
+                  "type": "file",
+                  "src": "/C:/Users/hejsn/OneDrive/Images/Captures d’écran/Capture d'écran 2023-07-17 000054.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/messages/660f14802c879012b50d7272/message_files",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "messages",
+                "660f14802c879012b50d7272",
+                "message_files"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete message",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "ffff",
+                  "type": "file",
+                  "src": "/C:/Users/hejsn/OneDrive/Images/Captures d’écran/Capture d'écran 2023-07-17 000054.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/messages/660f14802c879012b50d7272/message_files",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "messages",
+                "660f14802c879012b50d7272",
+                "message_files"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Message Type",
+      "item": [
+        {
+          "name": "GET Messages type",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/messages_type",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "messages_type"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET Messages type Id",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/messages_type/6600279909645b6d93051abc",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "messages_type",
+                "6600279909645b6d93051abc"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST Messages type",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "type",
+                  "value": "MATRICE ET PROJET ASSIGNATION",
+                  "type": "text"
+                },
+                {
+                  "key": "text",
+                  "value": "Chère Madame, \nCi joint la matrice reçue ainsi que mon projet d assignation que je complèterai dès retour du greffe sur la date d audience. \nCordialement",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/messages_type",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "messages_type"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT Messages type",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"type\": \"Test Type\",\r\n    \"text\": \"Chère Madame, \\nCi joint la matrice reçue ainsi que mon projet d assignation que je complèterai dès retour du greffe sur la date d audience. \\nCordialement\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/messages_type/6607f4c15848690e1703723e",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "messages_type",
+                "6607f4c15848690e1703723e"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE Messages type",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"type\": \"Test Type\",\r\n    \"text\": \"Chère Madame, \\nCi joint la matrice reçue ainsi que mon projet d assignation que je complèterai dès retour du greffe sur la date d audience. \\nCordialement\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/messages_type/6607f599afd8e999d008213a",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "messages_type",
+                "6607f599afd8e999d008213a"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "get users",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "type",
+                  "value": "reference",
+                  "type": "text"
+                },
+                {
+                  "key": "text",
+                  "value": "juridiction",
+                  "type": "text"
+                },
+                {
+                  "key": "file1",
+                  "type": "file",
+                  "fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+                  "filesNotInWorkingDirectory": [
+                    "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                  ],
+                  "src": "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                },
+                {
+                  "key": "file2",
+                  "type": "file",
+                  "fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+                  "filesNotInWorkingDirectory": [
+                    "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                  ],
+                  "src": "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                },
+                {
+                  "key": "dossier",
+                  "value": "65a79dac04d28169d105a443",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/users",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get users id",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "type",
+                  "value": "reference",
+                  "type": "text"
+                },
+                {
+                  "key": "text",
+                  "value": "juridiction",
+                  "type": "text"
+                },
+                {
+                  "key": "file1",
+                  "type": "file",
+                  "fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+                  "filesNotInWorkingDirectory": [
+                    "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                  ],
+                  "src": "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                },
+                {
+                  "key": "file2",
+                  "type": "file",
+                  "fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+                  "filesNotInWorkingDirectory": [
+                    "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                  ],
+                  "src": "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                },
+                {
+                  "key": "dossier",
+                  "value": "65a79dac04d28169d105a443",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/susers/6600279909645b6d93051abf",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "susers",
+                "6600279909645b6d93051abf"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "post users",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "userType",
+                  "value": "6600279909645b6d93051ab4",
+                  "type": "text"
+                },
+                {
+                  "key": "username",
+                  "value": "michael",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "test",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "michaelt603@gmail.com",
+                  "type": "text"
+                },
+                {
+                  "key": "nom",
+                  "value": "TAN",
+                  "type": "text"
+                },
+                {
+                  "key": "prenom",
+                  "value": "Michael",
+                  "type": "text"
+                },
+                {
+                  "key": "societe",
+                  "value": "6600279909645b6d93051ab6",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/users?count=true",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "put users",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"michael\",\r\n    \"email\": \"michaelt603@gmail.com\",\r\n    \"password\": \"098f6bcd4621d373cade4e832627b4f6\",\r\n    \"nom\": \"TAN test\",\r\n    \"prenom\": \"Michael test\",\r\n    \"societe\": \"6600279909645b6d93051ab6\",\r\n    \"userType\": \"6600279909645b6d93051ab4\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/users/6607ddbcafd8e999d0082135",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "users",
+                "6607ddbcafd8e999d0082135"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "type",
+                  "value": "reference",
+                  "type": "text"
+                },
+                {
+                  "key": "text",
+                  "value": "juridiction",
+                  "type": "text"
+                },
+                {
+                  "key": "file1",
+                  "type": "file",
+                  "fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+                  "filesNotInWorkingDirectory": [
+                    "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                  ],
+                  "src": "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                },
+                {
+                  "key": "file2",
+                  "type": "file",
+                  "fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+                  "filesNotInWorkingDirectory": [
+                    "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                  ],
+                  "src": "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                },
+                {
+                  "key": "dossier",
+                  "value": "65a79dac04d28169d105a443",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/users/6607ddbcafd8e999d0082135",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "users",
+                "6607ddbcafd8e999d0082135"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User Type",
+      "item": [
+        {
+          "name": "get usertype",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "type",
+                  "value": "reference",
+                  "type": "text"
+                },
+                {
+                  "key": "text",
+                  "value": "juridiction",
+                  "type": "text"
+                },
+                {
+                  "key": "file1",
+                  "type": "file",
+                  "fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+                  "filesNotInWorkingDirectory": [
+                    "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                  ],
+                  "src": "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                },
+                {
+                  "key": "file2",
+                  "type": "file",
+                  "fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+                  "filesNotInWorkingDirectory": [
+                    "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                  ],
+                  "src": "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                },
+                {
+                  "key": "dossier",
+                  "value": "65a79dac04d28169d105a443",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/user_types",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "user_types"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Factures",
+      "item": [
+        {
+          "name": "GET Facture",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/factures",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "factures"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET Facture Id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/factures/6600279909645b6d93051b80",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "factures",
+                "6600279909645b6d93051b80"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST Facture",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "montant",
+                  "value": "189623865",
+                  "type": "text"
+                },
+                {
+                  "key": "statut",
+                  "value": "Payer",
+                  "type": "text"
+                },
+                {
+                  "key": "user",
+                  "value": "66707f7b496db8f63c0dc77f",
+                  "type": "text"
+                },
+                {
+                  "key": "dossier",
+                  "value": "66707f7b496db8f63c0dc78f",
+                  "type": "text"
+                },
+                {
+                  "key": "dateEnvoi",
+                  "value": "30/03/2024",
+                  "type": "text"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "31f241bc-f73c-4f0e-8093-c6364749d086",
+                  "src": "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                },
+                {
+                  "key": "file2",
+                  "type": "file",
+                  "uuid": "e2b304d1-505a-4a61-b32d-fe5320a76749",
+                  "src": "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/factures",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "factures"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT Facture",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"montant\": 856261,\r\n    \"statut\": \"Payer test\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/factures/6607d827afd8e999d0082131",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "factures",
+                "6607d827afd8e999d0082131"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST Facture Copy",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "montant",
+                  "value": "189623865",
+                  "type": "text"
+                },
+                {
+                  "key": "statut",
+                  "value": "Payer",
+                  "type": "text"
+                },
+                {
+                  "key": "user",
+                  "value": "66707f7b496db8f63c0dc77f",
+                  "type": "text"
+                },
+                {
+                  "key": "dossier",
+                  "value": "66707f7b496db8f63c0dc78f",
+                  "type": "text"
+                },
+                {
+                  "key": "dateEnvoi",
+                  "value": "30/03/2024",
+                  "type": "text"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "31f241bc-f73c-4f0e-8093-c6364749d086",
+                  "src": "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                },
+                {
+                  "key": "file2",
+                  "type": "file",
+                  "uuid": "e2b304d1-505a-4a61-b32d-fe5320a76749",
+                  "src": "/C:/Users/Setsuna/Pictures/Saved Pictures/appareil photo.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/factures",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "factures"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Facture",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/factures/6607d827afd8e999d0082131",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "factures",
+                "6607d827afd8e999d0082131"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Societe",
+      "item": [
+        {
+          "name": "GET Societe",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/societes",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "societes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET Societe Id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/societes/6600279909645b6d93051ab6",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "societes",
+                "6600279909645b6d93051ab6"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST Societe",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "nomSociete",
+                  "value": "test nom postman",
+                  "type": "text"
+                },
+                {
+                  "key": "type",
+                  "value": "type societe",
+                  "type": "text"
+                },
+                {
+                  "key": "pays",
+                  "value": "France",
+                  "type": "text"
+                },
+                {
+                  "key": "ville",
+                  "value": "Paris",
+                  "type": "text"
+                },
+                {
+                  "key": "fax",
+                  "value": "060595758",
+                  "type": "text"
+                },
+                {
+                  "key": "adresse",
+                  "value": "rue test",
+                  "type": "text"
+                },
+                {
+                  "key": "telephone",
+                  "value": "0123456789",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/societes",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "societes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT Societe",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nomSociete\": \"test nom postman put\",\r\n    \"type\": \"type societe\",\r\n    \"pays\": \"France\",\r\n    \"ville\": \"Paris\",\r\n    \"fax\": \"060595758\",\r\n    \"adresse\": \"rue test\",\r\n    \"telephone\": \"0123456789\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/societes/6607eecfafd8e999d0082136",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "societes",
+                "6607eecfafd8e999d0082136"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE Societ",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{africa_jwt_token_000001}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://api.jurisys-africa.com/api/societes/6607f0045848690e1703723c",
+              "protocol": "http",
+              "host": [
+                "api",
+                "jurisys-africa",
+                "com"
+              ],
+              "path": [
+                "api",
+                "societes",
+                "6607f0045848690e1703723c"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

@@ -80,19 +80,25 @@ const ModalNewMessageDossier = (props) => {
 
   const handleSubmitFile = async (id) => {
     const form = new FormData()
+    if (!files.length) return
     files.forEach((file, index) => {
+      // Keep multiple key formats for backend compatibility
+      form.append('file', file)
       form.append(`file${index}`, file)
+      form.append('files[]', file)
     })
-
     try {
-      const response = await addMessageFiles(form, id)
+      await addMessageFiles(form, id)
       refresh()
       displaySuccess('Ajout un message', 'Le message a bien été créé avec sucess')
       setOpenModal(false)
 
       setFiles([])
     } catch (error) {
-      console.error("Une erreur s'est produite lors de l'envoi des fichiers:", error)
+      displayError(
+        'Upload fichier impossible',
+        error?.message || "Une erreur s'est produite lors de l'envoi des fichiers.",
+      )
     } finally {
       setLoading(false) // Arrêter le spinner après l'attente
     }
@@ -114,9 +120,8 @@ const ModalNewMessageDossier = (props) => {
     data.dossier = dataDossier.id
     try {
       const result = await addMessage(data)
-
       if (files.length > 0) {
-        handleSubmitFile(result.id)
+        await handleSubmitFile(result.id)
       } else {
         refresh()
         displaySuccess('Ajout un message', 'Le message a bien été créé avec sucess')

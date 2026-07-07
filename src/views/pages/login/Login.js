@@ -2,16 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import {
   CButton,
-  CCard,
   CCardBody,
-  CCardGroup,
-  CCol,
-  CContainer,
   CFormInput,
   CInputGroup,
   CInputGroupText,
   CSpinner,
-  CRow,
   CModal,
   CCardHeader,
 } from '@coreui/react'
@@ -22,9 +17,11 @@ import labels from 'src/translations/labels.json'
 import authService from 'src/services/authServices'
 import { useMessageContext } from 'src/Context/MessageContext'
 import { useAuth } from 'src/Context/AuthContext'
+import packageInfo from '../../../../package.json'
 
-// Import du CSS personnalisé
 import './Login.css'
+
+const LOGO_SRC = `${process.env.PUBLIC_URL}/images/logojurisys.jpg`
 
 const Login = () => {
   const { connect, isLogged } = useAuth()
@@ -39,6 +36,7 @@ const Login = () => {
     try {
       const response = await authService.login(data)
       localStorage.setItem('token', response.token)
+      localStorage.setItem('clientCode', (data.clientCode || '').trim())
       connect()
       setIsLoading(false)
       navigate('/dashboard')
@@ -56,101 +54,122 @@ const Login = () => {
   }, [isLogged, navigate])
 
   return (
-    <div className="login-wrapper min-vh-100 d-flex flex-row align-items-center">
-      <CContainer>
-        <CRow className="justify-content-center">
-          {/* Logo */}
-          <CCard className="py-4 mb-3 shadow-sm border-0" style={{ width: '65%' }}>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/logojurisys.jpg`}
-              alt="Logo"
-              className="login-logo"
-            />
-          </CCard>
+    <div className="login-page">
+      <div className="login-bg-shape login-bg-shape--1" aria-hidden="true" />
+      <div className="login-bg-shape login-bg-shape--2" aria-hidden="true" />
+      <div className="login-bg-shape login-bg-shape--3" aria-hidden="true" />
 
-          <CCol md={8}>
-            <CCardGroup>
-              {/* Formulaire */}
-              <CCard className="p-4 shadow-sm border-0 login-card">
-                <CCardBody>
-                  <form onSubmit={handleSubmit(handleLogin)}>
-                    <h1 className="login-title">{labels.login.titleHeader}</h1>
-                    <p className="text-body-secondary">{labels.login.title}</p>
+      <div className="login-shell">
+        <div className="login-brand-panel">
+          <div className="login-brand-content">
+            <div className="login-logo-frame">
+              <img src={LOGO_SRC} alt="Jurisys" className="login-logo" />
+            </div>
+            <h2 className="login-brand-title">Bienvenue</h2>
+            <p className="login-brand-tagline">{labels.description}</p>
+            <ul className="login-brand-features">
+              <li>Gestion des dossiers</li>
+              <li>Messagerie &amp; agenda</li>
+              <li>Suivi client simplifié</li>
+            </ul>
+            <span className="login-version">v{packageInfo.version}</span>
+          </div>
+        </div>
 
-                    {/* Username */}
-                    <CInputGroup className="mb-3">
-                      <CInputGroupText className="login-icon">
-                        <CIcon icon={cilUser} />
-                      </CInputGroupText>
-                      <Controller
-                        name="username"
-                        control={control}
-                        defaultValue=""
-                        render={({ field }) => (
-                          <CFormInput
-                            {...field}
-                            id="username"
-                            placeholder="E-Mail d'utilisateur"
-                            autoComplete="username"
-                          />
-                        )}
+        <div className="login-form-panel">
+          <CCardBody className="login-form-body">
+            <div className="login-form-header">
+              <img src={LOGO_SRC} alt="" className="login-form-logo-mobile" aria-hidden="true" />
+              <h1 className="login-title">{labels.login.titleHeader}</h1>
+              <p className="login-subtitle">{labels.login.title}</p>
+            </div>
+
+            <form onSubmit={handleSubmit(handleLogin)} className="login-form">
+              <div className="login-field">
+                <label htmlFor="clientCode" className="login-label">
+                  Code client
+                </label>
+                <CInputGroup className="login-input-group">
+                  <CInputGroupText className="login-icon">ID</CInputGroupText>
+                  <Controller
+                    name="clientCode"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <CFormInput
+                        {...field}
+                        id="clientCode"
+                        className="login-input"
+                        placeholder="Code client"
+                        autoComplete="off"
                       />
-                    </CInputGroup>
+                    )}
+                  />
+                </CInputGroup>
+              </div>
 
-                    {/* Password */}
-                    <CInputGroup className="mb-4">
-                      <CInputGroupText className="login-icon">
-                        <CIcon icon={cilLockLocked} />
-                      </CInputGroupText>
-                      <Controller
-                        name="password"
-                        control={control}
-                        defaultValue=""
-                        render={({ field }) => (
-                          <CFormInput
-                            {...field}
-                            id="password"
-                            type="password"
-                            placeholder="Mot de passe"
-                            autoComplete="current-password"
-                          />
-                        )}
+              <div className="login-field">
+                <label htmlFor="username" className="login-label">
+                  Adresse e-mail
+                </label>
+                <CInputGroup className="login-input-group">
+                  <CInputGroupText className="login-icon">
+                    <CIcon icon={cilUser} />
+                  </CInputGroupText>
+                  <Controller
+                    name="username"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <CFormInput
+                        {...field}
+                        id="username"
+                        className="login-input"
+                        placeholder="vous@exemple.com"
+                        autoComplete="username"
                       />
-                    </CInputGroup>
+                    )}
+                  />
+                </CInputGroup>
+              </div>
 
-                    {/* Bouton login */}
-                    <CRow>
-                      <CCol xs={6}>
-                        <CButton
-                          color="primary"
-                          type="submit"
-                          className="login-btn"
-                          disabled={isLoading}
-                        >
-                          {isLoading ? <CSpinner size="sm" className="me-2" /> : null}
-                          {isLoading ? labels.login.action.loading : labels.login.action.login}
-                        </CButton>
-                      </CCol>
-                    </CRow>
-                  </form>
-                </CCardBody>
-              </CCard>
+              <div className="login-field">
+                <label htmlFor="password" className="login-label">
+                  Mot de passe
+                </label>
+                <CInputGroup className="login-input-group">
+                  <CInputGroupText className="login-icon">
+                    <CIcon icon={cilLockLocked} />
+                  </CInputGroupText>
+                  <Controller
+                    name="password"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <CFormInput
+                        {...field}
+                        id="password"
+                        className="login-input"
+                        type="password"
+                        placeholder="••••••••"
+                        autoComplete="current-password"
+                      />
+                    )}
+                  />
+                </CInputGroup>
+              </div>
 
-              {/* Panneau droit */}
-              <CCard className="text-white py-5 login-right">
-                <CCardBody className="text-center fw-semibold">
-                  <h2>Bienvenue</h2>
-                  <br />
-                  <p>{labels.description}</p>
-                  <span className="login-version">V1.13.15</span>
-                </CCardBody>
-              </CCard>
-            </CCardGroup>
-          </CCol>
-        </CRow>
-      </CContainer>
+              <CButton type="submit" className="login-btn" disabled={isLoading}>
+                {isLoading ? <CSpinner size="sm" className="me-2" /> : null}
+                {isLoading ? labels.login.action.loading : labels.login.action.login}
+              </CButton>
+            </form>
 
-      {/* Modal reset password */}
+            <p className="login-footer-note">Plateforme sécurisée de gestion juridique</p>
+          </CCardBody>
+        </div>
+      </div>
+
       <CModal visible={false} aria-labelledby="VerticallyCenteredExample" alignment="center">
         <CCardHeader className="login-modal-header">
           <img

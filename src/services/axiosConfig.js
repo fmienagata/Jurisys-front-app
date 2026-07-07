@@ -10,6 +10,11 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
+    config.headers = config.headers || {}
+    const clientCode = localStorage.getItem('clientCode')
+    if (clientCode && clientCode.trim() !== '') {
+      config.headers['X-Client'] = clientCode.trim()
+    }
     if (localStorage.getItem('token') && localStorage.getItem('token') !== '') {
       config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
     }

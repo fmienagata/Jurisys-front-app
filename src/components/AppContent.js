@@ -10,7 +10,7 @@ const AppContent = () => {
   const { user, isLogged } = useAuth()
 
   return (
-    <CContainer className="px-4" lg>
+    <CContainer className="px-4 page-transition" lg>
       <Suspense fallback={<CSpinner color="primary" />}>
         <Routes>
           {!isLogged ? (
